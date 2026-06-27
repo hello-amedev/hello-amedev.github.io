@@ -1,0 +1,838 @@
+---
+import Base from "../../layouts/Base.astro";
+
+const pillars = [
+	{
+		key: "見つける",
+		title: "大量の画像から、目的の1枚へ",
+		body: "画像だけでなく PDF・動画・Office ファイルまで、フォルダの中身をまとめて一覧。タグ・色・撮影日・状態で絞り込み、探していた1枚にすぐたどり着けます。",
+	},
+	{
+		key: "共有する",
+		title: "「使っていい画像か」をチームで持つ",
+		body: "タグ・色・お気に入り・使用可否・メモを、チーム全員で共有。誰が見ても判断がそろい、その都度の確認がいりません。",
+	},
+	{
+		key: "被せるだけ",
+		title: "いまの共有フォルダは、そのまま",
+		body: "Google ドライブや Dropbox の共有フォルダに被せて使うだけ。移行もアップロードもなく、画像ファイルには一切手を加えません。",
+	},
+];
+
+// マーカーの色は Drive DAM の7色タグから。順序ではなく製品モチーフとして付与。
+const features = [
+	{
+		color: "teal",
+		title: "すべてのファイルを可視化",
+		body: "画像はもちろん、PDF・動画・Office・ZIP も種別を表示。フォルダの中に何があるかを、開かずに把握できます。",
+	},
+	{
+		color: "blue",
+		title: "タグ・色・メモをチームで共有",
+		body: "付けた情報は共有フォルダを介してメンバー全員に反映。使用可否（使用制限）も共有でき、判断のばらつきを抑えます。",
+	},
+	{
+		color: "green",
+		title: "サムネイルを高速表示",
+		body: "誰かが一度つくったサムネイルをチームで再利用。ローカルにも控えるので、次回からの表示と起動が速くなります。",
+	},
+	{
+		color: "purple",
+		title: "SNS サイズへトリミング書き出し",
+		body: "正方形・Instagram・X など、よく使う比率のプリセットで切り抜いて書き出し。元の画像はそのまま、別ファイルに残します。",
+	},
+	{
+		color: "orange",
+		title: "絞り込み・検索",
+		body: "キーワード・タグ・色・撮影日・お気に入りなどで絞り込み。条件を重ねて、目的の1枚まで一気に近づけます。",
+	},
+];
+
+const faqs = [
+	{
+		q: "画像ファイルは変更されますか？",
+		a: "いいえ。タグやメモは画像とは別のフォルダ（<code>_dam/</code>）に保存し、画像ファイルそのものには手を加えません。削除機能もなく、不要なものは「非表示」で隠すだけです。",
+	},
+	{
+		q: "いまの共有フォルダの構成を変える必要はありますか？",
+		a: "ありません。既存のフォルダ構成のまま、その上に被せて使えます。Drive DAM 専用のライブラリに取り込む必要はありません。",
+	},
+	{
+		q: "どのストレージで使えますか？",
+		a: "Google ドライブ・Dropbox・Box など、PC 上でフォルダとして同期されるサービスに対応します。社内ファイルサーバーや共有フォルダでも使えます。",
+	},
+	{
+		q: "チームではどのように共有されますか？",
+		a: "タグ・色・お気に入り・使用可否・メモは、共有フォルダ内の <code>_dam/</code> を介して同期され、メンバー全員に反映されます。他の端末の編集も自動で反映されます。",
+	},
+	{
+		q: "AI で自動的にタグ付けされますか？",
+		a: "いいえ。タグは手作業で付け、チームで共有して育てる運用です。自動分類で意図しない整理がされることはありません。",
+	},
+	{
+		q: "対応している OS は？",
+		a: "Windows に対応しています。",
+	},
+	{
+		q: "料金はどうなりますか？",
+		a: "30日間は無料で試用でき、その後は買い切りです。Microsoft Store での公開を準備しており、価格は公開時に確定します。",
+	},
+];
+
+const tiles = ["red", "green", "blue", "yellow", "blue", "purple", "teal", "orange", "green"];
+---
+
+<Base
+	title="Drive DAM — 共有フォルダに被せるだけのチーム向け画像管理"
+	description="Google ドライブや Dropbox の共有フォルダに被せるだけ。タグ・色・メモをチームで共有し、画像ファイルには手を加えないチーム向け画像管理（DAM）アプリです。"
+	current="drivedam"
+>
+	<!-- 1. ヒーロー -->
+	<section class="hero">
+		<div class="container hero__inner">
+			<div class="hero__copy">
+				<span class="eyebrow eyebrow--rule">チーム向け画像管理（DAM）</span>
+				<h1 class="hero__title">会社の画像を、<br />チームの<span class="hero__accent">資産</span>に。</h1>
+				<p class="hero__sub">
+					共有フォルダに<strong>被せるだけ</strong>。増え続ける写真や素材を、
+					タグと共有で「すぐ使える資産」に変えます。
+					<strong>画像ファイルは触りません。</strong>
+				</p>
+				<div class="hero__cta">
+					<span class="btn btn--primary" aria-disabled="true">近日 Microsoft Store で公開予定</span>
+					<a class="btn btn--ghost" href="#features">機能を見る</a>
+				</div>
+				<span class="btn-note">30日間は無料でお試しいただけます（その後は買い切り）。</span>
+			</div>
+
+			<!-- 製品の世界を CSS で描いたヒーロー・イラスト（スクショではなく恒久アセット） -->
+			<div class="hero__art" aria-hidden="true">
+				<div class="appwin">
+					<div class="appwin__bar">
+						<span class="shot__dot"></span><span class="shot__dot"></span><span class="shot__dot"></span>
+						<span class="appwin__path">商品写真 / 2026</span>
+					</div>
+					<div class="appwin__grid">
+						{tiles.map((c, i) => (
+							<span class={`tile tile--${i} ${i === 4 ? "tile--sel" : ""}`}>
+								<i class={`dot dot--${c}`}></i>
+							</span>
+						))}
+					</div>
+				</div>
+				<div class="hero__panel">
+					<span class="hero__panel-label">選択中</span>
+					<div class="hero__tags">
+						<span class="tagchip">商品写真</span>
+						<span class="tagchip">2026春</span>
+					</div>
+					<div class="hero__panel-row">
+						<span class="hero__color"><i class="dot dot--blue"></i>青</span>
+						<span class="hero__star">★</span>
+					</div>
+					<span class="hero__use">使用可</span>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<!-- 2. 3本柱 -->
+	<section class="section section--soft" id="pillars">
+		<div class="container">
+			<div class="section-head section-head--center">
+				<span class="eyebrow">Drive DAM ができること</span>
+				<h2 class="section-title">見つける。共有する。被せるだけ。</h2>
+				<p class="section-lead">
+					専用のライブラリに移すのではなく、いまの共有フォルダの上で、チームの画像管理を始められます。
+				</p>
+			</div>
+			<div class="pillars">
+				{pillars.map((p) => (
+					<article class="pillar">
+						<span class="pillar__key">{p.key}</span>
+						<h3 class="pillar__title">{p.title}</h3>
+						<p class="pillar__body">{p.body}</p>
+					</article>
+				))}
+			</div>
+		</div>
+	</section>
+
+	<!-- 3. 仕組みの図解（signature：被せる構造） -->
+	<section class="section" id="how">
+		<div class="container">
+			<div class="section-head section-head--center">
+				<span class="eyebrow">仕組み</span>
+				<h2 class="section-title">共有フォルダの「上」に、情報を重ねる</h2>
+				<p class="section-lead">
+					画像ファイルは動かさず、タグやメモを画像のとなりの <code>_dam/</code> フォルダに保存します。
+					共有フォルダごとチームに同期されるので、全員が同じ情報を見られます。
+				</p>
+			</div>
+
+			<div class="overlay">
+				<!-- 被せるレイヤー -->
+				<div class="overlay__app">
+					<span class="overlay__appname">Drive DAM</span>
+					<span class="overlay__appnote">共有フォルダに被せて使う</span>
+					<div class="overlay__flows">
+						<span class="overlay__flow">画像を読み取る<i>↓</i></span>
+						<span class="overlay__flow"><i>↑</i><code>_dam/</code> に保存</span>
+					</div>
+				</div>
+				<!-- 共有フォルダ本体 -->
+				<div class="overlay__folder">
+					<div class="overlay__foldername">共有フォルダ（Google ドライブ / Dropbox / Box）</div>
+					<div class="overlay__items">
+						<span class="card card--img">画像ファイル<small>そのまま</small></span>
+						<span class="card card--img">画像ファイル<small>そのまま</small></span>
+						<span class="card card--meta"><code>_dam/</code><small>タグ・メモ</small></span>
+						<span class="card card--meta"><code>_dam_thumbs/</code><small>サムネイル</small></span>
+					</div>
+				</div>
+			</div>
+
+			<div class="overlay__team">
+				<span class="member">メンバーA</span>
+				<span class="member">メンバーB</span>
+				<span class="member">メンバーC</span>
+				<span class="overlay__teamnote">同じタグ・色・メモが全員に反映されます</span>
+			</div>
+		</div>
+	</section>
+
+	<!-- 4. 主要機能 -->
+	<section class="section section--tint" id="features">
+		<div class="container">
+			<div class="section-head section-head--center">
+				<span class="eyebrow">主な機能</span>
+				<h2 class="section-title">発信に必要な操作を、ひととおり</h2>
+			</div>
+			<div class="features">
+				{features.map((f, i) => (
+					<article class={`feature ${i % 2 === 1 ? "feature--rev" : ""}`}>
+						<div class="feature__text">
+							<span class="feature__marker"><i class={`dot dot--${f.color}`}></i></span>
+							<h3 class="feature__title">{f.title}</h3>
+							<p class="feature__body">{f.body}</p>
+						</div>
+						<figure class="shot feature__shot">
+							<div class="shot__bar">
+								<span class="shot__dot"></span><span class="shot__dot"></span><span class="shot__dot"></span>
+							</div>
+							<div class="shot__body shot__body--tall">
+								<span class="shot__label">{f.title}</span>
+								<span class="shot__sub">スクリーンショットは準備中です</span>
+							</div>
+						</figure>
+					</article>
+				))}
+			</div>
+		</div>
+	</section>
+
+	<!-- 5. 価格 -->
+	<section class="section" id="price">
+		<div class="container">
+			<div class="section-head section-head--center">
+				<span class="eyebrow">価格</span>
+				<h2 class="section-title">まず30日間、無料で試せます</h2>
+				<p class="section-lead">
+					チームでひととおり使ってから、買い切りで導入できます。月額のかかる仕組みではありません。
+				</p>
+			</div>
+			<div class="price-card">
+				<div class="price-card__main">
+					<span class="price-card__free">30日間 無料</span>
+					<span class="price-card__arrow" aria-hidden="true">→</span>
+					<div class="price-card__buy">
+						<span class="price-card__buylabel">そのあと</span>
+						<span class="price-card__buyprice">買い切り</span>
+					</div>
+				</div>
+				<ul class="price-card__list lead-list">
+					<li>試用中も機能の制限はありません</li>
+					<li>一度購入すれば、月額料金はかかりません</li>
+					<li>同じチームのメンバーで共有して使えます</li>
+				</ul>
+				<div class="price-card__cta">
+					<span class="btn btn--primary" aria-disabled="true">近日 Microsoft Store で公開予定</span>
+					<span class="btn-note">
+						公開のお知らせを希望される方は
+						<a href="mailto:hello.amedev@gmail.com?subject=Drive%20DAM%20公開のお知らせ希望">hello.amedev@gmail.com</a>
+						までご連絡ください。価格は公開時に確定します。
+					</span>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<!-- 6. FAQ -->
+	<section class="section section--soft" id="faq">
+		<div class="container">
+			<div class="section-head section-head--center">
+				<span class="eyebrow">よくあるご質問</span>
+				<h2 class="section-title">FAQ</h2>
+			</div>
+			<div class="faq">
+				{faqs.map((item) => (
+					<details class="faq__item">
+						<summary class="faq__q">{item.q}</summary>
+						<div class="faq__a" set:html={item.a} />
+					</details>
+				))}
+			</div>
+		</div>
+	</section>
+</Base>
+
+<style>
+	/* ===== 7色タグのドット（製品モチーフ） ===== */
+	.dot {
+		display: inline-block;
+		width: 10px;
+		height: 10px;
+		border-radius: 50%;
+		flex: none;
+	}
+	.dot--red { background: var(--tag-red); }
+	.dot--orange { background: var(--tag-orange); }
+	.dot--yellow { background: var(--tag-yellow); }
+	.dot--green { background: var(--tag-green); }
+	.dot--teal { background: var(--tag-teal); }
+	.dot--blue { background: var(--tag-blue); }
+	.dot--purple { background: var(--tag-purple); }
+
+	/* ===== ヒーロー ===== */
+	.hero {
+		background:
+			radial-gradient(1100px 480px at 80% -12%, var(--blue-soft), transparent 58%),
+			linear-gradient(180deg, #ffffff, var(--blue-softer));
+		padding-block: 76px 88px;
+		overflow: hidden;
+	}
+	.hero__inner {
+		display: grid;
+		grid-template-columns: 1.02fr 0.98fr;
+		gap: 56px;
+		align-items: center;
+	}
+	.eyebrow--rule {
+		display: inline-flex;
+		align-items: center;
+		gap: 10px;
+	}
+	.eyebrow--rule::before {
+		content: "";
+		width: 26px;
+		height: 2px;
+		background: var(--blue);
+		border-radius: 2px;
+	}
+	.hero__title {
+		font-size: clamp(2.3rem, 1.3rem + 3.6vw, 3.6rem);
+		line-height: 1.24;
+		letter-spacing: -0.01em;
+		font-weight: 800;
+		margin-bottom: 22px;
+	}
+	.hero__accent {
+		position: relative;
+		white-space: nowrap;
+	}
+	.hero__accent::after {
+		content: "";
+		position: absolute;
+		left: -2px;
+		right: -2px;
+		bottom: 0.08em;
+		height: 0.34em;
+		background: var(--blue-soft);
+		border-radius: 3px;
+		z-index: -1;
+	}
+	.hero__sub {
+		font-size: 1.1rem;
+		color: var(--ink-muted);
+		line-height: 1.95;
+		max-width: 30em;
+	}
+	.hero__cta {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 14px;
+		margin-top: 30px;
+	}
+
+	/* ヒーロー・イラスト（アプリの世界） */
+	.hero__art {
+		position: relative;
+		justify-self: center;
+		width: 100%;
+		max-width: 440px;
+		animation: rise 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+	}
+	.appwin {
+		border-radius: var(--radius-lg);
+		border: 1px solid var(--border);
+		background: #fff;
+		box-shadow: var(--shadow-lg);
+		overflow: hidden;
+	}
+	.appwin__bar {
+		display: flex;
+		align-items: center;
+		gap: 7px;
+		padding: 12px 16px;
+		background: var(--blue-softer);
+		border-bottom: 1px solid var(--border);
+	}
+	.appwin__path {
+		margin-left: 8px;
+		font-size: 0.78rem;
+		font-weight: 600;
+		color: var(--ink-faint);
+	}
+	.appwin__grid {
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+		gap: 10px;
+		padding: 16px;
+	}
+	.tile {
+		position: relative;
+		aspect-ratio: 1;
+		border-radius: 10px;
+		background: var(--bg-soft);
+		overflow: hidden;
+	}
+	.tile .dot {
+		position: absolute;
+		top: 7px;
+		left: 7px;
+		box-shadow: 0 0 0 2px #fff;
+	}
+	/* タイルは写真を思わせる淡いグラデ。色味は彩度を抑え、ドットで色を立てる */
+	.tile--0 { background: linear-gradient(135deg, #d9e4f0, #bccfe4); }
+	.tile--1 { background: linear-gradient(135deg, #dceadf, #bdd8c6); }
+	.tile--2 { background: linear-gradient(135deg, #d7e2f1, #c0d2ea); }
+	.tile--3 { background: linear-gradient(135deg, #efe9d8, #e0d3b6); }
+	.tile--4 { background: linear-gradient(135deg, #cfe0f4, #aecbed); }
+	.tile--5 { background: linear-gradient(135deg, #e7e0f1, #d2c4e6); }
+	.tile--6 { background: linear-gradient(135deg, #d7eeec, #bcdedb); }
+	.tile--7 { background: linear-gradient(135deg, #f1e3d6, #e6cdb6); }
+	.tile--8 { background: linear-gradient(135deg, #dcead9, #c2d8b8); }
+	.tile--sel {
+		outline: 2.5px solid var(--blue-deep);
+		outline-offset: 1px;
+	}
+	.hero__panel {
+		position: absolute;
+		right: -14px;
+		bottom: -22px;
+		width: 184px;
+		background: #fff;
+		border: 1px solid var(--border);
+		border-radius: 14px;
+		box-shadow: var(--shadow-lg);
+		padding: 14px 16px;
+		display: grid;
+		gap: 9px;
+	}
+	.hero__panel-label {
+		font-size: 0.72rem;
+		font-weight: 700;
+		letter-spacing: 0.08em;
+		color: var(--ink-faint);
+	}
+	.hero__tags {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 6px;
+	}
+	.tagchip {
+		font-size: 0.76rem;
+		font-weight: 700;
+		color: var(--blue-deep);
+		background: var(--blue-soft);
+		padding: 3px 10px;
+		border-radius: 999px;
+	}
+	.hero__panel-row {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		font-size: 0.8rem;
+		color: var(--ink-muted);
+		font-weight: 600;
+	}
+	.hero__color {
+		display: inline-flex;
+		align-items: center;
+		gap: 6px;
+	}
+	.hero__star {
+		color: var(--tag-yellow);
+		font-size: 0.95rem;
+	}
+	.hero__use {
+		justify-self: start;
+		font-size: 0.74rem;
+		font-weight: 700;
+		color: var(--tag-green);
+		background: #eaf6ef;
+		border: 1px solid #cbe8d6;
+		padding: 2px 10px;
+		border-radius: 6px;
+	}
+	@keyframes rise {
+		from { opacity: 0; transform: translateY(16px); }
+		to { opacity: 1; transform: translateY(0); }
+	}
+	@media (max-width: 880px) {
+		.hero__inner {
+			grid-template-columns: 1fr;
+			gap: 56px;
+		}
+		.hero__art {
+			margin-bottom: 12px;
+		}
+	}
+
+	/* ===== 3本柱 ===== */
+	.pillars {
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+		gap: 24px;
+	}
+	.pillar {
+		background: #fff;
+		border: 1px solid var(--border);
+		border-radius: var(--radius);
+		padding: 32px 28px;
+		box-shadow: var(--shadow-sm);
+		transition: transform 0.15s ease, box-shadow 0.2s ease;
+	}
+	.pillar:hover {
+		transform: translateY(-3px);
+		box-shadow: var(--shadow);
+	}
+	.pillar__key {
+		display: inline-block;
+		font-weight: 800;
+		color: var(--blue-deep);
+		background: var(--blue-soft);
+		padding: 5px 14px;
+		border-radius: 999px;
+		font-size: 0.92rem;
+		margin-bottom: 18px;
+	}
+	.pillar__title {
+		font-size: 1.18rem;
+		margin-bottom: 12px;
+	}
+	.pillar__body {
+		color: var(--ink-muted);
+		font-size: 0.97rem;
+	}
+	@media (max-width: 820px) {
+		.pillars {
+			grid-template-columns: 1fr;
+		}
+	}
+
+	/* ===== 仕組み図解（被せる構造） ===== */
+	.overlay {
+		max-width: 680px;
+		margin-inline: auto;
+		position: relative;
+		padding-top: 30px;
+	}
+	.overlay__app {
+		position: relative;
+		z-index: 2;
+		width: min(86%, 520px);
+		margin-inline: auto;
+		background: linear-gradient(135deg, rgba(74, 144, 226, 0.96), rgba(46, 116, 181, 0.96));
+		color: #fff;
+		border-radius: var(--radius);
+		padding: 20px 26px;
+		box-shadow: 0 16px 36px rgba(31, 58, 95, 0.28);
+		text-align: center;
+	}
+	.overlay__appname {
+		display: block;
+		font-weight: 800;
+		font-size: 1.15rem;
+		letter-spacing: 0.02em;
+	}
+	.overlay__appnote {
+		display: block;
+		font-size: 0.84rem;
+		color: #e3eefb;
+		margin-top: 2px;
+	}
+	.overlay__flows {
+		display: flex;
+		justify-content: center;
+		gap: 22px;
+		margin-top: 12px;
+		font-size: 0.8rem;
+		font-weight: 600;
+	}
+	.overlay__flow {
+		display: inline-flex;
+		align-items: center;
+		gap: 5px;
+		background: rgba(255, 255, 255, 0.16);
+		padding: 4px 12px;
+		border-radius: 999px;
+	}
+	.overlay__flow i {
+		font-style: normal;
+		font-weight: 800;
+	}
+	.overlay__flow code {
+		background: transparent;
+		color: #fff;
+		padding: 0;
+	}
+	.overlay__folder {
+		position: relative;
+		z-index: 1;
+		margin-top: -16px;
+		padding: 30px 24px 22px;
+		background: #fff;
+		border: 1px solid var(--border);
+		border-radius: var(--radius);
+		box-shadow: var(--shadow);
+	}
+	.overlay__foldername {
+		text-align: center;
+		font-weight: 700;
+		color: var(--blue-ink);
+		font-size: 0.95rem;
+		margin-bottom: 16px;
+	}
+	.overlay__items {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: center;
+		gap: 12px;
+	}
+	.card {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 3px;
+		padding: 12px 18px;
+		border-radius: 10px;
+		font-weight: 700;
+		font-size: 0.9rem;
+		line-height: 1.3;
+	}
+	.card small {
+		font-weight: 500;
+		font-size: 0.72rem;
+		color: var(--ink-faint);
+	}
+	.card--img {
+		background: var(--bg-soft);
+		border: 1px solid var(--border);
+		color: var(--ink);
+	}
+	.card--meta {
+		background: var(--blue-soft);
+		border: 1px dashed var(--blue);
+		color: var(--blue-deep);
+	}
+	.card--meta code {
+		background: transparent;
+		padding: 0;
+		color: var(--blue-deep);
+	}
+	.overlay__team {
+		max-width: 680px;
+		margin: 34px auto 0;
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: center;
+		align-items: center;
+		gap: 12px;
+		position: relative;
+	}
+	.overlay__team::before {
+		content: "";
+		position: absolute;
+		top: -22px;
+		left: 50%;
+		width: 2px;
+		height: 18px;
+		background: var(--border-strong);
+		transform: translateX(-50%);
+	}
+	.member {
+		background: #fff;
+		border: 1px solid var(--border);
+		border-radius: 999px;
+		padding: 9px 20px;
+		font-weight: 700;
+		font-size: 0.9rem;
+		color: var(--blue-ink);
+		box-shadow: var(--shadow-sm);
+	}
+	.overlay__teamnote {
+		width: 100%;
+		text-align: center;
+		font-size: 0.85rem;
+		color: var(--ink-muted);
+		margin-top: 4px;
+	}
+
+	/* ===== 主要機能 ===== */
+	.features {
+		display: grid;
+		gap: 40px;
+	}
+	.feature {
+		display: grid;
+		grid-template-columns: 1fr 1.05fr;
+		gap: 48px;
+		align-items: center;
+	}
+	.feature--rev .feature__text {
+		order: 2;
+	}
+	.feature__marker {
+		display: inline-flex;
+		align-items: center;
+		margin-bottom: 14px;
+	}
+	.feature__marker .dot {
+		width: 13px;
+		height: 13px;
+	}
+	.feature__title {
+		font-size: 1.4rem;
+		margin-bottom: 14px;
+	}
+	.feature__body {
+		color: var(--ink-muted);
+		font-size: 1rem;
+	}
+	@media (max-width: 820px) {
+		.feature {
+			grid-template-columns: 1fr;
+			gap: 22px;
+		}
+		.feature--rev .feature__text {
+			order: 0;
+		}
+	}
+
+	/* ===== 価格 ===== */
+	.price-card {
+		max-width: 620px;
+		margin-inline: auto;
+		background: #fff;
+		border: 1px solid var(--border);
+		border-radius: var(--radius-lg);
+		box-shadow: var(--shadow);
+		padding: 44px 40px;
+		text-align: center;
+	}
+	.price-card__main {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: 20px;
+		flex-wrap: wrap;
+		padding-bottom: 28px;
+		border-bottom: 1px solid var(--border);
+		margin-bottom: 26px;
+	}
+	.price-card__free {
+		font-size: 1.7rem;
+		font-weight: 800;
+		color: var(--blue-deep);
+	}
+	.price-card__arrow {
+		color: var(--ink-faint);
+		font-size: 1.4rem;
+	}
+	.price-card__buy {
+		display: flex;
+		flex-direction: column;
+		line-height: 1.3;
+	}
+	.price-card__buylabel {
+		font-size: 0.8rem;
+		color: var(--ink-faint);
+	}
+	.price-card__buyprice {
+		font-size: 1.4rem;
+		font-weight: 800;
+		color: var(--blue-ink);
+	}
+	.price-card__list {
+		text-align: left;
+		max-width: 22em;
+		margin-inline: auto;
+		margin-bottom: 30px;
+	}
+	.price-card__cta .btn {
+		width: 100%;
+		max-width: 360px;
+	}
+
+	/* ===== FAQ ===== */
+	.faq {
+		max-width: var(--maxw-narrow);
+		margin-inline: auto;
+		display: grid;
+		gap: 12px;
+	}
+	.faq__item {
+		background: #fff;
+		border: 1px solid var(--border);
+		border-radius: var(--radius);
+		padding: 4px 22px;
+		box-shadow: var(--shadow-sm);
+	}
+	.faq__q {
+		cursor: pointer;
+		font-weight: 700;
+		color: var(--blue-ink);
+		padding: 16px 28px 16px 0;
+		position: relative;
+		list-style: none;
+	}
+	.faq__q::-webkit-details-marker {
+		display: none;
+	}
+	.faq__q::after {
+		content: "+";
+		position: absolute;
+		right: 0;
+		top: 14px;
+		font-size: 1.3rem;
+		font-weight: 400;
+		color: var(--blue);
+		transition: transform 0.2s ease;
+	}
+	.faq__item[open] .faq__q::after {
+		content: "−";
+	}
+	.faq__a {
+		color: var(--ink-muted);
+		font-size: 0.97rem;
+		padding: 0 0 18px;
+		line-height: 1.9;
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.hero__art {
+			animation: none;
+		}
+	}
+</style>

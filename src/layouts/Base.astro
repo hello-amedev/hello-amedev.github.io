@@ -1,0 +1,45 @@
+---
+import "../styles/global.css";
+import SiteHeader from "../components/SiteHeader.astro";
+import SiteFooter from "../components/SiteFooter.astro";
+
+interface Props {
+	title: string;
+	description?: string;
+	current?: "hub" | "drivedam";
+}
+
+const {
+	title,
+	description = "共有フォルダに被せるだけのチーム向け画像管理アプリ Drive DAM をはじめ、小さなチームの道具をつくる ame_dev の公式サイトです。",
+	current,
+} = Astro.props;
+
+const canonical = new URL(Astro.url.pathname, Astro.site);
+---
+
+<!doctype html>
+<html lang="ja">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="icon" href="/favicon.ico" />
+		<title>{title}</title>
+		<meta name="description" content={description} />
+		<link rel="canonical" href={canonical} />
+		<meta property="og:type" content="website" />
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content={description} />
+		<meta property="og:url" content={canonical} />
+		<meta property="og:locale" content="ja_JP" />
+		<meta name="generator" content={Astro.generator} />
+	</head>
+	<body>
+		<SiteHeader current={current} />
+		<main>
+			<slot />
+		</main>
+		<SiteFooter />
+	</body>
+</html>

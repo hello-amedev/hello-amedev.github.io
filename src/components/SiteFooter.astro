@@ -1,0 +1,35 @@
+---
+// サイト共通フッター。問い合わせ・他製品（将来ハブ）・プライバシーポリシー。
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+	<div class="container">
+		<div class="footer-grid">
+			<div class="footer-brand">
+				<div class="footer-brand__name">ame_dev</div>
+				<p class="footer-brand__desc">
+					小さなチームの仕事を、すこし軽くする道具をつくっています。
+				</p>
+			</div>
+			<div class="footer-col">
+				<h4>製品</h4>
+				<ul>
+					<li><a href="/drivedam/">Drive DAM</a></li>
+					<li><span class="footer-muted">ほか順次公開</span></li>
+				</ul>
+			</div>
+			<div class="footer-col">
+				<h4>サポート</h4>
+				<ul>
+					<li><a href="mailto:hello.amedev@gmail.com">お問い合わせ</a></li>
+					<li><a href="/privacy/">プライバシーポリシー</a></li>
+				</ul>
+			</div>
+		</div>
+		<div class="footer-bottom">
+			<span>© {year} ame_dev</span>
+			<span>Made in Japan</span>
+		</div>
+	</div>
+</footer>

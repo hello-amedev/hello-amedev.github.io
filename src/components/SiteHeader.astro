@@ -1,0 +1,19 @@
+---
+// サイト共通ヘッダー。home はハブ（/）へ、製品名はサブパスへ。
+const { current } = Astro.props as { current?: "hub" | "drivedam" };
+---
+
+<header class="site-header">
+	<div class="container site-header__inner">
+		<a class="brand" href="/">
+			<span class="brand__mark">a</span>
+			<span>ame_dev</span>
+		</a>
+		<nav class="site-nav">
+			<a href="/drivedam/" aria-current={current === "drivedam" ? "page" : undefined}>Drive DAM</a>
+			<a href="/#products">製品</a>
+			<a href="/drivedam/#price">価格</a>
+			<a href="/drivedam/#faq">FAQ</a>
+		</nav>
+	</div>
+</header>

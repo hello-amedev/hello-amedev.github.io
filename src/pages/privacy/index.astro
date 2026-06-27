@@ -1,0 +1,103 @@
+---
+import Base from "../../layouts/Base.astro";
+const updated = "2026年6月27日";
+---
+
+<Base
+	title="プライバシーポリシー — ame_dev"
+	description="ame_dev のウェブサイトおよびアプリにおける個人情報・データの取り扱いについて説明します。"
+>
+	<article class="legal">
+		<div class="container container--narrow">
+			<span class="eyebrow">プライバシーポリシー</span>
+			<h1 class="legal__title">プライバシーポリシー</h1>
+			<p class="legal__updated">最終更新日：{updated}</p>
+
+			<p>
+				ame_dev（以下「当方」）は、当方が提供するウェブサイトおよびアプリケーション（以下「本サービス」）における
+				個人情報および利用者のデータの取り扱いについて、以下のとおり定めます。
+			</p>
+
+			<h2>1. ウェブサイトについて</h2>
+			<p>
+				本ウェブサイトは静的なページで構成されており、利用者を識別するための Cookie やアクセス解析ツールを
+				使用していません。お問い合わせのためにメールでご連絡をいただいた場合、その内容と連絡先は、
+				ご返信および対応の目的にのみ使用します。
+			</p>
+
+			<h2>2. Drive DAM アプリについて</h2>
+			<p>
+				Drive DAM は、利用者の PC 上で動作するアプリケーションです。当方は、Drive DAM を通じて
+				利用者の画像・ファイル・タグ・メモなどのデータを収集したり、外部のサーバーへ送信したりすることは
+				ありません。
+			</p>
+			<ul class="legal__list">
+				<li>画像ファイルは、利用者が指定した共有フォルダ上にそのまま置かれ、当方へ送信されることはありません。</li>
+				<li>タグ・色・お気に入り・メモなどの情報は、画像と同じフォルダ内（<code>_dam/</code>）に保存され、利用者のチーム内でのみ共有されます。</li>
+				<li>Google ドライブ・Dropbox・Box などのストレージとの同期は、利用者ご自身が導入されている各サービスが行うものであり、各サービスのプライバシーポリシーが適用されます。</li>
+			</ul>
+
+			<h2>3. 第三者への提供</h2>
+			<p>
+				当方は、法令に基づく場合を除き、利用者の個人情報を第三者へ提供することはありません。
+			</p>
+
+			<h2>4. 本ポリシーの変更</h2>
+			<p>
+				本ポリシーの内容は、必要に応じて変更することがあります。変更した場合は、本ページに掲載した時点から
+				効力を生じるものとします。
+			</p>
+
+			<h2>5. お問い合わせ</h2>
+			<p>
+				本サービスおよび本ポリシーに関するお問い合わせは、
+				<a href="mailto:hello.amedev@gmail.com">hello.amedev@gmail.com</a> までご連絡ください。
+			</p>
+
+			<p class="legal__back"><a href="/">← トップへ戻る</a></p>
+		</div>
+	</article>
+</Base>
+
+<style>
+	.legal {
+		padding-block: 72px 88px;
+	}
+	.container--narrow {
+		max-width: var(--maxw-narrow);
+	}
+	.legal__title {
+		font-size: clamp(1.7rem, 1.2rem + 1.6vw, 2.2rem);
+		margin-bottom: 10px;
+	}
+	.legal__updated {
+		color: var(--ink-faint);
+		font-size: 0.88rem;
+		margin-bottom: 36px;
+	}
+	.legal p {
+		color: var(--ink-muted);
+		margin-bottom: 18px;
+		line-height: 1.95;
+	}
+	.legal h2 {
+		font-size: 1.2rem;
+		margin-top: 38px;
+		margin-bottom: 14px;
+		padding-top: 8px;
+	}
+	.legal__list {
+		color: var(--ink-muted);
+		line-height: 1.9;
+		padding-left: 1.3em;
+		margin-bottom: 18px;
+	}
+	.legal__list li {
+		margin-bottom: 10px;
+	}
+	.legal__back {
+		margin-top: 48px;
+		padding-top: 24px;
+		border-top: 1px solid var(--border);
+	}
+</style>
