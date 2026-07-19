@@ -1,838 +1,555 @@
 ---
-import Base from "../../layouts/Base.astro";
-
-const pillars = [
-	{
-		key: "見つける",
-		title: "大量の画像から、目的の1枚へ",
-		body: "画像だけでなく PDF・動画・Office ファイルまで、フォルダの中身をまとめて一覧。タグ・色・撮影日・状態で絞り込み、探していた1枚にすぐたどり着けます。",
-	},
-	{
-		key: "共有する",
-		title: "「使っていい画像か」をチームで持つ",
-		body: "タグ・色・お気に入り・使用可否・メモを、チーム全員で共有。誰が見ても判断がそろい、その都度の確認がいりません。",
-	},
-	{
-		key: "被せるだけ",
-		title: "いまの共有フォルダは、そのまま",
-		body: "Google ドライブや Dropbox の共有フォルダに被せて使うだけ。移行もアップロードもなく、画像ファイルには一切手を加えません。",
-	},
-];
-
-// マーカーの色は Drive DAM の7色タグから。順序ではなく製品モチーフとして付与。
-const features = [
-	{
-		color: "teal",
-		title: "すべてのファイルを可視化",
-		body: "画像はもちろん、PDF・動画・Office・ZIP も種別を表示。フォルダの中に何があるかを、開かずに把握できます。",
-	},
-	{
-		color: "blue",
-		title: "タグ・色・メモをチームで共有",
-		body: "付けた情報は共有フォルダを介してメンバー全員に反映。使用可否（使用制限）も共有でき、判断のばらつきを抑えます。",
-	},
-	{
-		color: "green",
-		title: "サムネイルを高速表示",
-		body: "誰かが一度つくったサムネイルをチームで再利用。ローカルにも控えるので、次回からの表示と起動が速くなります。",
-	},
-	{
-		color: "purple",
-		title: "SNS サイズへトリミング書き出し",
-		body: "正方形・Instagram・X など、よく使う比率のプリセットで切り抜いて書き出し。元の画像はそのまま、別ファイルに残します。",
-	},
-	{
-		color: "orange",
-		title: "絞り込み・検索",
-		body: "キーワード・タグ・色・撮影日・お気に入りなどで絞り込み。条件を重ねて、目的の1枚まで一気に近づけます。",
-	},
-];
-
-const faqs = [
-	{
-		q: "画像ファイルは変更されますか？",
-		a: "いいえ。タグやメモは画像とは別のフォルダ（<code>_dam/</code>）に保存し、画像ファイルそのものには手を加えません。削除機能もなく、不要なものは「非表示」で隠すだけです。",
-	},
-	{
-		q: "いまの共有フォルダの構成を変える必要はありますか？",
-		a: "ありません。既存のフォルダ構成のまま、その上に被せて使えます。Drive DAM 専用のライブラリに取り込む必要はありません。",
-	},
-	{
-		q: "どのストレージで使えますか？",
-		a: "Google ドライブ・Dropbox・Box など、PC 上でフォルダとして同期されるサービスに対応します。社内ファイルサーバーや共有フォルダでも使えます。",
-	},
-	{
-		q: "チームではどのように共有されますか？",
-		a: "タグ・色・お気に入り・使用可否・メモは、共有フォルダ内の <code>_dam/</code> を介して同期され、メンバー全員に反映されます。他の端末の編集も自動で反映されます。",
-	},
-	{
-		q: "AI で自動的にタグ付けされますか？",
-		a: "いいえ。タグは手作業で付け、チームで共有して育てる運用です。自動分類で意図しない整理がされることはありません。",
-	},
-	{
-		q: "対応している OS は？",
-		a: "Windows に対応しています。",
-	},
-	{
-		q: "料金はどうなりますか？",
-		a: "30日間は無料で試用でき、その後は買い切りです。Microsoft Store での公開を準備しており、価格は公開時に確定します。",
-	},
-];
-
-const tiles = ["red", "green", "blue", "yellow", "blue", "purple", "teal", "orange", "green"];
+import DrivedamLayout from "../../layouts/DrivedamLayout.astro";
 ---
 
-<Base
-	title="Drive DAM — 共有フォルダに被せるだけのチーム向け画像管理"
-	description="Google ドライブや Dropbox の共有フォルダに被せるだけ。タグ・色・メモをチームで共有し、画像ファイルには手を加えないチーム向け画像管理（DAM）アプリです。"
-	current="drivedam"
->
-	<!-- 1. ヒーロー -->
-	<section class="hero">
-		<div class="container hero__inner">
-			<div class="hero__copy">
-				<span class="eyebrow eyebrow--rule">チーム向け画像管理（DAM）</span>
-				<h1 class="hero__title">会社の画像を、<br />チームの<span class="hero__accent">資産</span>に。</h1>
-				<p class="hero__sub">
-					共有フォルダに<strong>被せるだけ</strong>。増え続ける写真や素材を、
-					タグと共有で「すぐ使える資産」に変えます。
-					<strong>画像ファイルは触りません。</strong>
-				</p>
-				<div class="hero__cta">
-					<span class="btn btn--primary" aria-disabled="true">近日 Microsoft Store で公開予定</span>
-					<a class="btn btn--ghost" href="#features">機能を見る</a>
-				</div>
-				<span class="btn-note">30日間は無料でお試しいただけます（その後は買い切り）。</span>
-			</div>
+<DrivedamLayout title="Drive DAM — 数万枚の画像から、目的の 1 枚へ">
 
-			<!-- 製品の世界を CSS で描いたヒーロー・イラスト（スクショではなく恒久アセット） -->
-			<div class="hero__art" aria-hidden="true">
-				<div class="appwin">
-					<div class="appwin__bar">
-						<span class="shot__dot"></span><span class="shot__dot"></span><span class="shot__dot"></span>
-						<span class="appwin__path">商品写真 / 2026</span>
-					</div>
-					<div class="appwin__grid">
-						{tiles.map((c, i) => (
-							<span class={`tile tile--${i} ${i === 4 ? "tile--sel" : ""}`}>
-								<i class={`dot dot--${c}`}></i>
-							</span>
-						))}
-					</div>
-				</div>
-				<div class="hero__panel">
-					<span class="hero__panel-label">選択中</span>
-					<div class="hero__tags">
-						<span class="tagchip">商品写真</span>
-						<span class="tagchip">2026春</span>
-					</div>
-					<div class="hero__panel-row">
-						<span class="hero__color"><i class="dot dot--blue"></i>青</span>
-						<span class="hero__star">★</span>
-					</div>
-					<span class="hero__use">使用可</span>
-				</div>
-			</div>
-		</div>
-	</section>
+<div class="progress" id="progress" aria-hidden="true"></div>
 
-	<!-- 2. 3本柱 -->
-	<section class="section section--soft" id="pillars">
-		<div class="container">
-			<div class="section-head section-head--center">
-				<span class="eyebrow">Drive DAM ができること</span>
-				<h2 class="section-title">見つける。共有する。被せるだけ。</h2>
-				<p class="section-lead">
-					専用のライブラリに移すのではなく、いまの共有フォルダの上で、チームの画像管理を始められます。
-				</p>
-			</div>
-			<div class="pillars">
-				{pillars.map((p) => (
-					<article class="pillar">
-						<span class="pillar__key">{p.key}</span>
-						<h3 class="pillar__title">{p.title}</h3>
-						<p class="pillar__body">{p.body}</p>
-					</article>
-				))}
-			</div>
-		</div>
-	</section>
+<header class="site-head" id="siteHead">
+  <div class="head-in">
+    <a class="brand" href="/"><img src="/drivedam/assets/app-icon.png" alt="">Drive DAM</a>
+    <span class="head-link" style="cursor:default">近日公開予定</span>
+  </div>
+</header>
 
-	<!-- 3. 仕組みの図解（signature：被せる構造） -->
-	<section class="section" id="how">
-		<div class="container">
-			<div class="section-head section-head--center">
-				<span class="eyebrow">仕組み</span>
-				<h2 class="section-title">共有フォルダの「上」に、情報を重ねる</h2>
-				<p class="section-lead">
-					画像ファイルは動かさず、タグやメモを画像のとなりの <code>_dam/</code> フォルダに保存します。
-					共有フォルダごとチームに同期されるので、全員が同じ情報を見られます。
-				</p>
-			</div>
+<!-- ============ HERO ============ -->
+<section class="hero" id="hero">
+  <div class="hero-light" id="heroLight" aria-hidden="true"><div class="hl-a"></div><div class="hl-b"></div></div>
+  <div class="wrap">
+    <h1 class="hero-title">
+      <span class="hl hl-1"><span class="hl-in">数万枚の画像から、</span></span>
+      <span class="hl hl-2"><span class="hl-in">目的の <em>1 枚</em>へ。</span></span>
+      <span class="hl hl-3"><span class="hl-in">ひとりでも、チームでも。</span></span>
+    </h1>
+    <div class="hero-lead">
+      <div class="hero-lead-in">
+        <p class="hero-sub">ローカルフォルダでも、オンラインストレージ等でも<strong style="display:inline-block">そのまま使える</strong>デジタルアセット管理。<br>共有フォルダを通して、チームでの画像管理・活用を効率化します。</p>
+        <div class="hero-cta">
+          <span class="btn btn-primary" style="cursor:default">近日 Microsoft Store で公開予定</span>
+        </div>
+        <p class="hero-note">v0.13.1(2026-07-18)・Windows 10 以降対応</p>
+      </div>
+    </div>
+    <figure class="hero-stage" id="heroStage">
+      <div class="frame" id="heroFrame">
+        <img src="/drivedam/assets/hero-main.png" alt="Drive DAM の実際の画面。左にフォルダツリー、中央にサムネイル一覧、右に選択・編集パネル" width="2558" height="1597">
+        <div class="gloss" aria-hidden="true"></div>
+      </div>
+    </figure>
+  </div>
+</section>
 
-			<div class="overlay">
-				<!-- 被せるレイヤー -->
-				<div class="overlay__app">
-					<span class="overlay__appname">Drive DAM</span>
-					<span class="overlay__appnote">共有フォルダに被せて使う</span>
-					<div class="overlay__flows">
-						<span class="overlay__flow">画像を読み取る<i>↓</i></span>
-						<span class="overlay__flow"><i>↑</i><code>_dam/</code> に保存</span>
-					</div>
-				</div>
-				<!-- 共有フォルダ本体 -->
-				<div class="overlay__folder">
-					<div class="overlay__foldername">共有フォルダ（Google ドライブ / Dropbox / Box）</div>
-					<div class="overlay__items">
-						<span class="card card--img">画像ファイル<small>そのまま</small></span>
-						<span class="card card--img">画像ファイル<small>そのまま</small></span>
-						<span class="card card--meta"><code>_dam/</code><small>タグ・メモ</small></span>
-						<span class="card card--meta"><code>_dam_thumbs/</code><small>サムネイル</small></span>
-					</div>
-				</div>
-			</div>
+<!-- ============ ABOUT(ツール説明) ============ -->
+<section class="about sec-pad" id="about">
+  <div class="wrap">
+    <div class="cap" data-cap>Drive DAM とは</div>
+    <div class="grid">
+      <div class="about-copy">
+        <h2 class="about-h" data-reveal>広報やマーケティングのための、<br>画像管理ツール。</h2>
+        <p class="about-body" data-reveal>Drive DAM は、画像 1 枚ごとに小さなサムネイルと設定ファイルをオンラインストレージ側に作成することで、<strong>チームでの画像管理と活用をスマートに実現する</strong>ツールです。数万枚の画像を、複数人で、安全かつ高速に管理できます。ローカルフォルダでの利用にも対応しています。</p>
+      </div>
+      <figure class="about-fig" data-reveal>
+        <svg class="draw" id="figSideBySide" viewBox="0 0 360 240" role="img" aria-label="画像ファイル 1 枚ごとに、サムネイルと設定ファイル(タグ・メモ)の 2 つが隣に作られる図">
+          <rect x="18" y="48" width="170" height="126" rx="6" style="--len:600"/>
+          <circle cx="66" cy="88" r="14" style="--len:90"/>
+          <polyline points="18,160 84,108 126,140 160,112 188,146" style="--len:230"/>
+          <text x="18" y="202" font-size="12" fill="#8B887F" stroke="none" font-family="Inter,sans-serif" letter-spacing="1">photo.jpg</text>
+          <rect class="blue" x="240" y="24" width="100" height="64" rx="6" style="--len:340"/>
+          <circle class="blue" cx="268" cy="44" r="8" style="--len:52"/>
+          <polyline class="blue" points="240,81 279,54 303,71 323,56 340,74" style="--len:130"/>
+          <text x="240" y="108" font-size="12" fill="#8B887F" stroke="none" font-family="Inter,sans-serif" letter-spacing="1">thumbnail</text>
+          <rect class="blue" x="240" y="124" width="100" height="64" rx="6" style="--len:340"/>
+          <line class="blue" x1="256" y1="142" x2="324" y2="142" style="--len:68"/>
+          <line class="blue" x1="256" y1="156" x2="312" y2="156" style="--len:56"/>
+          <line class="blue" x1="256" y1="170" x2="318" y2="170" style="--len:62"/>
+          <text x="240" y="208" font-size="12" fill="#8B887F" stroke="none" font-family="Inter,sans-serif" letter-spacing="1">tags + notes</text>
+          <line class="soft" x1="196" y1="56" x2="232" y2="56" style="--len:36"/>
+          <line class="soft" x1="196" y1="156" x2="232" y2="156" style="--len:36"/>
+        </svg>
+        <figcaption class="fig-cap">画像 1 枚ごとに、十数 KB 程度のサムネイル・設定ファイルを作成。これを起動時に読み込むことで高速で効率的な管理・活用を実現します。画像ファイルには手を加えず、安全です。</figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
 
-			<div class="overlay__team">
-				<span class="member">メンバーA</span>
-				<span class="member">メンバーB</span>
-				<span class="member">メンバーC</span>
-				<span class="overlay__teamnote">同じタグ・色・メモが全員に反映されます</span>
-			</div>
-		</div>
-	</section>
+<!-- ============ TRAITS(特徴 3) ============ -->
+<section class="traits sec-pad" id="traits">
+  <div class="wrap">
+    <div class="cap" data-cap>3 つの特徴</div>
+    <div class="trait-grid">
 
-	<!-- 4. 主要機能 -->
-	<section class="section section--tint" id="features">
-		<div class="container">
-			<div class="section-head section-head--center">
-				<span class="eyebrow">主な機能</span>
-				<h2 class="section-title">発信に必要な操作を、ひととおり</h2>
-			</div>
-			<div class="features">
-				{features.map((f, i) => (
-					<article class={`feature ${i % 2 === 1 ? "feature--rev" : ""}`}>
-						<div class="feature__text">
-							<span class="feature__marker"><i class={`dot dot--${f.color}`}></i></span>
-							<h3 class="feature__title">{f.title}</h3>
-							<p class="feature__body">{f.body}</p>
-						</div>
-						<figure class="shot feature__shot">
-							<div class="shot__bar">
-								<span class="shot__dot"></span><span class="shot__dot"></span><span class="shot__dot"></span>
-							</div>
-							<div class="shot__body shot__body--tall">
-								<span class="shot__label">{f.title}</span>
-								<span class="shot__sub">スクリーンショットは準備中です</span>
-							</div>
-						</figure>
-					</article>
-				))}
-			</div>
-		</div>
-	</section>
+      <div class="trait" data-reveal>
+        <div class="ill" data-ill>
+          <svg class="draw" viewBox="0 0 360 279" role="img" aria-label="検索バーと絞り込みチップの図。タグ 2 つと除外タグ・色を AND で重ね、12,179 件から 12 件に絞り込む">
+            <rect x="28" y="36" width="304" height="36" rx="9" style="--len:690"/>
+            <circle class="soft" cx="46" cy="54" r="5.2" style="--len:36"/>
+            <line class="soft" x1="50" y1="58" x2="55" y2="63" style="--len:8"/>
+            <text x="62" y="58" font-size="11.5" fill="#8B887F" stroke="none">ファイル名・タグ・メモで検索</text>
+            <rect class="blue" x="28" y="96" width="94" height="26" rx="13" style="--len:245"/>
+            <circle cx="44" cy="109" r="3.2" style="fill:#7A9BE8;stroke:none"/>
+            <text x="53" y="113" font-size="11" font-weight="600" fill="#4A7CE2" stroke="none">WEB掲載</text>
+            <path class="blue" d="M105 105.5l7 7M112 105.5l-7 7" style="--len:22;stroke-width:1.1"/>
+            <rect class="blue" x="132" y="96" width="94" height="26" rx="13" style="--len:245"/>
+            <circle cx="148" cy="109" r="3.2" style="fill:#7A9BE8;stroke:none"/>
+            <text x="157" y="113" font-size="11" font-weight="600" fill="#4A7CE2" stroke="none">SNS投稿</text>
+            <path class="blue" d="M209 105.5l7 7M216 105.5l-7 7" style="--len:22;stroke-width:1.1"/>
+            <rect class="soft" x="238" y="96" width="84" height="26" rx="13" style="--len:225"/>
+            <line class="soft" x1="280" y1="100" x2="280" y2="118" style="--len:20"/>
+            <text x="259" y="113" font-size="10" font-weight="600" fill="#45433D" stroke="none" text-anchor="middle">AND</text>
+            <text x="301" y="113" font-size="10" font-weight="600" fill="#B5B2A9" stroke="none" text-anchor="middle">OR</text>
+            <rect class="red" x="28" y="134" width="104" height="26" rx="13" style="--len:265"/>
+            <line class="red" x1="40" y1="147" x2="48" y2="147" style="--len:10"/>
+            <text x="54" y="151" font-size="11" font-weight="600" fill="#B5544A" stroke="none">期間限定</text>
+            <path class="red" d="M112 143.5l7 7M119 143.5l-7 7" style="--len:22;stroke-width:1.1"/>
+            <rect class="soft" x="144" y="134" width="56" height="26" rx="13" style="--len:170"/>
+            <circle cx="159" cy="147" r="4.5" style="fill:#C96F5F;stroke:none"/>
+            <text x="168" y="151" font-size="11" font-weight="600" fill="#45433D" stroke="none">赤</text>
+            <path class="soft" d="M182 143.5l7 7M189 143.5l-7 7" style="--len:22;stroke-width:1.1"/>
+            <line class="soft" x1="28" y1="184" x2="332" y2="184" style="--len:310;stroke-width:.8"/>
+            <text x="28" y="218" font-size="26" font-weight="700" fill="#1B1A17" stroke="none" style="font-variant-numeric:tabular-nums">12</text>
+            <text x="64" y="218" font-size="13" fill="#8B887F" stroke="none">/ 12,179 件</text>
+            <text x="28" y="240" font-size="10.5" fill="#8B887F" stroke="none" letter-spacing="1">該当ファイル</text>
+          </svg>
+        </div>
+        <h3 class="trait-h">数万枚の画像から、高速検索。</h3>
+        <p class="trait-b">タグ・色・撮影日・使用可否・キーワードを重ねて、数万枚の中から該当ファイルに一瞬で到達します。画像に加え、PDF・動画・Office・ZIP もまとめて一覧できます。</p>
+      </div>
 
-	<!-- 5. 価格 -->
-	<section class="section" id="price">
-		<div class="container">
-			<div class="section-head section-head--center">
-				<span class="eyebrow">価格</span>
-				<h2 class="section-title">まず30日間、無料で試せます</h2>
-				<p class="section-lead">
-					チームでひととおり使ってから、買い切りで導入できます。月額のかかる仕組みではありません。
-				</p>
-			</div>
-			<div class="price-card">
-				<div class="price-card__main">
-					<span class="price-card__free">30日間 無料</span>
-					<span class="price-card__arrow" aria-hidden="true">→</span>
-					<div class="price-card__buy">
-						<span class="price-card__buylabel">そのあと</span>
-						<span class="price-card__buyprice">買い切り</span>
-					</div>
-				</div>
-				<ul class="price-card__list lead-list">
-					<li>試用中も機能の制限はありません</li>
-					<li>一度購入すれば、月額料金はかかりません</li>
-					<li>同じチームのメンバーで共有して使えます</li>
-				</ul>
-				<div class="price-card__cta">
-					<span class="btn btn--primary" aria-disabled="true">近日 Microsoft Store で公開予定</span>
-					<span class="btn-note">
-						公開のお知らせを希望される方は
-						<a href="mailto:hello.amedev@gmail.com?subject=Drive%20DAM%20公開のお知らせ希望">hello.amedev@gmail.com</a>
-						までご連絡ください。価格は公開時に確定します。
-					</span>
-				</div>
-			</div>
-		</div>
-	</section>
+      <div class="trait" data-reveal>
+        <div class="ill" data-ill>
+          <svg class="draw" viewBox="0 0 360 279" aria-hidden="true">
+            <line class="soft" x1="151" y1="117" x2="86" y2="84" style="--len:80"/>
+            <line class="soft" x1="151" y1="145" x2="86" y2="178" style="--len:80"/>
+            <line class="soft" x1="204" y1="109" x2="277" y2="61" style="--len:95"/>
+            <line class="soft" x1="212" y1="131" x2="270" y2="131" style="--len:65"/>
+            <line class="soft" x1="204" y1="153" x2="277" y2="201" style="--len:95"/>
+          </svg>
+          <div class="node center" data-t="1" style="left:50%;top:47%">
+            <img src="/drivedam/assets/app-icon.png" alt="Drive DAM">
+          </div>
+          <div class="node bare" data-t="2" style="left:16%;top:25%">
+            <svg width="40" height="40" viewBox="0 0 40 40" aria-hidden="true"><path d="M5.1 11.3a4 4 0 0 1 4-4h7.9l4 4.7h10.1a4 4 0 0 1 4 4v13.1a4 4 0 0 1-4 4H9.1a4 4 0 0 1-4-4z" fill="none" stroke="#45433D" stroke-width="1.6" stroke-linejoin="round"/><path d="M5.1 12h15.9" fill="none" stroke="#45433D" stroke-width="1.2"/></svg>
+            <span class="nlabel">ローカルフォルダ</span>
+          </div>
+          <div class="node bare" data-t="2" style="left:16%;top:69%">
+            <svg width="40" height="40" viewBox="0 0 40 40" aria-hidden="true"><rect x="6" y="8" width="28" height="10" rx="2.8" fill="none" stroke="#45433D" stroke-width="1.6"/><rect x="6" y="22" width="28" height="10" rx="2.8" fill="none" stroke="#45433D" stroke-width="1.6"/><circle cx="12" cy="13" r="1.7" fill="#45433D"/><circle cx="12" cy="27" r="1.7" fill="#45433D"/><path d="M22 13h7M22 27h7" fill="none" stroke="#45433D" stroke-width="1.4" stroke-linecap="round"/></svg>
+            <span class="nlabel">ファイルサーバー</span>
+          </div>
+          <div class="node bare" data-t="3" style="left:84%;top:15%">
+            <svg width="40" height="40" viewBox="0 0 40 40" aria-hidden="true"><path d="M16.7 7a3.9 3.9 0 0 1 6.6 0l12.3 21.3a3.9 3.9 0 0 1-3.3 5.8H7.7a3.9 3.9 0 0 1-3.3-5.8z" fill="none" stroke="#45433D" stroke-width="1.6" stroke-linejoin="round"/><path d="M11.3 32.8 23 11.2M28.7 32.8 17 11.2M9 26h22" fill="none" stroke="#45433D" stroke-width="1.4" stroke-linecap="round"/></svg>
+            <span class="nlabel">Google Drive</span>
+          </div>
+          <div class="node bare" data-t="4" style="left:84%;top:47%">
+            <svg width="40" height="40" viewBox="0 0 40 40" aria-hidden="true"><path d="M8 12.9 20 6l12 6.9v14.1L20 34 8 27z" fill="none" stroke="#45433D" stroke-width="1.6" stroke-linejoin="round"/><path d="M8 12.9 20 19.9l12-7M20 19.9v14.1" fill="none" stroke="#45433D" stroke-width="1.4" stroke-linejoin="round"/></svg>
+            <span class="nlabel">Box</span>
+          </div>
+          <div class="node bare" data-t="5" style="left:84%;top:79%">
+            <svg width="40" height="40" viewBox="0 0 40 40" aria-hidden="true"><path d="M12 5 20 10.1 12 15.2 4 10.1ZM28 5 36 10.1 28 15.2 20 10.1ZM12 15.2 20 20.3 12 25.4 4 20.3ZM28 15.2 36 20.3 28 25.4 20 20.3Z" fill="none" stroke="#45433D" stroke-width="1.5" stroke-linejoin="round"/><path d="M12 28.4 20 33.5 28 28.4" fill="none" stroke="#45433D" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"/></svg>
+            <span class="nlabel">Dropbox</span>
+          </div>
+        </div>
+        <h3 class="trait-h">ローカルでも、オンラインストレージでも。</h3>
+        <p class="trait-b">Google Drive / Dropbox / Box / 社内ファイルサーバー の共有フォルダでそのまま動きます。フォルダ構成も画像ファイルも変更しません。別アップロードもライブラリ取り込みも発生しません。</p>
+      </div>
 
-	<!-- 6. FAQ -->
-	<section class="section section--soft" id="faq">
-		<div class="container">
-			<div class="section-head section-head--center">
-				<span class="eyebrow">よくあるご質問</span>
-				<h2 class="section-title">FAQ</h2>
-			</div>
-			<div class="faq">
-				{faqs.map((item) => (
-					<details class="faq__item">
-						<summary class="faq__q">{item.q}</summary>
-						<div class="faq__a" set:html={item.a} />
-					</details>
-				))}
-			</div>
-		</div>
-	</section>
-</Base>
+      <div class="trait" data-reveal>
+        <div class="ill" data-ill>
+          <svg class="draw" viewBox="0 0 360 279" role="img" aria-label="1 つの共有フォルダをユーザー A・B・C が開いている図。3 人の画面に同じタグ・色・お気に入りが表示される">
+            <path d="M40 113a6 6 0 0 1 6-6h15l8 9h21a6 6 0 0 1 6 6v27a6 6 0 0 1-6 6H46a6 6 0 0 1-6-6z" style="--len:240"/>
+            <text x="68" y="175" font-size="11" fill="#8B887F" stroke="none" text-anchor="middle">共有フォルダ</text>
+            <line class="soft" x1="96" y1="131" x2="122" y2="131" style="--len:28"/>
+            <line class="soft" x1="122" y1="63" x2="122" y2="199" style="--len:140"/>
+            <line class="soft" x1="122" y1="63" x2="144" y2="63" style="--len:24"/>
+            <line class="soft" x1="122" y1="131" x2="144" y2="131" style="--len:24"/>
+            <line class="soft" x1="122" y1="199" x2="144" y2="199" style="--len:24"/>
+            <circle cx="162" cy="63" r="13" style="--len:85"/>
+            <circle cx="162" cy="58.8" r="3.1" style="--len:21;stroke-width:1.2"/>
+            <path d="M156.4 70.6a5.6 5.6 0 0 1 11.2 0" style="--len:19;stroke-width:1.2"/>
+            <text x="162" y="90" font-size="9.5" fill="#8B887F" stroke="none" text-anchor="middle" letter-spacing="1">A</text>
+            <rect class="blue" x="186" y="50" width="86" height="26" rx="13" style="--len:230"/>
+            <circle cx="202" cy="63" r="3.2" style="fill:#7A9BE8;stroke:none"/>
+            <text x="210" y="67" font-size="11" font-weight="600" fill="#4A7CE2" stroke="none">WEB掲載</text>
+            <circle class="soft" cx="288" cy="63" r="8" style="--len:52"/>
+            <circle cx="288" cy="63" r="4.5" style="fill:#E2954A;stroke:none"/>
+            <path class="soft" transform="translate(316 63)" d="M0 -7 L1.7 -2.35 L6.66 -2.16 L2.76 0.9 L4.11 5.66 L0 2.9 L-4.11 5.66 L-2.76 0.9 L-6.66 -2.16 L-1.7 -2.35 Z" style="--len:65"/>
+            <circle cx="162" cy="131" r="13" style="--len:85"/>
+            <circle cx="162" cy="126.8" r="3.1" style="--len:21;stroke-width:1.2"/>
+            <path d="M156.4 138.6a5.6 5.6 0 0 1 11.2 0" style="--len:19;stroke-width:1.2"/>
+            <text x="162" y="158" font-size="9.5" fill="#8B887F" stroke="none" text-anchor="middle" letter-spacing="1">B</text>
+            <rect class="blue" x="186" y="118" width="86" height="26" rx="13" style="--len:230"/>
+            <circle cx="202" cy="131" r="3.2" style="fill:#7A9BE8;stroke:none"/>
+            <text x="210" y="135" font-size="11" font-weight="600" fill="#4A7CE2" stroke="none">WEB掲載</text>
+            <circle class="soft" cx="288" cy="131" r="8" style="--len:52"/>
+            <circle cx="288" cy="131" r="4.5" style="fill:#E2954A;stroke:none"/>
+            <path class="soft" transform="translate(316 131)" d="M0 -7 L1.7 -2.35 L6.66 -2.16 L2.76 0.9 L4.11 5.66 L0 2.9 L-4.11 5.66 L-2.76 0.9 L-6.66 -2.16 L-1.7 -2.35 Z" style="--len:65"/>
+            <circle cx="162" cy="199" r="13" style="--len:85"/>
+            <circle cx="162" cy="194.8" r="3.1" style="--len:21;stroke-width:1.2"/>
+            <path d="M156.4 206.6a5.6 5.6 0 0 1 11.2 0" style="--len:19;stroke-width:1.2"/>
+            <text x="162" y="226" font-size="9.5" fill="#8B887F" stroke="none" text-anchor="middle" letter-spacing="1">C</text>
+            <rect class="blue" x="186" y="186" width="86" height="26" rx="13" style="--len:230"/>
+            <circle cx="202" cy="199" r="3.2" style="fill:#7A9BE8;stroke:none"/>
+            <text x="210" y="203" font-size="11" font-weight="600" fill="#4A7CE2" stroke="none">WEB掲載</text>
+            <circle class="soft" cx="288" cy="199" r="8" style="--len:52"/>
+            <circle cx="288" cy="199" r="4.5" style="fill:#E2954A;stroke:none"/>
+            <path class="soft" transform="translate(316 199)" d="M0 -7 L1.7 -2.35 L6.66 -2.16 L2.76 0.9 L4.11 5.66 L0 2.9 L-4.11 5.66 L-2.76 0.9 L-6.66 -2.16 L-1.7 -2.35 Z" style="--len:65"/>
+          </svg>
+        </div>
+        <h3 class="trait-h">タグや使用条件を、チームで共有。</h3>
+        <p class="trait-b">タグ・色・お気に入り・使用可否・メモは、共有フォルダのアクセス権を持つメンバー全員に同期されます。誰が見ても同じ条件で絞り込め、「これ使っていいですか」の確認が要らなくなります。</p>
+      </div>
 
-<style>
-	/* ===== 7色タグのドット（製品モチーフ） ===== */
-	.dot {
-		display: inline-block;
-		width: 10px;
-		height: 10px;
-		border-radius: 50%;
-		flex: none;
-	}
-	.dot--red { background: var(--tag-red); }
-	.dot--orange { background: var(--tag-orange); }
-	.dot--yellow { background: var(--tag-yellow); }
-	.dot--green { background: var(--tag-green); }
-	.dot--teal { background: var(--tag-teal); }
-	.dot--blue { background: var(--tag-blue); }
-	.dot--purple { background: var(--tag-purple); }
+    </div>
+  </div>
+</section>
 
-	/* ===== ヒーロー ===== */
-	.hero {
-		background:
-			radial-gradient(1100px 480px at 80% -12%, var(--blue-soft), transparent 58%),
-			linear-gradient(180deg, #ffffff, var(--blue-softer));
-		padding-block: 76px 88px;
-		overflow: hidden;
-	}
-	.hero__inner {
-		display: grid;
-		grid-template-columns: 1.02fr 0.98fr;
-		gap: 56px;
-		align-items: center;
-	}
-	.eyebrow--rule {
-		display: inline-flex;
-		align-items: center;
-		gap: 10px;
-	}
-	.eyebrow--rule::before {
-		content: "";
-		width: 26px;
-		height: 2px;
-		background: var(--blue);
-		border-radius: 2px;
-	}
-	.hero__title {
-		font-size: clamp(2.3rem, 1.3rem + 3.6vw, 3.6rem);
-		line-height: 1.24;
-		letter-spacing: -0.01em;
-		font-weight: 800;
-		margin-bottom: 22px;
-	}
-	.hero__accent {
-		position: relative;
-		white-space: nowrap;
-	}
-	.hero__accent::after {
-		content: "";
-		position: absolute;
-		left: -2px;
-		right: -2px;
-		bottom: 0.08em;
-		height: 0.34em;
-		background: var(--blue-soft);
-		border-radius: 3px;
-		z-index: -1;
-	}
-	.hero__sub {
-		font-size: 1.1rem;
-		color: var(--ink-muted);
-		line-height: 1.95;
-		max-width: 30em;
-	}
-	.hero__cta {
-		display: flex;
-		flex-wrap: wrap;
-		gap: 14px;
-		margin-top: 30px;
-	}
+<!-- ============ FUNCS(主要機能 3・スクロール表示) ============ -->
+<section class="funcs sec-pad" id="funcs">
+  <div class="wrap">
+    <div class="cap" data-cap>機能</div>
+    <h2 class="funcs-h2" data-reveal>発信に必要な操作を、まとめて。</h2>
+    <div class="funcs-cols">
+      <nav class="funcs-nav" aria-label="機能一覧">
+        <ol>
+          <li><a href="#fn-thumbs" class="active"><span class="n">01</span>サムネイルを高速表示</a></li>
+          <li><a href="#fn-search"><span class="n">02</span>絞り込み・検索</a></li>
+          <li><a href="#fn-share"><span class="n">03</span>タグ・色・使用可否の共有</a></li>
+        </ol>
+      </nav>
+      <div class="funcs-body">
+        <article class="func" id="fn-thumbs">
+          <h3 class="func-h">サムネイルを高速表示</h3>
+          <p class="func-b">数万枚のフォルダでも、開いてすぐに一覧できます。誰かが一度生成したサムネイルをチーム全員で再利用し、ローカルにも控えるため、2 回目以降の表示はさらに速くなります。</p>
+          <div class="shot" data-shot><img class="shot-pic" src="/drivedam/assets/func-thumbs.png" alt="Drive DAM のサムネイル一覧画面。左にフォルダツリー、中央に大量のサムネイル、右にショートカット一覧" loading="lazy" width="2558" height="1597"></div>
+        </article>
+        <article class="func" id="fn-search">
+          <h3 class="func-h">絞り込み・検索</h3>
+          <p class="func-b">キーワード・タグ・色・撮影日・使用可否・お気に入りを重ねて絞り込みます。条件を組み合わせるほど候補が減ります。検索対象はファイル名・タグ・メモです。画像内の文字(OCR)や画像認識による自動検索は行いません。</p>
+          <div class="shot" data-shot><img class="shot-pic" src="/drivedam/assets/func-search.png" alt="絞り込みパネルを展開し、ライブラリ全体 9,974 件からお気に入りのみ 282 件に絞り込んだ状態" loading="lazy" width="1872" height="1345"></div>
+        </article>
+        <article class="func" id="fn-share">
+          <h3 class="func-h">タグ・色・使用可否をチームで共有</h3>
+          <p class="func-b">付けた情報は共有フォルダを介してメンバー全員の画面に反映されます。使用可否(社外公開可・要許諾・使用不可など)も共有でき、判断のばらつきを抑えます。共有フォルダのアクセス権がない人には共有されません。</p>
+          <div class="shot" data-shot>
+            <div class="shot-panel">
+              <img src="/drivedam/assets/func-share1.png" alt="使用可否のバッジが付いたサムネイル 3 件。要許諾・使用不可がひと目でわかる" loading="lazy" width="890" height="360" style="left:6%;top:28%;width:57%">
+              <img src="/drivedam/assets/func-share2.png" alt="詳細パネル。タグ・色・お気に入り・メモ・使用制限と、編集者・編集日時" loading="lazy" width="547" height="1121" style="right:6%;top:9%;width:25.6%">
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
 
-	/* ヒーロー・イラスト（アプリの世界） */
-	.hero__art {
-		position: relative;
-		justify-self: center;
-		width: 100%;
-		max-width: 440px;
-		animation: rise 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
-	}
-	.appwin {
-		border-radius: var(--radius-lg);
-		border: 1px solid var(--border);
-		background: #fff;
-		box-shadow: var(--shadow-lg);
-		overflow: hidden;
-	}
-	.appwin__bar {
-		display: flex;
-		align-items: center;
-		gap: 7px;
-		padding: 12px 16px;
-		background: var(--blue-softer);
-		border-bottom: 1px solid var(--border);
-	}
-	.appwin__path {
-		margin-left: 8px;
-		font-size: 0.78rem;
-		font-weight: 600;
-		color: var(--ink-faint);
-	}
-	.appwin__grid {
-		display: grid;
-		grid-template-columns: repeat(3, 1fr);
-		gap: 10px;
-		padding: 16px;
-	}
-	.tile {
-		position: relative;
-		aspect-ratio: 1;
-		border-radius: 10px;
-		background: var(--bg-soft);
-		overflow: hidden;
-	}
-	.tile .dot {
-		position: absolute;
-		top: 7px;
-		left: 7px;
-		box-shadow: 0 0 0 2px #fff;
-	}
-	/* タイルは写真を思わせる淡いグラデ。色味は彩度を抑え、ドットで色を立てる */
-	.tile--0 { background: linear-gradient(135deg, #d9e4f0, #bccfe4); }
-	.tile--1 { background: linear-gradient(135deg, #dceadf, #bdd8c6); }
-	.tile--2 { background: linear-gradient(135deg, #d7e2f1, #c0d2ea); }
-	.tile--3 { background: linear-gradient(135deg, #efe9d8, #e0d3b6); }
-	.tile--4 { background: linear-gradient(135deg, #cfe0f4, #aecbed); }
-	.tile--5 { background: linear-gradient(135deg, #e7e0f1, #d2c4e6); }
-	.tile--6 { background: linear-gradient(135deg, #d7eeec, #bcdedb); }
-	.tile--7 { background: linear-gradient(135deg, #f1e3d6, #e6cdb6); }
-	.tile--8 { background: linear-gradient(135deg, #dcead9, #c2d8b8); }
-	.tile--sel {
-		outline: 2.5px solid var(--blue-deep);
-		outline-offset: 1px;
-	}
-	.hero__panel {
-		position: absolute;
-		right: -14px;
-		bottom: -22px;
-		width: 184px;
-		background: #fff;
-		border: 1px solid var(--border);
-		border-radius: 14px;
-		box-shadow: var(--shadow-lg);
-		padding: 14px 16px;
-		display: grid;
-		gap: 9px;
-	}
-	.hero__panel-label {
-		font-size: 0.72rem;
-		font-weight: 700;
-		letter-spacing: 0.08em;
-		color: var(--ink-faint);
-	}
-	.hero__tags {
-		display: flex;
-		flex-wrap: wrap;
-		gap: 6px;
-	}
-	.tagchip {
-		font-size: 0.76rem;
-		font-weight: 700;
-		color: var(--blue-deep);
-		background: var(--blue-soft);
-		padding: 3px 10px;
-		border-radius: 999px;
-	}
-	.hero__panel-row {
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-		font-size: 0.8rem;
-		color: var(--ink-muted);
-		font-weight: 600;
-	}
-	.hero__color {
-		display: inline-flex;
-		align-items: center;
-		gap: 6px;
-	}
-	.hero__star {
-		color: var(--tag-yellow);
-		font-size: 0.95rem;
-	}
-	.hero__use {
-		justify-self: start;
-		font-size: 0.74rem;
-		font-weight: 700;
-		color: var(--tag-green);
-		background: #eaf6ef;
-		border: 1px solid #cbe8d6;
-		padding: 2px 10px;
-		border-radius: 6px;
-	}
-	@keyframes rise {
-		from { opacity: 0; transform: translateY(16px); }
-		to { opacity: 1; transform: translateY(0); }
-	}
-	@media (max-width: 880px) {
-		.hero__inner {
-			grid-template-columns: 1fr;
-			gap: 56px;
-		}
-		.hero__art {
-			margin-bottom: 12px;
-		}
-	}
+    <div class="fmore">
+      <div class="cap" data-cap>そのほかの機能</div>
 
-	/* ===== 3本柱 ===== */
-	.pillars {
-		display: grid;
-		grid-template-columns: repeat(3, 1fr);
-		gap: 24px;
-	}
-	.pillar {
-		background: #fff;
-		border: 1px solid var(--border);
-		border-radius: var(--radius);
-		padding: 32px 28px;
-		box-shadow: var(--shadow-sm);
-		transition: transform 0.15s ease, box-shadow 0.2s ease;
-	}
-	.pillar:hover {
-		transform: translateY(-3px);
-		box-shadow: var(--shadow);
-	}
-	.pillar__key {
-		display: inline-block;
-		font-weight: 800;
-		color: var(--blue-deep);
-		background: var(--blue-soft);
-		padding: 5px 14px;
-		border-radius: 999px;
-		font-size: 0.92rem;
-		margin-bottom: 18px;
-	}
-	.pillar__title {
-		font-size: 1.18rem;
-		margin-bottom: 12px;
-	}
-	.pillar__body {
-		color: var(--ink-muted);
-		font-size: 0.97rem;
-	}
-	@media (max-width: 820px) {
-		.pillars {
-			grid-template-columns: 1fr;
-		}
-	}
+      <div class="fgroup">
+        <h4 class="fgroup-h">検索・表示</h4>
+        <div class="fgrid">
+          <div class="fcard w6" data-reveal>
+            <div class="fcard-vis nat"><img src="/drivedam/assets/func-files.png" alt="MP4・PDF・XLSX が画像と混在して一覧表示されているフォルダ" loading="lazy" width="2558" height="1597"></div>
+            <h4 class="fcard-h">すべてのファイルを可視化</h4>
+            <p class="fcard-b">画像はもちろん、PDF・動画・Office・ZIP も種別を表示します。フォルダの中に何があるかを、開かずに把握できます。</p>
+          </div>
+          <div class="fcard w6" data-reveal>
+            <div class="fcard-vis nat"><img src="/drivedam/assets/func-zoom.png" alt="プレビュー画面。元画像を大きく表示し、下部にエクスプローラーで表示・既定のアプリで開く・ダウンロード・等倍のボタン" loading="lazy" width="2556" height="1595"></div>
+            <h4 class="fcard-h">プレビュー・原寸表示</h4>
+            <p class="fcard-b">元画像を大きくプレビューし、等倍表示で細部まで確認できます。矢印キーで前後のファイルに移動できます。</p>
+          </div>
+          <div class="fcard w6" data-reveal>
+            <div class="fcard-vis nat"><img src="/drivedam/assets/func-folder.png" alt="「下位フォルダを含める」をオンにして、サブフォルダの中身をまとめて一覧した画面" loading="lazy" width="1999" height="1479"></div>
+            <h4 class="fcard-h">下位フォルダをまとめて表示</h4>
+            <p class="fcard-b">サブフォルダの中身も 1 つの一覧に表示できます。フォルダを行き来せずに、全体を見渡せます。</p>
+          </div>
+          <div class="fcard w6" data-reveal>
+            <div class="fcard-vis modal" style="aspect-ratio:1999/1479"><img src="/drivedam/assets/func-searchsave.png" alt="保存済みの検索条件「WEB掲載2026選定」を呼び出し、タグ・お気に入り・撮影日の 3 条件で 6 件に絞り込んだ画面" loading="lazy" width="1998" height="781"></div>
+            <h4 class="fcard-h">検索条件の保存</h4>
+            <p class="fcard-b">よく使う絞り込み条件は、名前を付けて保存できます。保存した条件はサイドバーからいつでも呼び出せます。</p>
+          </div>
+        </div>
+      </div>
 
-	/* ===== 仕組み図解（被せる構造） ===== */
-	.overlay {
-		max-width: 680px;
-		margin-inline: auto;
-		position: relative;
-		padding-top: 30px;
-	}
-	.overlay__app {
-		position: relative;
-		z-index: 2;
-		width: min(86%, 520px);
-		margin-inline: auto;
-		background: linear-gradient(135deg, rgba(74, 144, 226, 0.96), rgba(46, 116, 181, 0.96));
-		color: #fff;
-		border-radius: var(--radius);
-		padding: 20px 26px;
-		box-shadow: 0 16px 36px rgba(31, 58, 95, 0.28);
-		text-align: center;
-	}
-	.overlay__appname {
-		display: block;
-		font-weight: 800;
-		font-size: 1.15rem;
-		letter-spacing: 0.02em;
-	}
-	.overlay__appnote {
-		display: block;
-		font-size: 0.84rem;
-		color: #e3eefb;
-		margin-top: 2px;
-	}
-	.overlay__flows {
-		display: flex;
-		justify-content: center;
-		gap: 22px;
-		margin-top: 12px;
-		font-size: 0.8rem;
-		font-weight: 600;
-	}
-	.overlay__flow {
-		display: inline-flex;
-		align-items: center;
-		gap: 5px;
-		background: rgba(255, 255, 255, 0.16);
-		padding: 4px 12px;
-		border-radius: 999px;
-	}
-	.overlay__flow i {
-		font-style: normal;
-		font-weight: 800;
-	}
-	.overlay__flow code {
-		background: transparent;
-		color: #fff;
-		padding: 0;
-	}
-	.overlay__folder {
-		position: relative;
-		z-index: 1;
-		margin-top: -16px;
-		padding: 30px 24px 22px;
-		background: #fff;
-		border: 1px solid var(--border);
-		border-radius: var(--radius);
-		box-shadow: var(--shadow);
-	}
-	.overlay__foldername {
-		text-align: center;
-		font-weight: 700;
-		color: var(--blue-ink);
-		font-size: 0.95rem;
-		margin-bottom: 16px;
-	}
-	.overlay__items {
-		display: flex;
-		flex-wrap: wrap;
-		justify-content: center;
-		gap: 12px;
-	}
-	.card {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		gap: 3px;
-		padding: 12px 18px;
-		border-radius: 10px;
-		font-weight: 700;
-		font-size: 0.9rem;
-		line-height: 1.3;
-	}
-	.card small {
-		font-weight: 500;
-		font-size: 0.72rem;
-		color: var(--ink-faint);
-	}
-	.card--img {
-		background: var(--bg-soft);
-		border: 1px solid var(--border);
-		color: var(--ink);
-	}
-	.card--meta {
-		background: var(--blue-soft);
-		border: 1px dashed var(--blue);
-		color: var(--blue-deep);
-	}
-	.card--meta code {
-		background: transparent;
-		padding: 0;
-		color: var(--blue-deep);
-	}
-	.overlay__team {
-		max-width: 680px;
-		margin: 34px auto 0;
-		display: flex;
-		flex-wrap: wrap;
-		justify-content: center;
-		align-items: center;
-		gap: 12px;
-		position: relative;
-	}
-	.overlay__team::before {
-		content: "";
-		position: absolute;
-		top: -22px;
-		left: 50%;
-		width: 2px;
-		height: 18px;
-		background: var(--border-strong);
-		transform: translateX(-50%);
-	}
-	.member {
-		background: #fff;
-		border: 1px solid var(--border);
-		border-radius: 999px;
-		padding: 9px 20px;
-		font-weight: 700;
-		font-size: 0.9rem;
-		color: var(--blue-ink);
-		box-shadow: var(--shadow-sm);
-	}
-	.overlay__teamnote {
-		width: 100%;
-		text-align: center;
-		font-size: 0.85rem;
-		color: var(--ink-muted);
-		margin-top: 4px;
-	}
+      <div class="fgroup">
+        <h4 class="fgroup-h">書き出し・ダウンロード</h4>
+        <div class="fgrid">
+          <div class="fcard" data-reveal>
+            <div class="fcard-vis modal"><div class="pshot" style="--src:url('/drivedam/assets/func-zoom.png');right:-2%;bottom:12%;width:80%;aspect-ratio:1080/1215;--zoom:237%;--pos:1% 100%" role="img" aria-label="プレビュー画面の下部。エクスプローラーで表示・既定のアプリで開く・ダウンロード・等倍のボタンが並ぶ"></div></div>
+            <h4 class="fcard-h">プレビューから即ダウンロード</h4>
+            <p class="fcard-b">プレビューで確認した画像を、その場でダウンロードできます。エクスプローラーでの表示や、既定のアプリで開く操作もここから行えます。</p>
+          </div>
+          <div class="fcard" data-reveal>
+            <div class="fcard-vis modal"><img src="/drivedam/assets/func-export1.png" alt="書き出しダイアログ全体。原寸のまま/リサイズする を選んで 12 件を一括書き出し" loading="lazy" width="945" height="906"></div>
+            <h4 class="fcard-h">書き出し(リサイズ・一括)</h4>
+            <p class="fcard-b">使用する画像を選んで書き出します。複数枚をまとめて、リサイズしながら書き出すこともできます。元の画像はそのまま残ります。</p>
+          </div>
+          <div class="fcard" data-reveal>
+            <div class="fcard-vis modal"><img src="/drivedam/assets/func-export2.png" alt="トリミングして書き出しダイアログ全体。比率プリセットとカスタム比率を選んで切り抜き" loading="lazy" width="1261" height="1309"></div>
+            <h4 class="fcard-h">書き出し(トリミング)</h4>
+            <p class="fcard-b">正方形・SNS 向けなどのプリセットや任意の比率で切り抜いて、書き出します。複数枚をまとめて処理することもできます。</p>
+          </div>
+        </div>
+      </div>
 
-	/* ===== 主要機能 ===== */
-	.features {
-		display: grid;
-		gap: 40px;
-	}
-	.feature {
-		display: grid;
-		grid-template-columns: 1fr 1.05fr;
-		gap: 48px;
-		align-items: center;
-	}
-	.feature--rev .feature__text {
-		order: 2;
-	}
-	.feature__marker {
-		display: inline-flex;
-		align-items: center;
-		margin-bottom: 14px;
-	}
-	.feature__marker .dot {
-		width: 13px;
-		height: 13px;
-	}
-	.feature__title {
-		font-size: 1.4rem;
-		margin-bottom: 14px;
-	}
-	.feature__body {
-		color: var(--ink-muted);
-		font-size: 1rem;
-	}
-	@media (max-width: 820px) {
-		.feature {
-			grid-template-columns: 1fr;
-			gap: 22px;
-		}
-		.feature--rev .feature__text {
-			order: 0;
-		}
-	}
+      <div class="fgroup">
+        <h4 class="fgroup-h">整理・ファイル操作</h4>
+        <p class="fgroup-lead">タグ・色・メモはファイル名と結び付いて管理されています。リネームや移動も Drive DAM 上で行うことで、関連付けを保ったまま整理できます(エクスプローラーで直接変更すると、関連付けが外れます)。</p>
+        <div class="fgrid">
+          <div class="fcard" data-reveal>
+            <div class="fcard-vis modal"><div class="pshot" style="--src:url('/drivedam/assets/func-bulc.png');left:15%;top:11%;width:70%;aspect-ratio:553/1114;--zoom:100%;--pos:50% 0" role="img" aria-label="10 件選択中の一括編集パネル。表示・開く・コピー・書き出し・一括リネームのボタンと、タグ編集のドロップダウン"></div></div>
+            <h4 class="fcard-h">複数選択で一括編集</h4>
+            <p class="fcard-b">複数ファイルを選んで、タグ・色・使用可否をまとめて設定します。まとめて書き出しもここから行えます。</p>
+          </div>
+          <div class="fcard" data-reveal>
+            <div class="fcard-vis modal"><img src="/drivedam/assets/func-rename.png" alt="一括リネームダイアログ。連番・検索置換・前後に追加のタブと、変更後ファイル名のプレビュー一覧" loading="lazy" width="978" height="896"></div>
+            <h4 class="fcard-h">一括リネーム</h4>
+            <p class="fcard-b">連番・検索置換・前後に追加の 3 方式で、複数ファイルをまとめてリネームします。実行前に変更後の名前を一覧で確認できます。</p>
+          </div>
+          <div class="fcard" data-reveal>
+            <div class="fcard-vis modal"><img src="/drivedam/assets/func-move.png" alt="移動先を選択するダイアログ。フォルダツリーから移動先を選ぶ。移動は他のメンバーにも反映される" loading="lazy" width="803" height="964"></div>
+            <h4 class="fcard-h">ファイルの移動</h4>
+            <p class="fcard-b">フォルダツリーから移動先を選んで、複数ファイルをまとめて移動します。移動は他のメンバーにも反映されます。</p>
+          </div>
+        </div>
+      </div>
 
-	/* ===== 価格 ===== */
-	.price-card {
-		max-width: 620px;
-		margin-inline: auto;
-		background: #fff;
-		border: 1px solid var(--border);
-		border-radius: var(--radius-lg);
-		box-shadow: var(--shadow);
-		padding: 44px 40px;
-		text-align: center;
-	}
-	.price-card__main {
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		gap: 20px;
-		flex-wrap: wrap;
-		padding-bottom: 28px;
-		border-bottom: 1px solid var(--border);
-		margin-bottom: 26px;
-	}
-	.price-card__free {
-		font-size: 1.7rem;
-		font-weight: 800;
-		color: var(--blue-deep);
-	}
-	.price-card__arrow {
-		color: var(--ink-faint);
-		font-size: 1.4rem;
-	}
-	.price-card__buy {
-		display: flex;
-		flex-direction: column;
-		line-height: 1.3;
-	}
-	.price-card__buylabel {
-		font-size: 0.8rem;
-		color: var(--ink-faint);
-	}
-	.price-card__buyprice {
-		font-size: 1.4rem;
-		font-weight: 800;
-		color: var(--blue-ink);
-	}
-	.price-card__list {
-		text-align: left;
-		max-width: 22em;
-		margin-inline: auto;
-		margin-bottom: 30px;
-	}
-	.price-card__cta .btn {
-		width: 100%;
-		max-width: 360px;
-	}
+      <div class="fgroup">
+        <h4 class="fgroup-h">チームでの運用</h4>
+        <div class="fgrid">
+          <div class="fcard" data-reveal>
+            <div class="fcard-vis modal r43"><img src="/drivedam/assets/func-tagmanager.png" alt="タグ管理画面。用途・被写体・ステータスのタググループにタグが整理されている" loading="lazy" width="1576" height="1121"></div>
+            <h4 class="fcard-h">タグ・タググループの管理</h4>
+            <p class="fcard-b">タグとタググループをまとめて管理します。名前の変更や整理も、共有フォルダを介してメンバー全員に共有されます。</p>
+          </div>
+          <div class="fcard" data-reveal>
+            <div class="fcard-vis modal r43"><img src="/drivedam/assets/func-compe.png" alt="編集の競合を解決するダイアログ。自分と相手の変更を並べて、残す方を選択" loading="lazy" width="945" height="533"></div>
+            <h4 class="fcard-h">編集の競合を検知・解決</h4>
+            <p class="fcard-b">メンバーと同時に同じ項目を編集した場合は、競合を知らせて残す方を選べます。競合しない変更は自動でまとめられ、意図せず上書きされる心配がありません。</p>
+          </div>
+          <div class="fcard" data-reveal>
+            <div class="fcard-vis compose r43">
+              <img src="/drivedam/assets/func-safe2.png" alt="非表示にした画像が薄く表示された一覧。表示メニューで「非表示にした画像」を切り替え" loading="lazy" width="1524" height="705" style="left:6%;top:10%;width:88%">
+              <img src="/drivedam/assets/func-safe1.png" alt="「非表示にする」ボタン。ファイル本体とタグは残り、いつでも戻せる" loading="lazy" width="537" height="213" style="left:10%;top:58%;width:52%">
+            </div>
+            <h4 class="fcard-h">誤って消す心配がない設計</h4>
+            <p class="fcard-b">削除機能はありません。見せたくない画像は自分の一覧から非表示にでき、いつでも戻せます。ファイル本体とタグは残ります。</p>
+          </div>
+        </div>
+      </div>
 
-	/* ===== FAQ ===== */
-	.faq {
-		max-width: var(--maxw-narrow);
-		margin-inline: auto;
-		display: grid;
-		gap: 12px;
-	}
-	.faq__item {
-		background: #fff;
-		border: 1px solid var(--border);
-		border-radius: var(--radius);
-		padding: 4px 22px;
-		box-shadow: var(--shadow-sm);
-	}
-	.faq__q {
-		cursor: pointer;
-		font-weight: 700;
-		color: var(--blue-ink);
-		padding: 16px 28px 16px 0;
-		position: relative;
-		list-style: none;
-	}
-	.faq__q::-webkit-details-marker {
-		display: none;
-	}
-	.faq__q::after {
-		content: "+";
-		position: absolute;
-		right: 0;
-		top: 14px;
-		font-size: 1.3rem;
-		font-weight: 400;
-		color: var(--blue);
-		transition: transform 0.2s ease;
-	}
-	.faq__item[open] .faq__q::after {
-		content: "−";
-	}
-	.faq__a {
-		color: var(--ink-muted);
-		font-size: 0.97rem;
-		padding: 0 0 18px;
-		line-height: 1.9;
-	}
+      <div class="fgroup">
+        <h4 class="fgroup-h">外観</h4>
+        <div class="fband" data-reveal>
+          <div class="fband-copy">
+            <h4 class="fcard-h">ダークモードにも対応</h4>
+            <p class="fcard-b">配色はライト/ダークをワンクリックで切り替えられます。暗めの環境や、画像の色を確認する作業に合わせて選べます。</p>
+          </div>
+          <div class="fband-vis">
+            <div class="fcard-vis nat"><img src="/drivedam/assets/func-dark.png" alt="ダークモードの Drive DAM 全画面。サムネイル一覧が暗い配色で表示されている" loading="lazy" width="2556" height="1595"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
-	@media (prefers-reduced-motion: reduce) {
-		.hero__art {
-			animation: none;
-		}
-	}
-</style>
+<!-- ============ ASSURE(チーム活用を支える安心設計) ============ -->
+<section class="assure sec-pad" id="assure">
+  <div class="wrap">
+    <div class="cap" data-cap>安心設計</div>
+    <h2 class="assure-h" data-reveal>チームでの活用を支える、安心設計。</h2>
+    <div class="assure-row" data-reveal>
+      <p class="assure-t">削除機能はありません</p>
+      <p class="assure-b">誤操作でファイルが消える心配を、仕組みとして取り除いています。見せたくない画像は「あとから戻せる非表示」で自分の一覧から外せます。他のメンバーの表示には影響しません。</p>
+    </div>
+    <div class="assure-row" data-reveal>
+      <p class="assure-t">画像ファイルは変更されません</p>
+      <p class="assure-b">タグやメモは画像のとなりの小さなファイルに保存します。リサイズ書き出し・トリミング書き出しも、元の画像はそのままに別ファイルとして保存します。</p>
+    </div>
+    <div class="assure-row" data-reveal>
+      <p class="assure-t">共有範囲は、フォルダのアクセス権のまま</p>
+      <p class="assure-b">共有フォルダのアクセス権限が、そのままタグ・メモの共有範囲になります。新しい権限管理を覚える必要はありません。</p>
+    </div>
+    <div class="assure-row" data-reveal>
+      <p class="assure-t">やめても、データは残ります</p>
+      <p class="assure-b">タグ・メモは共有フォルダ内に残るため、アンインストールしても消えません。再インストールすれば同じ状態で再開できます。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PRICE(コンバージョンエリア) ============ -->
+<section class="price price-pad" id="price">
+  <div class="wrap">
+    <img class="price-icon" src="/drivedam/assets/app-icon.png" alt="Drive DAM" width="92" height="92" data-reveal>
+    <h2 class="price-h" data-reveal>30 日間、無料で試せます。</h2>
+    <p class="price-lead" data-reveal>試用中の機能制限はありません。チームで一通り使ったうえで、<strong>買い切り(目安 2,000 円台・1 ユーザー 1 ライセンス)</strong>で導入できます。月額課金はありません。</p>
+    <div data-reveal>
+      <span class="btn-cta" style="cursor:default">近日 Microsoft Store で公開予定</span>
+    </div>
+    <p class="price-meta" data-reveal>
+      <span>月額課金なし</span><span>Windows 専用</span>
+    </p>
+  </div>
+</section>
+
+<!-- ============ FAQ ============ -->
+<section class="faq sec-pad" id="faq">
+  <div class="wrap">
+    <div class="cap" data-cap>FAQ</div>
+    <h2 class="faq-h" data-reveal>よくあるご質問</h2>
+    <ul class="faq-list" id="faqList"></ul>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer class="site-foot">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <span class="brand">Drive DAM</span>
+        <p>広報やマーケティングのための画像管理ツール。画像のとなりに、タグとメモを置く。</p>
+      </div>
+      <div class="foot-col">
+        <p class="foot-t">対応ストレージ</p>
+        <ul><li>Google Drive</li><li>Dropbox</li><li>Box</li><li>社内ファイルサーバー</li><li>ローカルフォルダ</li></ul>
+      </div>
+      <div class="foot-col">
+        <p class="foot-t">こんなチームに</p>
+        <ul><li>3〜10 名のチーム</li><li>Windows 中心の環境</li><li>既存の共有フォルダで画像を運用中</li></ul>
+      </div>
+    </div>
+    <div class="foot-base">
+      <span>© ame_dev</span>
+      <a href="/privacy/">プライバシーポリシー</a>
+    </div>
+  </div>
+</footer>
+
+<script is:inline>
+(function(){
+"use strict";
+var REDUCE = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+/* ---------- FAQ(確定コピー 3.9・5 問) ---------- */
+var FAQ = [
+["画像ファイルは変更されますか?","いいえ。タグやメモは画像と同じフォルダ内の <code>_dam/</code> に保存し、画像ファイルそのものには手を加えません。"],
+["共有フォルダのアクセス権がない人にも、タグやメモは見えますか?","見えません。共有フォルダのアクセス権限が、そのままタグ・メモの共有範囲になります。"],
+["AI で自動的にタグ付けされますか?","いいえ。タグは手作業で付け、チームで共有して育てる運用です。自動分類による意図しない整理はありません。"],
+["Mac の人もタグを見られますか?","アプリ本体は Windows 専用ですが、共有フォルダ自体は Mac/iPhone からも見えます。タグやメモの作成・閲覧は、Windows 端末でのみ可能です。"],
+["個人開発のようですが、サービス終了のリスクは?","タグやメモは共有フォルダ内の <code>_dam/</code> に保存され、アプリの提供有無に関わらず手元に残ります。買い切りなので、サービス停止による追加課金もありません。"]
+];
+var faqList = document.getElementById("faqList");
+FAQ.forEach(function(qa){
+  var li = document.createElement("li");
+  li.className = "faq-item";
+  li.innerHTML = '<button class="faq-q" aria-expanded="false"><span>'+qa[0]+
+    '</span><span class="faq-x" aria-hidden="true"></span></button>'+
+    '<div class="faq-a"><div class="faq-a-in"><p>'+qa[1]+"</p></div></div>";
+  li.querySelector(".faq-q").addEventListener("click",function(){
+    var open = li.classList.toggle("open");
+    this.setAttribute("aria-expanded", open ? "true" : "false");
+  });
+  faqList.appendChild(li);
+});
+
+/* ---------- Reveal エンジン(IO 共用) ---------- */
+function ease(t){return 1-Math.pow(1-t,3)}
+var io = new IntersectionObserver(function(entries){
+  entries.forEach(function(en){
+    if(!en.isIntersecting) return;
+    var el = en.target;
+    el.classList.add("is-in");
+    var d = el.querySelector && el.querySelector(".draw"); if(d) d.classList.add("is-in");
+    io.unobserve(el);
+  });
+},{threshold:.3, rootMargin:"0px 0px -8% 0px"});
+document.querySelectorAll("[data-reveal],[data-cap],[data-shot],[data-steps],.stage-cap")
+  .forEach(function(el){ io.observe(el); });
+
+/* ---------- funcs ナビ(スクロールスパイ) ---------- */
+var navLinks = document.querySelectorAll(".funcs-nav a");
+if(navLinks.length){
+  var byId = {};
+  navLinks.forEach(function(a){ byId[a.getAttribute("href").slice(1)] = a; });
+  var spy = new IntersectionObserver(function(entries){
+    entries.forEach(function(en){
+      if(!en.isIntersecting) return;
+      navLinks.forEach(function(a){ a.classList.remove("active"); });
+      var a = byId[en.target.id]; if(a) a.classList.add("active");
+    });
+  },{rootMargin:"-35% 0px -55% 0px"});
+  document.querySelectorAll(".func").forEach(function(f){ spy.observe(f); });
+}
+
+/* ---------- 3 特徴の図解の登場 ---------- */
+var illIO = new IntersectionObserver(function(entries){
+  entries.forEach(function(en){
+    if(!en.isIntersecting) return;
+    en.target.classList.add("is-in");
+    illIO.unobserve(en.target);
+  });
+},{threshold:.45});
+document.querySelectorAll("[data-ill]").forEach(function(el){ illIO.observe(el); });
+
+/* ---------- ヒーローの光+統合 rAF ---------- */
+var hero = document.getElementById("hero");
+var light = document.getElementById("heroLight");
+var frame = document.getElementById("heroFrame");
+var head = document.getElementById("siteHead");
+var progress = document.getElementById("progress");
+var lx=0, ly=0, ltx=0, lty=0;
+var gx=.5, gy=.5, gtx=.5, gty=.5;
+var running = false;
+
+function tick(){
+  if(!running) return;
+  var sy = window.scrollY;
+  var max = document.documentElement.scrollHeight - window.innerHeight;
+  progress.style.transform = "scaleX("+(max>0? sy/max : 0)+")";
+  if(sy>24) head.classList.add("scrolled"); else head.classList.remove("scrolled");
+
+  gx += (gtx-gx)*.1; gy += (gty-gy)*.1;
+  if(frame){ frame.style.setProperty("--gx",(gx*100)+"%"); frame.style.setProperty("--gy",(gy*100)+"%"); }
+
+  if(light){
+    lx += (ltx-lx)*.06; ly += (lty-ly)*.06;
+    var heroH = hero.offsetHeight || 1;
+    var p = Math.min(sy/(heroH*.85), 1);
+    light.style.opacity = String(1 - p*.82);
+    var a = light.firstElementChild;
+    if(a){
+      a.style.setProperty("--lx", lx.toFixed(1)+"px");
+      a.style.setProperty("--ly", (ly - p*60).toFixed(1)+"px");
+    }
+  }
+  requestAnimationFrame(tick);
+}
+function start(){ if(!running){ running = true; requestAnimationFrame(tick); } }
+function stop(){ running = false; }
+
+if(REDUCE){
+  window.addEventListener("scroll",function(){
+    var sy = window.scrollY;
+    var max = document.documentElement.scrollHeight - window.innerHeight;
+    progress.style.transform = "scaleX("+(max>0? sy/max : 0)+")";
+    if(sy>24) head.classList.add("scrolled"); else head.classList.remove("scrolled");
+  },{passive:true});
+}else{
+  start();
+  window.addEventListener("pointermove",function(e){
+    var w = window.innerWidth, h = window.innerHeight;
+    ltx = (e.clientX/w - .5) * 70;
+    lty = (e.clientY/h - .5) * 44;
+    if(frame){
+      var fr = frame.getBoundingClientRect();
+      gtx = Math.min(Math.max((e.clientX-fr.left)/fr.width,0),1);
+      gty = Math.min(Math.max((e.clientY-fr.top)/fr.height,0),1);
+    }
+  },{passive:true});
+  document.addEventListener("visibilitychange",function(){
+    if(document.hidden) stop(); else start();
+  });
+}
+})();
+</script>
+
+</DrivedamLayout>

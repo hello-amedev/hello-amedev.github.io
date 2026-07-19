@@ -1,7 +1,8 @@
 /* =========================================================
    ame_dev サイト グローバルスタイル
-   配色: 青（#4a90e2 / #2E74B5）＋ 白・余白多め
-   書体: Inter（あれば）→ 游ゴシック系フォールバック
+   ベース: 青（#4a90e2 / #2E74B5）＋白・余白多め
+   signature: code-comment 風 eyebrow（// …）と、各セクション
+              左端の 1px 縦帯（7色タグから 1 セクション 1 色）
    ========================================================= */
 
 :root {
@@ -12,10 +13,10 @@
 	--blue-soft: #eaf2fb;     /* 薄い青の面 */
 	--blue-softer: #f5f9fd;   /* さらに薄い青の面 */
 
-	/* テキスト */
-	--ink: #2b2f36;           /* 本文（黒より柔らかいダークグレー） */
-	--ink-muted: #5f6b7a;     /* 補足テキスト */
-	--ink-faint: #8a97a6;     /* キャプション等 */
+	/* テキスト（少し締めた blue-gray ベース） */
+	--ink: #1f2933;
+	--ink-muted: #51606f;
+	--ink-faint: #8595a5;
 
 	/* 背景・境界 */
 	--bg: #ffffff;
@@ -25,6 +26,7 @@
 
 	/* 注意（控えめに使う） */
 	--danger: #c0392b;
+	--danger-soft: #fdeceb;
 
 	/* Drive DAM の7色タグ（製品の語彙。差し色として抑制的に使う） */
 	--tag-red: #e2574a;
@@ -36,7 +38,7 @@
 	--tag-purple: #8a6fd0;
 
 	/* レイアウト */
-	--maxw: 1080px;
+	--maxw: 1100px;
 	--maxw-narrow: 760px;
 	--radius: 14px;
 	--radius-lg: 22px;
@@ -45,8 +47,19 @@
 	--shadow-lg: 0 18px 50px rgba(31, 58, 95, 0.12);
 
 	/* 書体 */
-	--font-sans: "Inter", system-ui, -apple-system, "Segoe UI", "Yu Gothic",
-		"游ゴシック", YuGothic, "Hiragino Kaku Gothic ProN", Meiryo, sans-serif;
+	--font-sans: "Inter", system-ui, -apple-system, "Segoe UI", "Yu Gothic UI",
+		"Yu Gothic", "游ゴシック", YuGothic, "Hiragino Kaku Gothic ProN",
+		Meiryo, sans-serif;
+	--font-mono: "SFMono-Regular", "JetBrains Mono", Consolas,
+		"Liberation Mono", Menlo, "Hiragino Kaku Gothic ProN", monospace;
+
+	/* 型スケール（14 / 16 / 18 / 22 / 30 / 48） */
+	--fs-xs: 0.82rem;
+	--fs-sm: 0.92rem;
+	--fs-md: 1rem;
+	--fs-lg: 1.13rem;
+	--fs-xl: 1.4rem;
+	--fs-2xl: 1.9rem;
 }
 
 * {
@@ -63,7 +76,7 @@ body {
 	font-family: var(--font-sans);
 	color: var(--ink);
 	background: var(--bg);
-	line-height: 1.8;
+	line-height: 1.85;
 	letter-spacing: 0.01em;
 	font-feature-settings: "palt" 1;
 	-webkit-font-smoothing: antialiased;
@@ -72,10 +85,14 @@ body {
 
 h1, h2, h3, h4 {
 	color: var(--blue-ink);
-	line-height: 1.4;
-	letter-spacing: 0.01em;
+	line-height: 1.38;
+	letter-spacing: 0.005em;
 	margin: 0;
-	font-weight: 700;
+	font-weight: 800;
+}
+
+h1 {
+	letter-spacing: -0.01em;
 }
 
 p {
@@ -101,13 +118,20 @@ strong {
 }
 
 code, kbd {
-	font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+	font-family: var(--font-mono);
 	font-size: 0.9em;
 	background: var(--blue-soft);
 	color: var(--blue-deep);
 	padding: 0.12em 0.4em;
 	border-radius: 5px;
 	font-weight: 600;
+}
+
+/* キーボードフォーカスを統一 */
+:focus-visible {
+	outline: 2px solid var(--blue);
+	outline-offset: 2px;
+	border-radius: 3px;
 }
 
 /* ---------- レイアウトユーティリティ ---------- */
@@ -120,7 +144,8 @@ code, kbd {
 }
 
 .section {
-	padding-block: 88px;
+	padding-block: 112px;
+	position: relative;
 }
 .section--soft {
 	background: var(--bg-soft);
@@ -128,16 +153,56 @@ code, kbd {
 .section--tint {
 	background: linear-gradient(180deg, var(--blue-softer), #ffffff);
 }
+.section--thin {
+	padding-block: 56px;
+}
+
+/* セクション左端の 1px 縦帯（signature）。
+   各セクションに 1 色だけ。container 左端から伸びる短い帯で
+   「整理されたファイル一覧の余白」を演出する。 */
+.section--rail {
+	position: relative;
+}
+.section--rail::before {
+	content: "";
+	position: absolute;
+	top: 64px;
+	bottom: 64px;
+	left: max(24px, calc((100% - var(--maxw)) / 2 + 24px));
+	width: 2px;
+	border-radius: 1px;
+	background: var(--rail-color, var(--blue));
+	opacity: 0.55;
+}
+.section--rail-find    { --rail-color: var(--tag-blue); }
+.section--rail-stay    { --rail-color: var(--tag-teal); }
+.section--rail-share   { --rail-color: var(--tag-green); }
+.section--rail-how     { --rail-color: var(--blue-deep); }
+.section--rail-feat    { --rail-color: var(--tag-orange); }
+.section--rail-onboard { --rail-color: var(--tag-yellow); }
+.section--rail-safe    { --rail-color: var(--tag-red); }
+.section--rail-price   { --rail-color: var(--tag-purple); }
+.section--rail-faq     { --rail-color: var(--tag-teal); }
+
+@media (max-width: 720px) {
+	.section--rail::before {
+		display: none;
+	}
+}
 
 .section-head {
 	max-width: var(--maxw-narrow);
-	margin-bottom: 48px;
+	margin-bottom: 52px;
 }
 .section-head--center {
 	margin-inline: auto;
 	text-align: center;
 }
 
+/* signature: コードコメント書式の eyebrow
+   既存の .eyebrow（青文字・大文字 letter-spacing）は維持しつつ、
+   .eyebrow--code を新規追加する。コードな見た目で
+   「ファイルの隣のレイヤー」というブランドの姿勢を通底させる。 */
 .eyebrow {
 	display: inline-block;
 	font-size: 0.8rem;
@@ -147,15 +212,47 @@ code, kbd {
 	margin-bottom: 14px;
 }
 
+.eyebrow--code {
+	font-family: var(--font-mono);
+	font-size: 0.82rem;
+	font-weight: 500;
+	letter-spacing: 0;
+	color: var(--ink-muted);
+	background: transparent;
+	padding: 0;
+	border: 0;
+	display: inline-block;
+	margin-bottom: 18px;
+}
+.eyebrow--code::before {
+	content: "// ";
+	color: var(--blue);
+	font-weight: 600;
+}
+
+.eyebrow--rule {
+	display: inline-flex;
+	align-items: center;
+	gap: 10px;
+}
+.eyebrow--rule::before {
+	content: "";
+	width: 26px;
+	height: 2px;
+	background: var(--blue);
+	border-radius: 2px;
+}
+
 .section-title {
-	font-size: clamp(1.6rem, 1.1rem + 1.8vw, 2.2rem);
-	margin-bottom: 16px;
+	font-size: clamp(1.7rem, 1.1rem + 1.9vw, 2.35rem);
+	margin-bottom: 18px;
+	letter-spacing: 0.005em;
 }
 
 .section-lead {
 	font-size: 1.05rem;
 	color: var(--ink-muted);
-	line-height: 1.9;
+	line-height: 1.95;
 }
 
 /* ---------- ボタン ---------- */
@@ -167,11 +264,12 @@ code, kbd {
 	gap: 8px;
 	font-weight: 700;
 	font-size: 1rem;
-	padding: 14px 28px;
+	padding: 14px 26px;
 	border-radius: 999px;
 	border: 1.5px solid transparent;
 	cursor: pointer;
-	transition: transform 0.12s ease, box-shadow 0.2s ease, background 0.2s ease;
+	transition: transform 0.12s ease, box-shadow 0.2s ease, background 0.2s ease,
+		border-color 0.2s ease;
 	text-decoration: none;
 	line-height: 1.2;
 }
@@ -211,13 +309,17 @@ code, kbd {
 	font-size: 0.85rem;
 	color: var(--ink-faint);
 	margin-top: 12px;
+	line-height: 1.7;
 }
 
 /* ---------- スクリーンショット差し替え枠 ---------- */
-/* 撮影前のプレースホルダ。撮影後は <img> に差し替える前提 */
+/* 撮影前のプレースホルダ。撮影後は <img> に差し替える前提。
+   ベース .shot は「アプリ風カードの輪郭」のみ。
+   .shot--paper は「ファイルパス書式」の controlled placeholder。
+   .shot--sketch は CSS 製ミニスケッチ用の外枠。 */
 
 .shot {
-	border-radius: var(--radius-lg);
+	border-radius: var(--radius);
 	border: 1px solid var(--border);
 	background: #fff;
 	box-shadow: var(--shadow-lg);
@@ -227,13 +329,13 @@ code, kbd {
 	display: flex;
 	align-items: center;
 	gap: 7px;
-	padding: 12px 16px;
+	padding: 11px 14px;
 	background: var(--blue-softer);
 	border-bottom: 1px solid var(--border);
 }
 .shot__dot {
-	width: 11px;
-	height: 11px;
+	width: 10px;
+	height: 10px;
 	border-radius: 50%;
 	background: var(--border-strong);
 }
@@ -243,25 +345,30 @@ code, kbd {
 	text-align: center;
 	gap: 6px;
 	aspect-ratio: 16 / 10;
-	background:
-		repeating-linear-gradient(
-			-45deg,
-			var(--blue-softer) 0 14px,
-			#fff 14px 28px
-		);
+	background: var(--bg-soft);
 	color: var(--ink-faint);
 }
 .shot__body--tall {
 	aspect-ratio: 4 / 3;
 }
 .shot__label {
-	font-weight: 700;
-	color: var(--blue-deep);
-	font-size: 0.95rem;
+	font-family: var(--font-mono);
+	font-size: 0.8rem;
+	color: var(--ink-muted);
 }
 .shot__sub {
-	font-size: 0.82rem;
+	font-size: 0.78rem;
 	color: var(--ink-faint);
+}
+
+/* ファイルパス書式の placeholder（モノスペースで控えめに） */
+.shot--paper .shot__body {
+	background: #fff;
+	background-image:
+		linear-gradient(to right, var(--border) 1px, transparent 1px),
+		linear-gradient(to bottom, var(--border) 1px, transparent 1px);
+	background-size: 32px 32px;
+	background-position: -1px -1px;
 }
 
 /* ---------- ヘッダー ---------- */
@@ -270,7 +377,7 @@ code, kbd {
 	position: sticky;
 	top: 0;
 	z-index: 50;
-	background: rgba(255, 255, 255, 0.85);
+	background: rgba(255, 255, 255, 0.88);
 	backdrop-filter: saturate(180%) blur(10px);
 	border-bottom: 1px solid var(--border);
 }
@@ -414,9 +521,19 @@ code, kbd {
 	background: var(--blue);
 }
 
+/* セクションタイトル直下のリード文の reveal（控えめに） */
+@keyframes rise-soft {
+	from { opacity: 0; transform: translateY(8px); }
+	to { opacity: 1; transform: translateY(0); }
+}
+.reveal {
+	animation: rise-soft 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
 @media (prefers-reduced-motion: reduce) {
 	* {
 		scroll-behavior: auto !important;
 		transition: none !important;
+		animation: none !important;
 	}
 }

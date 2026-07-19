@@ -25,3 +25,9 @@ pnpm-debug.log*
 
 # Claude Code のローカル設定
 .claude/
+
+# design PoC・作業スクラッチ(公開しない)
+design-poc/
+copy/
+public/design-poc/
+public/drivedam/_dev/
