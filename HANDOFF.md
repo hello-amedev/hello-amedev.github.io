@@ -64,10 +64,11 @@ Astro 実装(`src/pages/drivedam/index.astro`)は旧版のまま。確定後に�
 
 ## 2. 現在の状態(2026-07-19)
 
-- **3 ページ実装済み・ビルド通過**(`/`・`/drivedam/`・`/privacy/`)。Astro 実装はゼロベース上書き予定
-- **git init 済み・初回コミット `4e34162` のみ・GitHub 未 push**(デザイン確定後に push の方針は不変)
-- **design-poc/ 一式・HANDOFF.md 修正・その他は main 側で未コミット**(あめさん方針:
-  デザイン確定まで小刻みコミットしない)
+- **公開済み**: `https://hello-amedev.github.io/`(ハブ)/ `/drivedam/`(LP)/ `/privacy/`(ポリシー)
+- **GitHub リポジトリ**: `hello-amedev/hello-amedev.github.io`(Public User Site)
+- **GitHub Pages Source**: GitHub Actions(`build_type: workflow`・main push で自動デプロイ)
+- **最新コミット**: `32ef38a` Drive DAM ページの新デザインを Astro に本実装 + サイト公開の初期整備
+- **design-poc/・copy/ は .gitignore で非追跡化**(内部 PoC 資材はローカルのみ)
 - **dev サーバー停止済み**・**テレメトリ無効化済み**
 
 ### スクショ資材の全リスト(2026-07-19 時点・`design-poc/assets/`)
