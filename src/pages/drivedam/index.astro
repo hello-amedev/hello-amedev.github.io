@@ -9,6 +9,13 @@ import DrivedamLayout from "../../layouts/DrivedamLayout.astro";
 <header class="site-head" id="siteHead">
   <div class="head-in">
     <a class="brand" href="/"><img src="/drivedam/assets/app-icon.png" alt="">Drive DAM</a>
+    <nav class="head-nav" aria-label="ページ内メニュー">
+      <a href="#about">Drive DAM とは</a>
+      <a href="#traits">特徴</a>
+      <a href="#funcs">機能</a>
+      <a href="#price">価格</a>
+      <a href="#faq">FAQ</a>
+    </nav>
     <span class="head-link" style="cursor:default">近日公開予定</span>
   </div>
 </header>
@@ -33,7 +40,7 @@ import DrivedamLayout from "../../layouts/DrivedamLayout.astro";
     </div>
     <figure class="hero-stage" id="heroStage">
       <div class="frame" id="heroFrame">
-        <img src="/drivedam/assets/hero-main.png" alt="Drive DAM の実際の画面。左にフォルダツリー、中央にサムネイル一覧、右に選択・編集パネル" width="2558" height="1597">
+        <img src="/drivedam/assets/hero-main.png" alt="Drive DAM の実際の画面。左にフォルダツリー、中央にサムネイル一覧、右に選択・編集パネル" width="2556" height="1595">
         <div class="gloss" aria-hidden="true"></div>
       </div>
     </figure>
@@ -219,17 +226,17 @@ import DrivedamLayout from "../../layouts/DrivedamLayout.astro";
       <div class="funcs-body">
         <article class="func" id="fn-thumbs">
           <h3 class="func-h">サムネイルを高速表示</h3>
-          <p class="func-b">数万枚のフォルダでも、開いてすぐに一覧できます。誰かが一度生成したサムネイルをチーム全員で再利用し、ローカルにも控えるため、2 回目以降の表示はさらに速くなります。</p>
-          <div class="shot" data-shot><img class="shot-pic" src="/drivedam/assets/func-thumbs.png" alt="Drive DAM のサムネイル一覧画面。左にフォルダツリー、中央に大量のサムネイル、右にショートカット一覧" loading="lazy" width="2558" height="1597"></div>
+          <p class="func-b">数万枚のフォルダでも、開いてすぐに一覧できます。初回のフォルダ登録時にサムネイルを作成してローカルにコピーすることで、高速な表示を実現します。チームメンバーは同じサムネイルを利用でき、効率的に画像を検索・活用できます。</p>
+          <div class="shot" data-shot><img class="shot-pic" src="/drivedam/assets/func-thumbs.png" alt="Drive DAM のサムネイル一覧画面。左にフォルダツリー、中央に大量のサムネイル、右にショートカット一覧" loading="lazy" width="2556" height="1595"></div>
         </article>
         <article class="func" id="fn-search">
           <h3 class="func-h">絞り込み・検索</h3>
-          <p class="func-b">キーワード・タグ・色・撮影日・使用可否・お気に入りを重ねて絞り込みます。条件を組み合わせるほど候補が減ります。検索対象はファイル名・タグ・メモです。画像内の文字(OCR)や画像認識による自動検索は行いません。</p>
+          <p class="func-b">キーワード・タグ・色・撮影日・使用可否・お気に入りなど、さまざまな条件で画像の検索・絞り込みが可能です。ファイルパスでも検索できるので、フォルダ名の文字列でも画像を探せます。<br><span class="func-note">※画像内の文字認識等には対応していません</span></p>
           <div class="shot" data-shot><img class="shot-pic" src="/drivedam/assets/func-search.png" alt="絞り込みパネルを展開し、ライブラリ全体 9,974 件からお気に入りのみ 282 件に絞り込んだ状態" loading="lazy" width="1872" height="1345"></div>
         </article>
         <article class="func" id="fn-share">
           <h3 class="func-h">タグ・色・使用可否をチームで共有</h3>
-          <p class="func-b">付けた情報は共有フォルダを介してメンバー全員の画面に反映されます。使用可否(社外公開可・要許諾・使用不可など)も共有でき、判断のばらつきを抑えます。共有フォルダのアクセス権がない人には共有されません。</p>
+          <p class="func-b">タグやメモなどの情報は、共有フォルダを介してメンバー全員が利用できます。使用条件(要許諾・使用不可など)も共有でき、画像の使用に関するミスを防げます。他のメンバーに共有されない、自分だけのお気に入り登録も可能です。</p>
           <div class="shot" data-shot>
             <div class="shot-panel">
               <img src="/drivedam/assets/func-share1.png" alt="使用可否のバッジが付いたサムネイル 3 件。要許諾・使用不可がひと目でわかる" loading="lazy" width="890" height="360" style="left:6%;top:28%;width:57%">
@@ -247,7 +254,7 @@ import DrivedamLayout from "../../layouts/DrivedamLayout.astro";
         <h4 class="fgroup-h">検索・表示</h4>
         <div class="fgrid">
           <div class="fcard w6" data-reveal>
-            <div class="fcard-vis nat"><img src="/drivedam/assets/func-files.png" alt="MP4・PDF・XLSX が画像と混在して一覧表示されているフォルダ" loading="lazy" width="2558" height="1597"></div>
+            <div class="fcard-vis nat"><img src="/drivedam/assets/func-files.png" alt="MP4・PDF・XLSX が画像と混在して一覧表示されているフォルダ" loading="lazy" width="2556" height="1595"></div>
             <h4 class="fcard-h">すべてのファイルを可視化</h4>
             <p class="fcard-b">画像はもちろん、PDF・動画・Office・ZIP も種別を表示します。フォルダの中に何があるかを、開かずに把握できます。</p>
           </div>
@@ -273,7 +280,7 @@ import DrivedamLayout from "../../layouts/DrivedamLayout.astro";
         <h4 class="fgroup-h">書き出し・ダウンロード</h4>
         <div class="fgrid">
           <div class="fcard" data-reveal>
-            <div class="fcard-vis modal"><div class="pshot" style="--src:url('/drivedam/assets/func-zoom.png');right:-2%;bottom:12%;width:80%;aspect-ratio:1080/1215;--zoom:237%;--pos:1% 100%" role="img" aria-label="プレビュー画面の下部。エクスプローラーで表示・既定のアプリで開く・ダウンロード・等倍のボタンが並ぶ"></div></div>
+            <div class="fcard-vis modal"><div class="pshot" style="--src:url('/drivedam/assets/func-zoom.png');right:-2%;bottom:5%;width:88%;aspect-ratio:1080/1215;--zoom:250%;--pos:1% 100%" role="img" aria-label="プレビュー画面の下部。エクスプローラーで表示・既定のアプリで開く・ダウンロード・等倍のボタンが並ぶ"></div></div>
             <h4 class="fcard-h">プレビューから即ダウンロード</h4>
             <p class="fcard-b">プレビューで確認した画像を、その場でダウンロードできます。エクスプローラーでの表示や、既定のアプリで開く操作もここから行えます。</p>
           </div>
@@ -295,7 +302,7 @@ import DrivedamLayout from "../../layouts/DrivedamLayout.astro";
         <p class="fgroup-lead">タグ・色・メモはファイル名と結び付いて管理されています。リネームや移動も Drive DAM 上で行うことで、関連付けを保ったまま整理できます(エクスプローラーで直接変更すると、関連付けが外れます)。</p>
         <div class="fgrid">
           <div class="fcard" data-reveal>
-            <div class="fcard-vis modal"><div class="pshot" style="--src:url('/drivedam/assets/func-bulc.png');left:15%;top:11%;width:70%;aspect-ratio:553/1114;--zoom:100%;--pos:50% 0" role="img" aria-label="10 件選択中の一括編集パネル。表示・開く・コピー・書き出し・一括リネームのボタンと、タグ編集のドロップダウン"></div></div>
+            <div class="fcard-vis modal"><div class="pshot" style="--src:url('/drivedam/assets/func-bulc.png');left:15%;top:4%;width:70%;aspect-ratio:553/1114;--zoom:100%;--pos:50% 0" role="img" aria-label="10 件選択中の一括編集パネル。表示・開く・コピー・書き出し・一括リネームのボタンと、タグ編集のドロップダウン"></div></div>
             <h4 class="fcard-h">複数選択で一括編集</h4>
             <p class="fcard-b">複数ファイルを選んで、タグ・色・使用可否をまとめて設定します。まとめて書き出しもここから行えます。</p>
           </div>
@@ -410,11 +417,7 @@ import DrivedamLayout from "../../layouts/DrivedamLayout.astro";
       </div>
       <div class="foot-col">
         <p class="foot-t">対応ストレージ</p>
-        <ul><li>Google Drive</li><li>Dropbox</li><li>Box</li><li>社内ファイルサーバー</li><li>ローカルフォルダ</li></ul>
-      </div>
-      <div class="foot-col">
-        <p class="foot-t">こんなチームに</p>
-        <ul><li>3〜10 名のチーム</li><li>Windows 中心の環境</li><li>既存の共有フォルダで画像を運用中</li></ul>
+        <p class="foot-desc">Google Drive などエクスプローラー上で利用できるオンラインストレージ、社内ファイルサーバー、ローカルフォルダに対応</p>
       </div>
     </div>
     <div class="foot-base">

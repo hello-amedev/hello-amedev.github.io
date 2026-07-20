@@ -3,8 +3,8 @@
    紙白+墨のエディトリアル。すべての動きは墨の濃淡の中で起こす。
    ================================================================ */
 :root{
-  --paper:#F7F5F0;
-  --paper-deep:#F0EDE6;
+  --paper:#F6F8FA;
+  --paper-deep:#EEF1F5;
   --ink:#1B1A17;
   --ink-2:#45433D;
   --ink-3:#8B887F;
@@ -81,7 +81,7 @@ body::after{
   content:"";position:absolute;left:0;right:0;bottom:0;height:1px;
   background:var(--line);transform:scaleX(0);transition:transform .6s var(--ease);
 }
-.site-head.scrolled{background:rgba(247,245,240,.92);backdrop-filter:blur(10px)}
+.site-head.scrolled{background:rgba(246,248,250,.92);backdrop-filter:blur(10px)}
 .site-head.scrolled::after{transform:scaleX(1)}
 .head-in{
   max-width:var(--max);margin:0 auto;padding:0 var(--pad-x);
@@ -100,6 +100,18 @@ body::after{
   padding-bottom:2px;
 }
 .head-link:hover{background-size:100% 1px;color:var(--ink)}
+.head-nav{
+  display:flex;gap:clamp(18px,2.4vw,32px);align-items:center;
+  flex:1;justify-content:center;
+}
+.head-nav a{
+  font-size:13px;font-weight:500;color:var(--ink-2);
+  background-image:linear-gradient(var(--ink),var(--ink));
+  background-repeat:no-repeat;background-size:0% 1px;background-position:left calc(100% - 1px);
+  transition:background-size .3s var(--ease),color .3s var(--ease);
+  padding-bottom:2px;
+}
+.head-nav a:hover{background-size:100% 1px;color:var(--ink)}
 .progress{
   position:fixed;top:0;left:0;height:2px;width:100%;z-index:101;
   background:var(--ink);opacity:.22;transform:scaleX(0);transform-origin:left center;
@@ -251,7 +263,7 @@ section{position:relative}
   position:relative;aspect-ratio:4/3.1;border-radius:14px;overflow:hidden;
   background:
     radial-gradient(120% 90% at 80% -10%,rgba(96,148,235,.16),transparent 55%),
-    linear-gradient(165deg,rgba(74,124,226,.085),rgba(74,124,226,.02) 55%,rgba(247,245,240,0));
+    linear-gradient(165deg,rgba(74,124,226,.085),rgba(74,124,226,.02) 55%,rgba(246,248,250,0));
   border:1px solid rgba(74,124,226,.16);
 }
 .ill [data-t]{opacity:0;transform:translateY(9px);transition:opacity .6s var(--ease),transform .6s var(--ease)}
@@ -416,6 +428,7 @@ section{position:relative}
   letter-spacing:-.01em;line-height:1.4;margin-bottom:16px;
 }
 .func-b{font-size:15px;line-height:2.0;max-width:640px;margin-bottom:32px}
+.func-note{font-size:12.5px;color:var(--ink-3);line-height:1.9}
 .func-b code{
   font-family:"Inter",sans-serif;font-size:.92em;font-weight:600;color:var(--ink);
   background:rgba(27,26,23,.05);padding:1px 6px;border-radius:4px;
@@ -438,7 +451,7 @@ section{position:relative}
   position:relative;aspect-ratio:16/10;overflow:hidden;
   background:
     radial-gradient(120% 90% at 80% -10%,rgba(96,148,235,.14),transparent 55%),
-    linear-gradient(165deg,rgba(74,124,226,.075),rgba(74,124,226,.02) 55%,rgba(247,245,240,0));
+    linear-gradient(165deg,rgba(74,124,226,.075),rgba(74,124,226,.02) 55%,rgba(246,248,250,0));
 }
 .shot-panel img{
   position:absolute;height:auto;border-radius:8px;
@@ -479,7 +492,7 @@ section{position:relative}
   display:flex;align-items:center;justify-content:center;
   background:
     radial-gradient(120% 90% at 80% -10%,rgba(96,148,235,.14),transparent 55%),
-    linear-gradient(165deg,rgba(74,124,226,.075),rgba(74,124,226,.02) 55%,rgba(247,245,240,0));
+    linear-gradient(165deg,rgba(74,124,226,.075),rgba(74,124,226,.02) 55%,rgba(246,248,250,0));
 }
 .fcard-vis.modal img{
   max-width:90%;max-height:90%;width:auto;height:auto;border-radius:8px;
@@ -504,7 +517,7 @@ section{position:relative}
 .fcard-vis.compose{
   background:
     radial-gradient(120% 90% at 80% -10%,rgba(96,148,235,.14),transparent 55%),
-    linear-gradient(165deg,rgba(74,124,226,.075),rgba(74,124,226,.02) 55%,rgba(247,245,240,0));
+    linear-gradient(165deg,rgba(74,124,226,.075),rgba(74,124,226,.02) 55%,rgba(246,248,250,0));
 }
 .fcard-vis.compose img{
   position:absolute;height:auto;border-radius:6px;
@@ -536,8 +549,14 @@ section{position:relative}
 .assure-t{grid-column:1/5;font-weight:600;color:var(--ink);font-size:16.5px;line-height:1.8}
 .assure-b{grid-column:5/12;font-size:15px;line-height:2.0}
 
-/* --- price(コンバージョンエリア。墨面+中央光背) --- */
-.price{background:var(--night);color:var(--paper-night);position:relative;overflow:hidden}
+/* --- price(コンバージョンエリア。墨面+中央光背)
+       紙の上に角丸の墨パネルを置く構図。assure との間に十分な呼吸を取る --- */
+.price{
+  background:var(--night);color:var(--paper-night);position:relative;overflow:hidden;
+  margin-top:clamp(110px,13vw,190px);
+  margin-inline:clamp(10px,1.5vw,24px);
+  border-radius:clamp(20px,3vw,36px);
+}
 .price::before{
   content:"";position:absolute;left:50%;top:-14%;transform:translateX(-50%);
   width:min(92vw,1100px);aspect-ratio:1;
@@ -636,13 +655,14 @@ section{position:relative}
 .foot-brand{grid-column:1/5}
 .foot-brand .brand{font-size:16px}
 .foot-brand p{font-size:13px;line-height:2.0;color:var(--ink-3);margin-top:14px;max-width:300px}
-.foot-col{grid-column:span 3}
+.foot-col{grid-column:6/13}
 .foot-t{
   font-family:"Inter",sans-serif;font-size:10.5px;font-weight:600;
   letter-spacing:.16em;text-transform:uppercase;color:var(--ink-3);margin-bottom:18px;
 }
 .foot-col ul{list-style:none}
 .foot-col li{font-size:13.5px;line-height:1.8;padding:5px 0;color:var(--ink-2)}
+.foot-desc{font-size:13.5px;line-height:2.0;color:var(--ink-2);max-width:340px}
 .foot-cta{grid-column:9/13}
 .foot-base{
   display:flex;justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap;
@@ -681,8 +701,9 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-off
   .assure-t{grid-column:1/13;margin-bottom:8px}
   .assure-b{grid-column:1/13}
   .foot-brand{grid-column:1/13;margin-bottom:40px}
-  .foot-col{grid-column:span 6;margin-bottom:32px}
+  .foot-col{grid-column:1/13;margin-bottom:32px}
   .foot-cta{grid-column:1/13}
+  .head-nav{display:none}
 }
 @media (max-width:640px){
   .steps-grid{grid-template-columns:1fr;row-gap:36px}
