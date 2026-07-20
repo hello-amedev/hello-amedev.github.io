@@ -6,11 +6,12 @@
 ## 0. 次の Claude へ(2026-07-20 セッション終了時の状態)
 
 **Astro 実装済みの Drive DAM LP をブラッシュアップし、モバイル対応・SEO 整備・CV エリア
-修正まで完了**。本セッション 5 コミット(74cc677 / 97a3e98 / cb12d60 / e4060bc / 次コミット)
-で本番公開済み。デザインコンセプトは引き続き**「Paper & Ink + Blue Light」**だが、紙色は
-**クールグレー(`--paper:#F6F8FA`)**に変更済(暗パネル側の対の変数 `--paper-night` も
-第 4 コミットで追随済み)。実装は `src/pages/drivedam/index.astro` +
-`src/styles/drivedam.css` が一次ソース(design-poc は過去の PoC 置き場として残置)。
+修正・英語版(/en/)追加まで完了**。本セッション 6 コミット(74cc677 / 97a3e98 / cb12d60 /
+e4060bc / 76feda0 / 次コミット)で本番公開済み。デザインコンセプトは引き続き
+**「Paper & Ink + Blue Light」**だが、紙色は**クールグレー(`--paper:#F6F8FA`)**に変更済
+(暗パネル側の対の変数 `--paper-night` も第 4 コミットで追随済み)。実装は
+`src/pages/drivedam/index.astro` + `src/styles/drivedam.css` が一次ソース、英語版は
+`src/pages/en/` 配下(design-poc は過去の PoC 置き場として残置)。
 
 **本セッションの変更(2026-07-20・2 コミットに分割)**:
 
@@ -86,18 +87,35 @@
 20. **価格リード文を 2 行に分割**: 「サブスク不要、買い切りでずっと使えます。」の後に
     `<br>` を追加し、「30 日間すべての機能を無料でお使いいただけます。」を次の行に。
 
+### 第6コミット(英語版 /en/ 追加)
+21. **英語版を新設**: `/en/drivedam/`(LP)+ `/en/privacy/`(ポリシー)。別ディレクトリ
+    ルーティング方式(あめさんの指示・ストア国際公開向け)。翻訳は Fable 5 が全文執筆
+    (直訳でなく英語圏向けマーケコピー。「そのまま使える」= "works in place" で全編統一)、
+    実装は Sonnet サブエージェント 2 体に並列委譲 → 監督が統合検証・磨き込み。
+22. **多言語プラミング**: 両 Layout に `lang` / `altHref` props 追加。`<html lang>`・
+    `og:locale`(ja_JP / en_US)・hreflang 3 本(ja / en / x-default=ja)を自動出力。
+    SiteHeader / SiteFooter も lang 対応(en 時は英語ナビ・英語文言。ハブは無変化)。
+23. **言語切替リンク**: JA LP ヘッダー右に「EN」(`.head-lang`・1024px 以下は非表示で
+    オーバーレイ側の「English」リンクに委ねる)、EN 側は「日本語」。privacy は SiteHeader
+    のナビ末尾に表示。
+24. **図解 SVG の英語化と字幅調整**: チップは「Web use」「Social」「Seasonal」「Red」。
+    英語ラベルの字幅に合わせ rect 幅・× 位置を微調整(「Red」は文字と × が重なる不具合を
+    実測で発見・修正)。
+25. **EN 専用 CSS 微調整**: `html[lang="en"]` で hero-title の letter-spacing -.035em +
+    font-size 下限 44→37px(モバイルの英文 8 行折り返し対策。デスクトップは不変)、
+    price-meta 区切りを半角「·」に。旧 `.i18n-tag` / `.hero-en` プレビュー残骸は削除。
+26. **英語コピーの一次ソースは EN ページの HTML 実装**(`src/pages/en/drivedam/index.astro`)。
+    プライバシーポリシー英訳は `src/pages/en/privacy/index.astro`。
+
 **次セッションの最初の作業**:
-1. **英語版(i18n)制作に着手**(あめさんの指示・2026-07-20)。現状 `drivedam.css` に
-   `.i18n-tag` `.hero-en` など英語プレビュー用の下地クラスが既にあるので、まずそれが
-   使える状態か確認してから設計方針(別ルーティング `/en/` か言語切替か等)を相談する。
-   コピーの一次ソースは本ファイル 3 章(日本語確定版)。トーン規定(3.10)も英訳時に
-   踏襲するか要検討。
-2. 専用の og:image を作る(現状 hero-main.png を暫定利用中。1200×630 の SNS 特化画像に
+1. 専用の og:image を作る(現状 hero-main.png を暫定利用中。1200×630 の SNS 特化画像に
    差し替えると SNS シェア時の見栄えが上がる)
-3. ストア公開時の CTA 差し替え: 「近日 Microsoft Store で公開予定」は 3 箇所
+2. ストア公開時の CTA 差し替え: 「近日 Microsoft Store で公開予定」は JA/EN 各 3 箇所
    (Header・hero-cta・price-cta+ハンバーガーオーバーレイ)。ストア URL 確定後に一気に置換。
-4. JSON-LD (SoftwareApplication schema) の追加: ストア公開後、価格・レビュー等を含めて追加すると Google 検索でリッチスニペット化
-5. 引き続きあめさんの指摘反映(90 点目標)
+3. JSON-LD (SoftwareApplication schema) の追加: ストア公開後、価格・レビュー等を含めて追加すると Google 検索でリッチスニペット化
+4. 引き続きあめさんの指摘反映(90 点目標)
+5. EN 版スクショの差し替え検討(現状は日本語 UI のスクショを共用。英語 UI のスクショが
+   用意できたら `/en/` 側だけ差し替え)
 6. `func-download.png` は現在未使用(継続保留)
 
 ## 1. プロジェクト概要
@@ -275,7 +293,9 @@
   フォント self-host / og:image + SEO 整備 / 安心設計セクション廃止・FAQ 6 問に改訂 /
   コピー多数修正 / フッター再編(アイコン追加・説明文差し替え・リンク導線整理) /
   価格エリアのコピー刷新・CTA ボタンのベージュ残留修正・メタ表記をヒーローと統一 /
-  ページ内メニュー「価格」→「ダウンロード」・価格リード文を 2 行に分割
+  ページ内メニュー「価格」→「ダウンロード」・価格リード文を 2 行に分割 /
+  英語版 /en/drivedam/ + /en/privacy/ 新設(翻訳は Fable 直筆・実装は Sonnet 2 体並列委譲、
+  hreflang 相互リンク・言語切替リンク・SVG 英語化・EN 専用 CSS 微調整まで)
 
 ### 今回セッションで新規に確立した方針
 1. **カード内での「画面の一部を覗く」演出は縁接続型で**: 全体を見せたい時は薄青パネル+
@@ -319,6 +339,9 @@
   IO 発火前 opacity:0 のせいで真っ白に撮れる。`--virtual-time-budget` は使わない(白紙化する)
 - **subst で仮想ドライブを撮影する場合**: PowerShell では `%USERPROFILE%` が展開されないので
   `$env:USERPROFILE` を使う(または cmd で実行)
+- **日本語版 LP を修正したら英語版(`src/pages/en/drivedam/index.astro`)も追随させる**:
+  日英は同一構造の別ファイル(共通化していない)ため、コピー・構造・FAQ(inline script 内)の
+  変更は放置すると乖離する。JA 側を触るコミットでは必ず EN 側の同箇所を確認すること
 - **紙色パレット変更時は「暗パネル用の対の変数」も忘れず追随させる**: `--paper`/`--paper-deep`
   をベージュ→クールグレーに変えた際(第 1 コミット)、価格エリア(暗パネル)側で使う
   `--paper-night`/`--line-night` が未追随のままベージュ(`#F1EEE6`)が残るバグが発生

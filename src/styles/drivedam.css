@@ -100,6 +100,14 @@ body::after{
   padding-bottom:2px;
 }
 .head-link:hover{background-size:100% 1px;color:var(--ink)}
+.head-lang{
+  font-size:13px;font-weight:500;color:var(--ink-2);
+  background-image:linear-gradient(var(--ink),var(--ink));
+  background-repeat:no-repeat;background-size:0% 1px;background-position:left calc(100% - 1px);
+  transition:background-size .3s var(--ease),color .3s var(--ease);
+  padding-bottom:2px;margin-left:18px;
+}
+.head-lang:hover{background-size:100% 1px;color:var(--ink)}
 .head-nav{
   display:flex;gap:clamp(18px,2.4vw,32px);align-items:center;
   flex:1;justify-content:center;
@@ -703,18 +711,9 @@ section{position:relative}
 .foot-base a{border-bottom:1px solid transparent;transition:border-color .25s var(--ease)}
 .foot-base a:hover{border-color:var(--ink-3)}
 
-/* --- i18n preview --- */
-.i18n-tag{
-  display:block;text-align:center;
-  font-family:"Inter",sans-serif;font-size:10.5px;font-weight:600;
-  letter-spacing:.2em;text-transform:uppercase;color:var(--ink-3);
-  padding:clamp(80px,10vw,140px) 0 clamp(56px,7vw,96px);
-  border-top:1px dashed var(--line-strong);margin-top:clamp(120px,14vw,200px);
-}
-.hero-en .hero-title,.hero-en .hero-eyebrow,.hero-en .hero-sub,.hero-en .hero-note{font-family:"Inter","Noto Sans JP",sans-serif}
-.hero-en .hero-title{letter-spacing:-.035em}
-.hero-en .hero-eyebrow,.hero-en .hero-lead-in{opacity:1;animation:none}
-.hero-en .hl-in{transform:none;animation:none}
+/* --- lang="en" 微調整 --- */
+html[lang="en"] .hero-title{letter-spacing:-.035em;font-size:clamp(37px,6.6vw,92px)}
+html[lang="en"] .price-meta span+span::before{content:"·"}
 
 /* --- focus / a11y --- */
 a:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-offset:4px;border-radius:2px}
@@ -734,6 +733,7 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-off
   .head-nav{display:none}
   .head-burger{display:block}
   .head-link{display:none}
+  .head-lang{display:none}
 }
 @media (max-width:640px){
   .steps-grid{grid-template-columns:1fr;row-gap:36px}

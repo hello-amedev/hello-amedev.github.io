@@ -1,0 +1,578 @@
+---
+import DrivedamLayout from "../../../layouts/DrivedamLayout.astro";
+---
+
+<DrivedamLayout
+  title="Drive DAM — From tens of thousands of images to the one you need"
+  description="Digital asset management for small teams that works in place on your shared folders — Google Drive, Dropbox, Box, office file servers, or local folders. Manage tens of thousands of images together, safely and fast."
+  lang="en"
+  altHref="/drivedam/"
+>
+
+<div class="progress" id="progress" aria-hidden="true"></div>
+
+<header class="site-head" id="siteHead">
+  <div class="head-in">
+    <a class="brand" href="/en/drivedam/"><img src="/drivedam/assets/app-icon.png" alt="">Drive DAM</a>
+    <nav class="head-nav" aria-label="In-page menu">
+      <a href="#about">About</a>
+      <a href="#traits">Highlights</a>
+      <a href="#funcs">Features</a>
+      <a href="#price">Download</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+    <span class="head-link" style="cursor:default">Coming soon</span>
+    <a class="head-lang" href="/drivedam/">日本語</a>
+    <button class="head-burger" id="headBurger" aria-label="Open menu" aria-expanded="false" aria-controls="headOverlay">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<div class="head-overlay" id="headOverlay" aria-hidden="true">
+  <nav class="head-overlay-nav" aria-label="In-page menu (mobile)">
+    <a href="#about">About</a>
+    <a href="#traits">Highlights</a>
+    <a href="#funcs">Features</a>
+    <a href="#price">Download</a>
+    <a href="#faq">FAQ</a>
+    <a href="/drivedam/">日本語</a>
+  </nav>
+  <p class="head-overlay-foot">Coming soon to the Microsoft Store</p>
+</div>
+
+<!-- ============ HERO ============ -->
+<section class="hero" id="hero">
+  <div class="hero-light" id="heroLight" aria-hidden="true"><div class="hl-a"></div><div class="hl-b"></div></div>
+  <div class="wrap">
+    <h1 class="hero-title">
+      <span class="hl hl-1"><span class="hl-in">From tens of thousands of images</span></span>
+      <span class="hl hl-2"><span class="hl-in">to the <em>one</em> you need.</span></span>
+      <span class="hl hl-3"><span class="hl-in">On your own, or with your team.</span></span>
+    </h1>
+    <div class="hero-lead">
+      <div class="hero-lead-in">
+        <p class="hero-sub">Digital asset management that <strong style="display:inline-block">works in place</strong> — in local folders and cloud storage alike.<br>Organize, find, and use images together, right through your shared folders.</p>
+        <div class="hero-cta">
+          <span class="btn btn-primary" style="cursor:default">Coming soon to the Microsoft Store</span>
+        </div>
+        <p class="hero-note">v0.13.1 (2026-07-18) · Windows 10 or later</p>
+      </div>
+    </div>
+    <figure class="hero-stage" id="heroStage">
+      <div class="frame" id="heroFrame">
+        <img src="/drivedam/assets/hero-main.png" alt="The actual Drive DAM screen: folder tree on the left, thumbnail grid in the center, selection and editing panel on the right" width="2556" height="1595">
+        <div class="gloss" aria-hidden="true"></div>
+      </div>
+    </figure>
+  </div>
+</section>
+
+<!-- ============ ABOUT(ツール説明) ============ -->
+<section class="about sec-pad" id="about">
+  <div class="wrap">
+    <div class="cap" data-cap>About Drive DAM</div>
+    <div class="grid">
+      <div class="about-copy">
+        <h2 class="about-h" data-reveal>Image management built for<br>PR and marketing teams.</h2>
+        <p class="about-body" data-reveal>Drive DAM works by creating a small thumbnail and settings file alongside every image in your storage — <strong>the foundation for smart, team-wide image management</strong>. Handle tens of thousands of images with multiple people, safely and at speed. Local folders are fully supported too.</p>
+      </div>
+      <figure class="about-fig" data-reveal>
+        <svg class="draw" id="figSideBySide" viewBox="0 0 360 240" role="img" aria-label="For every image file, a thumbnail and a settings file (tags and notes) are created alongside it">
+          <rect x="18" y="48" width="170" height="126" rx="6" style="--len:600"/>
+          <circle cx="66" cy="88" r="14" style="--len:90"/>
+          <polyline points="18,160 84,108 126,140 160,112 188,146" style="--len:230"/>
+          <text x="18" y="202" font-size="12" fill="#8B887F" stroke="none" font-family="Inter,sans-serif" letter-spacing="1">photo.jpg</text>
+          <rect class="blue" x="240" y="24" width="100" height="64" rx="6" style="--len:340"/>
+          <circle class="blue" cx="268" cy="44" r="8" style="--len:52"/>
+          <polyline class="blue" points="240,81 279,54 303,71 323,56 340,74" style="--len:130"/>
+          <text x="240" y="108" font-size="12" fill="#8B887F" stroke="none" font-family="Inter,sans-serif" letter-spacing="1">thumbnail</text>
+          <rect class="blue" x="240" y="124" width="100" height="64" rx="6" style="--len:340"/>
+          <line class="blue" x1="256" y1="142" x2="324" y2="142" style="--len:68"/>
+          <line class="blue" x1="256" y1="156" x2="312" y2="156" style="--len:56"/>
+          <line class="blue" x1="256" y1="170" x2="318" y2="170" style="--len:62"/>
+          <text x="240" y="208" font-size="12" fill="#8B887F" stroke="none" font-family="Inter,sans-serif" letter-spacing="1">tags + notes</text>
+          <line class="soft" x1="196" y1="56" x2="232" y2="56" style="--len:36"/>
+          <line class="soft" x1="196" y1="156" x2="232" y2="156" style="--len:36"/>
+        </svg>
+        <figcaption class="fig-cap">For each image, Drive DAM creates a thumbnail and settings file of just a dozen kilobytes or so. Loading these at startup is what makes browsing and search so fast — and your image files themselves are never touched.</figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<!-- ============ TRAITS(特徴 3) ============ -->
+<section class="traits sec-pad" id="traits">
+  <div class="wrap">
+    <div class="cap" data-cap>Why Drive DAM</div>
+    <div class="trait-grid">
+
+      <div class="trait" data-reveal>
+        <div class="ill" data-ill>
+          <svg class="draw" viewBox="0 0 360 279" role="img" aria-label="Search bar and filter chips: two tags, an excluded tag, and a color stacked with AND, narrowing 12,179 files down to 12">
+            <rect x="28" y="36" width="304" height="36" rx="9" style="--len:690"/>
+            <circle class="soft" cx="46" cy="54" r="5.2" style="--len:36"/>
+            <line class="soft" x1="50" y1="58" x2="55" y2="63" style="--len:8"/>
+            <text x="62" y="58" font-size="11.5" fill="#8B887F" stroke="none">Search file names, tags, and notes</text>
+            <rect class="blue" x="28" y="96" width="94" height="26" rx="13" style="--len:245"/>
+            <circle cx="44" cy="109" r="3.2" style="fill:#7A9BE8;stroke:none"/>
+            <text x="53" y="113" font-size="11" font-weight="600" fill="#4A7CE2" stroke="none">Web use</text>
+            <path class="blue" d="M105 105.5l7 7M112 105.5l-7 7" style="--len:22;stroke-width:1.1"/>
+            <rect class="blue" x="132" y="96" width="82" height="26" rx="13" style="--len:245"/>
+            <circle cx="148" cy="109" r="3.2" style="fill:#7A9BE8;stroke:none"/>
+            <text x="157" y="113" font-size="11" font-weight="600" fill="#4A7CE2" stroke="none">Social</text>
+            <path class="blue" d="M197 105.5l7 7M204 105.5l-7 7" style="--len:22;stroke-width:1.1"/>
+            <rect class="soft" x="238" y="96" width="84" height="26" rx="13" style="--len:225"/>
+            <line class="soft" x1="280" y1="100" x2="280" y2="118" style="--len:20"/>
+            <text x="259" y="113" font-size="10" font-weight="600" fill="#45433D" stroke="none" text-anchor="middle">AND</text>
+            <text x="301" y="113" font-size="10" font-weight="600" fill="#B5B2A9" stroke="none" text-anchor="middle">OR</text>
+            <rect class="red" x="28" y="134" width="104" height="26" rx="13" style="--len:265"/>
+            <line class="red" x1="40" y1="147" x2="48" y2="147" style="--len:10"/>
+            <text x="54" y="151" font-size="11" font-weight="600" fill="#B5544A" stroke="none">Seasonal</text>
+            <path class="red" d="M112 143.5l7 7M119 143.5l-7 7" style="--len:22;stroke-width:1.1"/>
+            <rect class="soft" x="144" y="134" width="68" height="26" rx="13" style="--len:170"/>
+            <circle cx="159" cy="147" r="4.5" style="fill:#C96F5F;stroke:none"/>
+            <text x="168" y="151" font-size="11" font-weight="600" fill="#45433D" stroke="none">Red</text>
+            <path class="soft" d="M196 143.5l7 7M203 143.5l-7 7" style="--len:22;stroke-width:1.1"/>
+            <line class="soft" x1="28" y1="184" x2="332" y2="184" style="--len:310;stroke-width:.8"/>
+            <text x="28" y="218" font-size="26" font-weight="700" fill="#1B1A17" stroke="none" style="font-variant-numeric:tabular-nums">12</text>
+            <text x="64" y="218" font-size="13" fill="#8B887F" stroke="none">of 12,179</text>
+            <text x="28" y="240" font-size="10.5" fill="#8B887F" stroke="none" letter-spacing="1">MATCHING FILES</text>
+          </svg>
+        </div>
+        <h3 class="trait-h">Search tens of thousands, instantly.</h3>
+        <p class="trait-b">Stack tags, colors, shoot dates, usage terms, and keywords to reach the exact files in moments. Alongside images, PDFs, videos, Office files, and ZIPs all appear in the same list.</p>
+      </div>
+
+      <div class="trait" data-reveal>
+        <div class="ill" data-ill>
+          <svg class="draw" viewBox="0 0 360 279" aria-hidden="true">
+            <line class="soft" x1="151" y1="117" x2="86" y2="84" style="--len:80"/>
+            <line class="soft" x1="151" y1="145" x2="86" y2="178" style="--len:80"/>
+            <line class="soft" x1="204" y1="109" x2="277" y2="61" style="--len:95"/>
+            <line class="soft" x1="212" y1="131" x2="270" y2="131" style="--len:65"/>
+            <line class="soft" x1="204" y1="153" x2="277" y2="201" style="--len:95"/>
+          </svg>
+          <div class="node center" data-t="1" style="left:50%;top:47%">
+            <img src="/drivedam/assets/app-icon.png" alt="Drive DAM">
+          </div>
+          <div class="node bare" data-t="2" style="left:16%;top:25%">
+            <svg width="40" height="40" viewBox="0 0 40 40" aria-hidden="true"><path d="M5.1 11.3a4 4 0 0 1 4-4h7.9l4 4.7h10.1a4 4 0 0 1 4 4v13.1a4 4 0 0 1-4 4H9.1a4 4 0 0 1-4-4z" fill="none" stroke="#45433D" stroke-width="1.6" stroke-linejoin="round"/><path d="M5.1 12h15.9" fill="none" stroke="#45433D" stroke-width="1.2"/></svg>
+            <span class="nlabel">Local folders</span>
+          </div>
+          <div class="node bare" data-t="2" style="left:16%;top:69%">
+            <svg width="40" height="40" viewBox="0 0 40 40" aria-hidden="true"><rect x="6" y="8" width="28" height="10" rx="2.8" fill="none" stroke="#45433D" stroke-width="1.6"/><rect x="6" y="22" width="28" height="10" rx="2.8" fill="none" stroke="#45433D" stroke-width="1.6"/><circle cx="12" cy="13" r="1.7" fill="#45433D"/><circle cx="12" cy="27" r="1.7" fill="#45433D"/><path d="M22 13h7M22 27h7" fill="none" stroke="#45433D" stroke-width="1.4" stroke-linecap="round"/></svg>
+            <span class="nlabel">File server</span>
+          </div>
+          <div class="node bare" data-t="3" style="left:84%;top:15%">
+            <svg width="40" height="40" viewBox="0 0 40 40" aria-hidden="true"><path d="M16.7 7a3.9 3.9 0 0 1 6.6 0l12.3 21.3a3.9 3.9 0 0 1-3.3 5.8H7.7a3.9 3.9 0 0 1-3.3-5.8z" fill="none" stroke="#45433D" stroke-width="1.6" stroke-linejoin="round"/><path d="M11.3 32.8 23 11.2M28.7 32.8 17 11.2M9 26h22" fill="none" stroke="#45433D" stroke-width="1.4" stroke-linecap="round"/></svg>
+            <span class="nlabel">Google Drive</span>
+          </div>
+          <div class="node bare" data-t="4" style="left:84%;top:47%">
+            <svg width="40" height="40" viewBox="0 0 40 40" aria-hidden="true"><path d="M8 12.9 20 6l12 6.9v14.1L20 34 8 27z" fill="none" stroke="#45433D" stroke-width="1.6" stroke-linejoin="round"/><path d="M8 12.9 20 19.9l12-7M20 19.9v14.1" fill="none" stroke="#45433D" stroke-width="1.4" stroke-linejoin="round"/></svg>
+            <span class="nlabel">Box</span>
+          </div>
+          <div class="node bare" data-t="5" style="left:84%;top:79%">
+            <svg width="40" height="40" viewBox="0 0 40 40" aria-hidden="true"><path d="M12 5 20 10.1 12 15.2 4 10.1ZM28 5 36 10.1 28 15.2 20 10.1ZM12 15.2 20 20.3 12 25.4 4 20.3ZM28 15.2 36 20.3 28 25.4 20 20.3Z" fill="none" stroke="#45433D" stroke-width="1.5" stroke-linejoin="round"/><path d="M12 28.4 20 33.5 28 28.4" fill="none" stroke="#45433D" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"/></svg>
+            <span class="nlabel">Dropbox</span>
+          </div>
+        </div>
+        <h3 class="trait-h">Local folders or cloud storage.</h3>
+        <p class="trait-b">Works as-is on shared folders in Google Drive, Dropbox, Box, or your office file server. Your folder structure and image files stay untouched — no separate uploads, no library imports.</p>
+      </div>
+
+      <div class="trait" data-reveal>
+        <div class="ill" data-ill>
+          <svg class="draw" viewBox="0 0 360 279" role="img" aria-label="One shared folder opened by users A, B, and C — all three see the same tags, colors, and favorites">
+            <path d="M40 113a6 6 0 0 1 6-6h15l8 9h21a6 6 0 0 1 6 6v27a6 6 0 0 1-6 6H46a6 6 0 0 1-6-6z" style="--len:240"/>
+            <text x="68" y="175" font-size="11" fill="#8B887F" stroke="none" text-anchor="middle">Shared folder</text>
+            <line class="soft" x1="96" y1="131" x2="122" y2="131" style="--len:28"/>
+            <line class="soft" x1="122" y1="63" x2="122" y2="199" style="--len:140"/>
+            <line class="soft" x1="122" y1="63" x2="144" y2="63" style="--len:24"/>
+            <line class="soft" x1="122" y1="131" x2="144" y2="131" style="--len:24"/>
+            <line class="soft" x1="122" y1="199" x2="144" y2="199" style="--len:24"/>
+            <circle cx="162" cy="63" r="13" style="--len:85"/>
+            <circle cx="162" cy="58.8" r="3.1" style="--len:21;stroke-width:1.2"/>
+            <path d="M156.4 70.6a5.6 5.6 0 0 1 11.2 0" style="--len:19;stroke-width:1.2"/>
+            <text x="162" y="90" font-size="9.5" fill="#8B887F" stroke="none" text-anchor="middle" letter-spacing="1">A</text>
+            <rect class="blue" x="186" y="50" width="86" height="26" rx="13" style="--len:230"/>
+            <circle cx="202" cy="63" r="3.2" style="fill:#7A9BE8;stroke:none"/>
+            <text x="210" y="67" font-size="11" font-weight="600" fill="#4A7CE2" stroke="none">Web use</text>
+            <circle class="soft" cx="288" cy="63" r="8" style="--len:52"/>
+            <circle cx="288" cy="63" r="4.5" style="fill:#E2954A;stroke:none"/>
+            <path class="soft" transform="translate(316 63)" d="M0 -7 L1.7 -2.35 L6.66 -2.16 L2.76 0.9 L4.11 5.66 L0 2.9 L-4.11 5.66 L-2.76 0.9 L-6.66 -2.16 L-1.7 -2.35 Z" style="--len:65"/>
+            <circle cx="162" cy="131" r="13" style="--len:85"/>
+            <circle cx="162" cy="126.8" r="3.1" style="--len:21;stroke-width:1.2"/>
+            <path d="M156.4 138.6a5.6 5.6 0 0 1 11.2 0" style="--len:19;stroke-width:1.2"/>
+            <text x="162" y="158" font-size="9.5" fill="#8B887F" stroke="none" text-anchor="middle" letter-spacing="1">B</text>
+            <rect class="blue" x="186" y="118" width="86" height="26" rx="13" style="--len:230"/>
+            <circle cx="202" cy="131" r="3.2" style="fill:#7A9BE8;stroke:none"/>
+            <text x="210" y="135" font-size="11" font-weight="600" fill="#4A7CE2" stroke="none">Web use</text>
+            <circle class="soft" cx="288" cy="131" r="8" style="--len:52"/>
+            <circle cx="288" cy="131" r="4.5" style="fill:#E2954A;stroke:none"/>
+            <path class="soft" transform="translate(316 131)" d="M0 -7 L1.7 -2.35 L6.66 -2.16 L2.76 0.9 L4.11 5.66 L0 2.9 L-4.11 5.66 L-2.76 0.9 L-6.66 -2.16 L-1.7 -2.35 Z" style="--len:65"/>
+            <circle cx="162" cy="199" r="13" style="--len:85"/>
+            <circle cx="162" cy="194.8" r="3.1" style="--len:21;stroke-width:1.2"/>
+            <path d="M156.4 206.6a5.6 5.6 0 0 1 11.2 0" style="--len:19;stroke-width:1.2"/>
+            <text x="162" y="226" font-size="9.5" fill="#8B887F" stroke="none" text-anchor="middle" letter-spacing="1">C</text>
+            <rect class="blue" x="186" y="186" width="86" height="26" rx="13" style="--len:230"/>
+            <circle cx="202" cy="199" r="3.2" style="fill:#7A9BE8;stroke:none"/>
+            <text x="210" y="203" font-size="11" font-weight="600" fill="#4A7CE2" stroke="none">Web use</text>
+            <circle class="soft" cx="288" cy="199" r="8" style="--len:52"/>
+            <circle cx="288" cy="199" r="4.5" style="fill:#E2954A;stroke:none"/>
+            <path class="soft" transform="translate(316 199)" d="M0 -7 L1.7 -2.35 L6.66 -2.16 L2.76 0.9 L4.11 5.66 L0 2.9 L-4.11 5.66 L-2.76 0.9 L-6.66 -2.16 L-1.7 -2.35 Z" style="--len:65"/>
+          </svg>
+        </div>
+        <h3 class="trait-h">Tags and usage terms, shared by the team.</h3>
+        <p class="trait-b">Tags, colors, favorites, usage terms, and notes sync to everyone with access to the shared folder. The whole team filters by the same criteria — no more asking around whether an image is cleared for use.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============ FUNCS(主要機能 3・スクロール表示) ============ -->
+<section class="funcs sec-pad" id="funcs">
+  <div class="wrap">
+    <div class="cap" data-cap>Features</div>
+    <h2 class="funcs-h2" data-reveal>Everything you need to publish, in one place.</h2>
+    <div class="funcs-cols">
+      <nav class="funcs-nav" aria-label="Feature list">
+        <ol>
+          <li><a href="#fn-thumbs" class="active"><span class="n">01</span>Instant thumbnails</a></li>
+          <li><a href="#fn-search"><span class="n">02</span>Filter & search</a></li>
+          <li><a href="#fn-share"><span class="n">03</span>Shared tags & usage terms</a></li>
+        </ol>
+      </nav>
+      <div class="funcs-body">
+        <article class="func" id="fn-thumbs">
+          <h3 class="func-h">Instant thumbnail browsing</h3>
+          <p class="func-b">Even folders with tens of thousands of images open ready to browse. When a folder is first registered, Drive DAM generates thumbnails and copies them locally — that is what keeps browsing fast. Teammates reuse the same thumbnails, so everyone searches and works efficiently.</p>
+          <div class="shot" data-shot><img class="shot-pic" src="/drivedam/assets/func-thumbs.png" alt="Drive DAM thumbnail view: folder tree on the left, a large thumbnail grid in the center, shortcuts on the right" loading="lazy" width="2556" height="1595"></div>
+        </article>
+        <article class="func" id="fn-search">
+          <h3 class="func-h">Filter and search</h3>
+          <p class="func-b">Search and filter by keyword, tag, color, shoot date, usage terms, favorites, and more. File paths are searchable too, so even a folder-name fragment can lead you to the image.<br><span class="func-note">Note: text recognition inside images (OCR) is not supported.</span></p>
+          <div class="shot" data-shot><img class="shot-pic" src="/drivedam/assets/func-search.png" alt="Filter panel expanded, narrowing the whole library from 9,974 files down to 282 favorites" loading="lazy" width="1872" height="1345"></div>
+        </article>
+        <article class="func" id="fn-share">
+          <h3 class="func-h">Tags, colors, and usage terms — shared with your team</h3>
+          <p class="func-b">Tags, notes, and other metadata are available to every member through the shared folder. Usage terms — permission required, do not use, and so on — are shared as well, preventing mistakes before they happen. You can also keep private favorites that stay yours alone.</p>
+          <div class="shot" data-shot>
+            <div class="shot-panel">
+              <img src="/drivedam/assets/func-share1.png" alt="Three thumbnails with usage badges — permission required and do not use are visible at a glance" loading="lazy" width="890" height="360" style="left:6%;top:28%;width:57%">
+              <img src="/drivedam/assets/func-share2.png" alt="Details panel: tags, color, favorite, notes, usage restrictions, plus editor and edit date" loading="lazy" width="547" height="1121" style="right:6%;top:9%;width:25.6%">
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+
+    <div class="fmore">
+      <div class="cap" data-cap>More features</div>
+
+      <div class="fgroup">
+        <h4 class="fgroup-h">Search & viewing</h4>
+        <div class="fgrid">
+          <div class="fcard w6" data-reveal>
+            <div class="fcard-vis nat"><img src="/drivedam/assets/func-files.png" alt="A folder where MP4, PDF, and XLSX files are listed alongside images" loading="lazy" width="2556" height="1595"></div>
+            <h4 class="fcard-h">Every file, visible</h4>
+            <p class="fcard-b">Images are the main focus, but other files show up with their type, and you can tag and annotate them too.<br><span class="func-note">Note: thumbnails are not generated for non-image files.</span></p>
+          </div>
+          <div class="fcard w6" data-reveal>
+            <div class="fcard-vis nat"><img src="/drivedam/assets/func-zoom.png" alt="Preview screen showing the original image large, with buttons below: reveal in Explorer, open in default app, download, and 100% view" loading="lazy" width="2556" height="1595"></div>
+            <h4 class="fcard-h">Preview at full size</h4>
+            <p class="fcard-b">Preview the original large, and zoom to 100% to inspect the details. Arrow keys move you through neighboring files.</p>
+          </div>
+          <div class="fcard w6" data-reveal>
+            <div class="fcard-vis nat"><img src="/drivedam/assets/func-folder.png" alt="&quot;Include subfolders&quot; turned on, listing the contents of subfolders together" loading="lazy" width="1999" height="1479"></div>
+            <h4 class="fcard-h">Subfolders in one view</h4>
+            <p class="fcard-b">Show the contents of subfolders in a single list. See everything at once, without hopping between folders.</p>
+          </div>
+          <div class="fcard w6" data-reveal>
+            <div class="fcard-vis modal" style="aspect-ratio:1999/1479"><img src="/drivedam/assets/func-searchsave.png" alt="A saved search being recalled, narrowing to 6 files with three conditions: tag, favorite, and shoot date" loading="lazy" width="1998" height="781"></div>
+            <h4 class="fcard-h">Saved searches</h4>
+            <p class="fcard-b">Give your go-to filter combinations a name and save them. Recall them anytime from the sidebar.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="fgroup">
+        <h4 class="fgroup-h">Export & download</h4>
+        <div class="fgrid">
+          <div class="fcard" data-reveal>
+            <div class="fcard-vis modal"><div class="pshot" style="--src:url('/drivedam/assets/func-zoom.png');right:-2%;bottom:5%;width:88%;aspect-ratio:1080/1215;--zoom:250%;--pos:1% 100%" role="img" aria-label="Bottom of the preview screen: buttons for reveal in Explorer, open in default app, download, and 100% view"></div></div>
+            <h4 class="fcard-h">Download straight from preview</h4>
+            <p class="fcard-b">Download the image you are previewing, on the spot. Reveal it in Explorer or open it in its default app from the same place.</p>
+          </div>
+          <div class="fcard" data-reveal>
+            <div class="fcard-vis modal"><img src="/drivedam/assets/func-export1.png" alt="Export dialog: choosing between original size and resize, exporting 12 files at once" loading="lazy" width="945" height="906"></div>
+            <h4 class="fcard-h">Export (resize & batch)</h4>
+            <p class="fcard-b">Pick the images you need and export them — in bulk, resizing as you go. The originals stay exactly as they are.</p>
+          </div>
+          <div class="fcard" data-reveal>
+            <div class="fcard-vis modal"><img src="/drivedam/assets/func-export2.png" alt="Crop-and-export dialog with ratio presets and custom ratios" loading="lazy" width="1261" height="1309"></div>
+            <h4 class="fcard-h">Export (crop)</h4>
+            <p class="fcard-b">Crop to presets like square or social formats — or any ratio you like — resizing in the same pass. Works on multiple images at once.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="fgroup">
+        <h4 class="fgroup-h">Organizing & file operations</h4>
+        <p class="fgroup-lead">Tags, colors, and notes are linked to file names. Rename and move files inside Drive DAM and those links stay intact. (Changing files directly in Explorer breaks the link.)</p>
+        <div class="fgrid">
+          <div class="fcard" data-reveal>
+            <div class="fcard-vis modal"><div class="pshot" style="--src:url('/drivedam/assets/func-bulc.png');left:15%;top:4%;width:70%;aspect-ratio:553/1114;--zoom:100%;--pos:50% 0" role="img" aria-label="Batch-edit panel with 10 files selected: buttons for view, open, copy, export, batch rename, and a tag-editing dropdown"></div></div>
+            <h4 class="fcard-h">Batch editing</h4>
+            <p class="fcard-b">Select multiple files and set tags, colors, and usage terms in one go. Batch export starts here too.</p>
+          </div>
+          <div class="fcard" data-reveal>
+            <div class="fcard-vis modal"><img src="/drivedam/assets/func-rename.png" alt="Batch rename dialog with tabs for sequential numbers, find & replace, and add before/after, plus a preview list of the new names" loading="lazy" width="978" height="896"></div>
+            <h4 class="fcard-h">Batch rename</h4>
+            <p class="fcard-b">Rename many files at once — sequential numbers, find & replace, or add before/after. Preview every new name before you commit.</p>
+          </div>
+          <div class="fcard" data-reveal>
+            <div class="fcard-vis modal"><img src="/drivedam/assets/func-move.png" alt="Move dialog: choosing a destination from the folder tree; moves are reflected for other members" loading="lazy" width="803" height="964"></div>
+            <h4 class="fcard-h">Moving files</h4>
+            <p class="fcard-b">Pick a destination in the folder tree and move files in bulk. Moves are reflected for every member.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="fgroup">
+        <h4 class="fgroup-h">Working as a team</h4>
+        <div class="fgrid">
+          <div class="fcard" data-reveal>
+            <div class="fcard-vis modal r43"><img src="/drivedam/assets/func-tagmanager.png" alt="Tag manager: tags organized into groups such as purpose, subject, and status" loading="lazy" width="1576" height="1121"></div>
+            <h4 class="fcard-h">Tag & tag-group management</h4>
+            <p class="fcard-b">Manage tags and tag groups in one place. Renames and reorganizing carry over to every member through the shared folder.</p>
+          </div>
+          <div class="fcard" data-reveal>
+            <div class="fcard-vis modal r43"><img src="/drivedam/assets/func-compe.png" alt="Conflict resolution dialog comparing your change and a teammate's, choosing which to keep" loading="lazy" width="945" height="533"></div>
+            <h4 class="fcard-h">Conflict detection & resolution</h4>
+            <p class="fcard-b">If two people edit the same item at the same time, Drive DAM flags the conflict and lets you choose which version to keep. Non-conflicting changes merge automatically — nothing gets overwritten by accident.</p>
+          </div>
+          <div class="fcard" data-reveal>
+            <div class="fcard-vis compose r43">
+              <img src="/drivedam/assets/func-safe2.png" alt="A list where hidden images appear dimmed, with a view menu toggling &quot;hidden images&quot;" loading="lazy" width="1524" height="705" style="left:6%;top:10%;width:88%">
+              <img src="/drivedam/assets/func-safe1.png" alt="The &quot;Hide&quot; button — the file itself and its tags remain, and it can be restored anytime" loading="lazy" width="537" height="213" style="left:10%;top:58%;width:52%">
+            </div>
+            <h4 class="fcard-h">Your original files are never touched</h4>
+            <p class="fcard-b">Files in the original image folders cannot be deleted from Drive DAM — reassuring when many people work in the same shared folder.<br><span class="func-note">Note: files you do not need can be hidden from your own view instead.</span></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="fgroup">
+        <h4 class="fgroup-h">Appearance</h4>
+        <div class="fband" data-reveal>
+          <div class="fband-copy">
+            <h4 class="fcard-h">Dark mode included</h4>
+            <p class="fcard-b">Switch between light and dark with one click — for dim rooms, or for judging image colors on a neutral ground.</p>
+          </div>
+          <div class="fband-vis">
+            <div class="fcard-vis nat"><img src="/drivedam/assets/func-dark.png" alt="Drive DAM in dark mode, full screen, with the thumbnail grid in a dark color scheme" loading="lazy" width="2556" height="1595"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PRICE(コンバージョンエリア) ============ -->
+<section class="price price-pad" id="price">
+  <div class="wrap">
+    <img class="price-icon" src="/drivedam/assets/app-icon.png" alt="Drive DAM" width="92" height="92" data-reveal>
+    <h2 class="price-h" data-reveal>Try it free for 30 days.</h2>
+    <p class="price-lead" data-reveal><strong>No subscription — buy once, use it for good.</strong><br>Every feature is free to use for the first 30 days.</p>
+    <div data-reveal>
+      <span class="btn-cta" style="cursor:default">Coming soon to the Microsoft Store</span>
+    </div>
+    <p class="price-meta" data-reveal>
+      <span>v0.13.1 (2026-07-18)</span><span>Windows 10 or later</span>
+    </p>
+  </div>
+</section>
+
+<!-- ============ FAQ ============ -->
+<section class="faq sec-pad" id="faq">
+  <div class="wrap">
+    <div class="cap" data-cap>FAQ</div>
+    <h2 class="faq-h" data-reveal>Frequently asked questions</h2>
+    <ul class="faq-list" id="faqList"></ul>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer class="site-foot">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <span class="brand"><img src="/drivedam/assets/app-icon.png" alt="">Drive DAM</span>
+        <p>Digital asset management that works in place — in local folders and cloud storage alike. Organize, find, and use images together, right through your shared folders.</p>
+      </div>
+      <div class="foot-col">
+        <p class="foot-t">Supported storage</p>
+        <p class="foot-desc">Works with online storage that appears in Explorer (such as Google Drive), office file servers, and local folders</p>
+      </div>
+    </div>
+    <div class="foot-base">
+      <a href="/">© ame_dev</a>
+      <a href="/en/privacy/">Privacy Policy</a>
+    </div>
+  </div>
+</footer>
+
+<script is:inline>
+(function(){
+"use strict";
+var REDUCE = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+/* ---------- ハンバーガーメニュー(モバイル) ---------- */
+var burger = document.getElementById("headBurger");
+var overlay = document.getElementById("headOverlay");
+if(burger && overlay){
+  function setMenu(open){
+    overlay.classList.toggle("open", open);
+    burger.setAttribute("aria-expanded", open ? "true" : "false");
+    overlay.setAttribute("aria-hidden", open ? "false" : "true");
+    burger.setAttribute("aria-label", open ? "Close menu" : "Open menu");
+    document.body.style.overflow = open ? "hidden" : "";
+  }
+  burger.addEventListener("click", function(){
+    setMenu(!overlay.classList.contains("open"));
+  });
+  overlay.querySelectorAll("a").forEach(function(a){
+    a.addEventListener("click", function(){ setMenu(false); });
+  });
+  document.addEventListener("keydown", function(e){
+    if(e.key === "Escape" && overlay.classList.contains("open")) setMenu(false);
+  });
+}
+
+/* ---------- FAQ(確定コピー 3.9・6 問) ---------- */
+var FAQ = [
+["Are my image files modified?","No. Tags and notes are stored in a <code>_dam/</code> folder next to your images — the image files themselves are never altered."],
+["What happens to my tags and notes if I uninstall Drive DAM?","Tags and notes live in <code>_dam</code> folders inside your local or shared folders, so they remain after uninstalling — your teammates keep working, unaffected. Reinstall and register the folder again, and you pick up right where you left off. With settings export and import, you can also restore registered folders and bookmarks."],
+["Can people without access to the shared folder see our tags and notes?","No. Access permissions on the shared folder define exactly who can see the tags and notes."],
+["Does it tag images automatically with AI?","No. Tags are applied by hand and refined together as a team. There is no automatic classification quietly reorganizing your library."],
+["Is Mac supported?","Drive DAM is a Windows app; Mac is not supported at present. The generated thumbnails and settings files are visible in the shared folder, but Drive DAM itself will not run there. A Mac version may come in the future."],
+["How do I completely remove the thumbnail and tag data?","Once no Drive DAM user has the folder registered, delete the <code>_dam</code> and <code>_dam_thumbs</code> folders. If there are many, search for folders with those names and delete them all."]
+];
+var faqList = document.getElementById("faqList");
+FAQ.forEach(function(qa){
+  var li = document.createElement("li");
+  li.className = "faq-item";
+  li.innerHTML = '<button class="faq-q" aria-expanded="false"><span>'+qa[0]+
+    '</span><span class="faq-x" aria-hidden="true"></span></button>'+
+    '<div class="faq-a"><div class="faq-a-in"><p>'+qa[1]+"</p></div></div>";
+  li.querySelector(".faq-q").addEventListener("click",function(){
+    var open = li.classList.toggle("open");
+    this.setAttribute("aria-expanded", open ? "true" : "false");
+  });
+  faqList.appendChild(li);
+});
+
+/* ---------- Reveal エンジン(IO 共用) ---------- */
+function ease(t){return 1-Math.pow(1-t,3)}
+var io = new IntersectionObserver(function(entries){
+  entries.forEach(function(en){
+    if(!en.isIntersecting) return;
+    var el = en.target;
+    el.classList.add("is-in");
+    var d = el.querySelector && el.querySelector(".draw"); if(d) d.classList.add("is-in");
+    io.unobserve(el);
+  });
+},{threshold:.3, rootMargin:"0px 0px -8% 0px"});
+document.querySelectorAll("[data-reveal],[data-cap],[data-shot],[data-steps],.stage-cap")
+  .forEach(function(el){ io.observe(el); });
+
+/* ---------- funcs ナビ(スクロールスパイ) ---------- */
+var navLinks = document.querySelectorAll(".funcs-nav a");
+if(navLinks.length){
+  var byId = {};
+  navLinks.forEach(function(a){ byId[a.getAttribute("href").slice(1)] = a; });
+  var spy = new IntersectionObserver(function(entries){
+    entries.forEach(function(en){
+      if(!en.isIntersecting) return;
+      navLinks.forEach(function(a){ a.classList.remove("active"); });
+      var a = byId[en.target.id]; if(a) a.classList.add("active");
+    });
+  },{rootMargin:"-35% 0px -55% 0px"});
+  document.querySelectorAll(".func").forEach(function(f){ spy.observe(f); });
+}
+
+/* ---------- 3 特徴の図解の登場 ---------- */
+var illIO = new IntersectionObserver(function(entries){
+  entries.forEach(function(en){
+    if(!en.isIntersecting) return;
+    en.target.classList.add("is-in");
+    illIO.unobserve(en.target);
+  });
+},{threshold:.45});
+document.querySelectorAll("[data-ill]").forEach(function(el){ illIO.observe(el); });
+
+/* ---------- ヒーローの光+統合 rAF ---------- */
+var hero = document.getElementById("hero");
+var light = document.getElementById("heroLight");
+var frame = document.getElementById("heroFrame");
+var head = document.getElementById("siteHead");
+var progress = document.getElementById("progress");
+var lx=0, ly=0, ltx=0, lty=0;
+var gx=.5, gy=.5, gtx=.5, gty=.5;
+var running = false;
+
+function tick(){
+  if(!running) return;
+  var sy = window.scrollY;
+  var max = document.documentElement.scrollHeight - window.innerHeight;
+  progress.style.transform = "scaleX("+(max>0? sy/max : 0)+")";
+  if(sy>24) head.classList.add("scrolled"); else head.classList.remove("scrolled");
+
+  gx += (gtx-gx)*.1; gy += (gty-gy)*.1;
+  if(frame){ frame.style.setProperty("--gx",(gx*100)+"%"); frame.style.setProperty("--gy",(gy*100)+"%"); }
+
+  if(light){
+    lx += (ltx-lx)*.06; ly += (lty-ly)*.06;
+    var heroH = hero.offsetHeight || 1;
+    var p = Math.min(sy/(heroH*.85), 1);
+    light.style.opacity = String(1 - p*.82);
+    var a = light.firstElementChild;
+    if(a){
+      a.style.setProperty("--lx", lx.toFixed(1)+"px");
+      a.style.setProperty("--ly", (ly - p*60).toFixed(1)+"px");
+    }
+  }
+  requestAnimationFrame(tick);
+}
+function start(){ if(!running){ running = true; requestAnimationFrame(tick); } }
+function stop(){ running = false; }
+
+if(REDUCE){
+  window.addEventListener("scroll",function(){
+    var sy = window.scrollY;
+    var max = document.documentElement.scrollHeight - window.innerHeight;
+    progress.style.transform = "scaleX("+(max>0? sy/max : 0)+")";
+    if(sy>24) head.classList.add("scrolled"); else head.classList.remove("scrolled");
+  },{passive:true});
+}else{
+  start();
+  window.addEventListener("pointermove",function(e){
+    var w = window.innerWidth, h = window.innerHeight;
+    ltx = (e.clientX/w - .5) * 70;
+    lty = (e.clientY/h - .5) * 44;
+    if(frame){
+      var fr = frame.getBoundingClientRect();
+      gtx = Math.min(Math.max((e.clientX-fr.left)/fr.width,0),1);
+      gty = Math.min(Math.max((e.clientY-fr.top)/fr.height,0),1);
+    }
+  },{passive:true});
+  document.addEventListener("visibilitychange",function(){
+    if(document.hidden) stop(); else start();
+  });
+}
+})();
+</script>
+
+</DrivedamLayout>

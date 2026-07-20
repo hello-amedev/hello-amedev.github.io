@@ -11,20 +11,30 @@ interface Props {
 	title: string;
 	description?: string;
 	current?: "hub" | "drivedam";
+	lang?: "ja" | "en";
+	altHref?: string;
 }
 
 const {
 	title,
 	description = "Google Drive・Dropbox・Box・社内ファイルサーバーの共有フォルダで、そのまま使えるチーム向け画像管理アプリ Drive DAM をはじめ、小さなチームの道具をつくる ame_dev の公式サイトです。",
 	current,
+	lang = "ja",
+	altHref,
 } = Astro.props;
 
 const canonical = new URL(Astro.url.pathname, Astro.site);
 const ogImage = new URL("/drivedam/assets/hero-main.png", Astro.site);
+const ogLocale = lang === "en" ? "en_US" : "ja_JP";
+
+const jaHref = lang === "ja" ? Astro.url.pathname : altHref;
+const enHref = lang === "en" ? Astro.url.pathname : altHref;
+const jaUrl = jaHref ? new URL(jaHref, Astro.site) : undefined;
+const enUrl = enHref ? new URL(enHref, Astro.site) : undefined;
 ---
 
 <!doctype html>
-<html lang="ja">
+<html lang={lang}>
 	<head>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -35,11 +45,18 @@ const ogImage = new URL("/drivedam/assets/hero-main.png", Astro.site);
 		<title>{title}</title>
 		<meta name="description" content={description} />
 		<link rel="canonical" href={canonical} />
+		{altHref && jaUrl && enUrl && (
+			<>
+				<link rel="alternate" hreflang="ja" href={jaUrl} />
+				<link rel="alternate" hreflang="en" href={enUrl} />
+				<link rel="alternate" hreflang="x-default" href={jaUrl} />
+			</>
+		)}
 		<meta property="og:type" content="website" />
 		<meta property="og:title" content={title} />
 		<meta property="og:description" content={description} />
 		<meta property="og:url" content={canonical} />
-		<meta property="og:locale" content="ja_JP" />
+		<meta property="og:locale" content={ogLocale} />
 		<meta property="og:image" content={ogImage} />
 		<meta property="og:image:width" content="2556" />
 		<meta property="og:image:height" content="1595" />
@@ -50,10 +67,10 @@ const ogImage = new URL("/drivedam/assets/hero-main.png", Astro.site);
 		<meta name="generator" content={Astro.generator} />
 	</head>
 	<body>
-		<SiteHeader current={current} />
+		<SiteHeader current={current} lang={lang} altHref={altHref} />
 		<main>
 			<slot />
 		</main>
-		<SiteFooter />
+		<SiteFooter lang={lang} />
 	</body>
 </html>

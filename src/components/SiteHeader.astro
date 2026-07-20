@@ -1,6 +1,11 @@
 ---
 // サイト共通ヘッダー。home はハブ（/）へ、製品名はサブパスへ。
-const { current } = Astro.props as { current?: "hub" | "drivedam" };
+const { current, lang = "ja", altHref } = Astro.props as {
+	current?: "hub" | "drivedam";
+	lang?: "ja" | "en";
+	altHref?: string;
+};
+const isEn = lang === "en";
 ---
 
 <header class="site-header">
@@ -10,10 +15,23 @@ const { current } = Astro.props as { current?: "hub" | "drivedam" };
 			<span>ame_dev</span>
 		</a>
 		<nav class="site-nav">
-			<a href="/drivedam/" aria-current={current === "drivedam" ? "page" : undefined}>Drive DAM</a>
-			<a href="/#products">製品</a>
-			<a href="/drivedam/#price">ダウンロード</a>
-			<a href="/drivedam/#faq">FAQ</a>
+			{isEn ? (
+				<>
+					<a href="/en/drivedam/" aria-current={current === "drivedam" ? "page" : undefined}>Drive DAM</a>
+					<a href="/en/drivedam/#price">Download</a>
+					<a href="/en/drivedam/#faq">FAQ</a>
+				</>
+			) : (
+				<>
+					<a href="/drivedam/" aria-current={current === "drivedam" ? "page" : undefined}>Drive DAM</a>
+					<a href="/#products">製品</a>
+					<a href="/drivedam/#price">ダウンロード</a>
+					<a href="/drivedam/#faq">FAQ</a>
+				</>
+			)}
+			{altHref && (
+				isEn ? <a href={altHref}>日本語</a> : <a href={altHref}>EN</a>
+			)}
 		</nav>
 	</div>
 </header>

@@ -1,0 +1,103 @@
+---
+import Base from "../../../layouts/Base.astro";
+const updated = "Last updated: June 27, 2026";
+---
+
+<Base
+	title="Privacy Policy — ame_dev"
+	description="How ame_dev handles personal information and user data across its website and apps."
+	lang="en"
+	altHref="/privacy/"
+>
+	<article class="legal">
+		<div class="container container--narrow">
+			<span class="eyebrow">Privacy Policy</span>
+			<h1 class="legal__title">Privacy Policy</h1>
+			<p class="legal__updated">{updated}</p>
+
+			<p>
+				ame_dev ("we") sets out below how personal information and user data are handled on the
+				website and in the applications we provide (the "Services").
+			</p>
+
+			<h2>1. About this website</h2>
+			<p>
+				This website consists of static pages and uses no cookies or analytics tools that could
+				identify visitors. If you contact us by email, the content of your message and your
+				contact details are used solely to reply and respond to your inquiry.
+			</p>
+
+			<h2>2. About the Drive DAM app</h2>
+			<p>
+				Drive DAM runs entirely on your PC. We do not collect your images, files, tags, notes, or
+				any other data through Drive DAM, nor do we transmit them to external servers.
+			</p>
+			<ul class="legal__list">
+				<li>Your image files remain in the shared folders you designate and are never sent to us.</li>
+				<li>Tags, colors, favorites, notes, and similar information are stored in the same folder as your images (<code>_dam/</code>) and are shared only within your team.</li>
+				<li>Synchronization with storage services such as Google Drive, Dropbox, or Box is performed by the service you have installed, and the privacy policy of that service applies.</li>
+			</ul>
+
+			<h2>3. Disclosure to third parties</h2>
+			<p>
+				We do not provide users' personal information to third parties, except where required by law.
+			</p>
+
+			<h2>4. Changes to this policy</h2>
+			<p>
+				This policy may be revised as needed. Any changes take effect once posted on this page.
+			</p>
+
+			<h2>5. Contact</h2>
+			<p>
+				For inquiries about the Services or this policy, please contact
+				<a href="mailto:amemitai@gmail.com">amemitai@gmail.com</a>.
+			</p>
+
+			<p class="legal__back"><a href="/en/drivedam/">← Back to Drive DAM</a></p>
+		</div>
+	</article>
+</Base>
+
+<style>
+	.legal {
+		padding-block: 72px 88px;
+	}
+	.container--narrow {
+		max-width: var(--maxw-narrow);
+	}
+	.legal__title {
+		font-size: clamp(1.7rem, 1.2rem + 1.6vw, 2.2rem);
+		margin-bottom: 10px;
+	}
+	.legal__updated {
+		color: var(--ink-faint);
+		font-size: 0.88rem;
+		margin-bottom: 36px;
+	}
+	.legal p {
+		color: var(--ink-muted);
+		margin-bottom: 18px;
+		line-height: 1.95;
+	}
+	.legal h2 {
+		font-size: 1.2rem;
+		margin-top: 38px;
+		margin-bottom: 14px;
+		padding-top: 8px;
+	}
+	.legal__list {
+		color: var(--ink-muted);
+		line-height: 1.9;
+		padding-left: 1.3em;
+		margin-bottom: 18px;
+	}
+	.legal__list li {
+		margin-bottom: 10px;
+	}
+	.legal__back {
+		margin-top: 48px;
+		padding-top: 24px;
+		border-top: 1px solid var(--border);
+	}
+</style>
