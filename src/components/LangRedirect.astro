@@ -1,0 +1,42 @@
+---
+// ブラウザ言語で JA/EN ページ間を初回のみ自動転送する共通スクリプト。
+// - 初回訪問時のみ判定し、sessionStorage に選択を記録
+// - 以降は内部リンク遷移で言語が保たれる(再判定しない)
+// - `?lang=ja` / `?lang=en` 付きで来たら判定スキップ + 記録更新 + URL からパラメータ除去
+---
+<script is:inline>
+	(function () {
+		try {
+			var pageLang = document.documentElement.lang === "en" ? "en" : "ja";
+			var params = new URLSearchParams(location.search);
+			var explicit = params.get("lang");
+			if (explicit === "ja" || explicit === "en") {
+				sessionStorage.setItem("lang-choice", explicit);
+				params.delete("lang");
+				var q = params.toString();
+				var clean = location.pathname + (q ? "?" + q : "") + location.hash;
+				history.replaceState(null, "", clean);
+				return;
+			}
+			var chosen = sessionStorage.getItem("lang-choice");
+			if (chosen === "ja" || chosen === "en") return;
+			var langs = navigator.languages && navigator.languages.length
+				? navigator.languages
+				: [navigator.language || ""];
+			if (!langs[0]) return;
+			var prefersJa = langs.some(function (l) { return /^ja\b/i.test(l); });
+			var want = prefersJa ? "ja" : "en";
+			sessionStorage.setItem("lang-choice", want);
+			if (want === pageLang) return;
+			var next;
+			if (want === "en") {
+				next = "/en" + location.pathname + location.search + location.hash;
+			} else {
+				next = location.pathname.replace(/^\/en/, "") + location.search + location.hash;
+			}
+			location.replace(next);
+		} catch (e) {
+			// 例外時は判定せず通常表示に fallback
+		}
+	})();
+</script>

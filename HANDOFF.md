@@ -6,8 +6,9 @@
 ## 0. 次の Claude へ(2026-07-20 セッション終了時の状態)
 
 **Astro 実装済みの Drive DAM LP をブラッシュアップし、モバイル対応・SEO 整備・CV エリア
-修正・英語版(/en/)追加まで完了**。本セッション 6 コミット(74cc677 / 97a3e98 / cb12d60 /
-e4060bc / 76feda0 / 次コミット)で本番公開済み。デザインコンセプトは引き続き
+修正・英語版(/en/)追加・言語自動転送(Microsoft Store 対応)まで完了**。本セッション
+6 コミット(74cc677 / 97a3e98 / cb12d60 / e4060bc / 76feda0 / 4bdde82)+ 翌セッションで
+言語自動転送 1 コミット(次コミット)で本番公開済み。デザインコンセプトは引き続き
 **「Paper & Ink + Blue Light」**だが、紙色は**クールグレー(`--paper:#F6F8FA`)**に変更済
 (暗パネル側の対の変数 `--paper-night` も第 4 コミットで追随済み)。実装は
 `src/pages/drivedam/index.astro` + `src/styles/drivedam.css` が一次ソース、英語版は
@@ -108,6 +109,25 @@ e4060bc / 76feda0 / 次コミット)で本番公開済み。デザインコン�
     旧 `.i18n-tag` / `.hero-en` プレビュー残骸は削除。
 26. **英語コピーの一次ソースは EN ページの HTML 実装**(`src/pages/en/drivedam/index.astro`)。
     プライバシーポリシー英訳は `src/pages/en/privacy/index.astro`。
+
+### 第7コミット(言語自動転送・Microsoft Store 対応)
+27. **ブラウザ言語による JA/EN 自動転送を実装**: Microsoft Store など「言語別 URL 登録機能が
+    無いストア」向けに、`/drivedam/` ⇔ `/en/drivedam/`・`/privacy/` ⇔ `/en/privacy/` の間で
+    初回訪問時のみブラウザ言語で自動転送する仕組みを追加。
+    - **新規** `src/components/LangRedirect.astro`: `<head>` 冒頭に `<script is:inline>` を
+      差し込む共通コンポーネント。判定 → `location.replace` で転送 → sessionStorage
+      `lang-choice` に選択を記録し、以降は再判定しない(内部リンク遷移で言語が保たれる)。
+      `?lang=ja` / `?lang=en` 付きで来たら判定スキップ + sessionStorage 更新 +
+      `history.replaceState` で URL からパラメータを自動除去。判定不能(navigator.language
+      が空)時はリダイレクトせず x-default=ja に倒す。
+    - **配置**: `DrivedamLayout.astro` と `Base.astro` の `<head>` 冒頭に
+      `{altHref && <LangRedirect />}` として配置。`altHref` があるページ(=対応言語ページが
+      存在)でのみ判定が走る。ハブ `/` は判定なし(EN 版が無いため)。
+    - **既存の言語切替リンク 5 箇所に `?lang=xx` を付与**: 明示切替が自動判定に上書き
+      されないように。JA LP ヘッダー右「EN」+ モバイルオーバーレイ「English」・EN LP
+      ヘッダー右「日本語」+ モバイルオーバーレイ「日本語」・SiteHeader(privacy 用)。
+    - **動作確認**: dev サーバー(localhost:4321)で 5 シナリオ通過(同言語アクセス /
+      異言語アクセス / ?lang=xx 明示スイッチ 2 方向 / 内部リンクで言語保持)。
 
 **次セッションの最初の作業**:
 1. 専用の og:image を作る(現状 hero-main.png を暫定利用中。1200×630 の SNS 特化画像に
@@ -343,6 +363,10 @@ e4060bc / 76feda0 / 次コミット)で本番公開済み。デザインコン�
   IO 発火前 opacity:0 のせいで真っ白に撮れる。`--virtual-time-budget` は使わない(白紙化する)
 - **subst で仮想ドライブを撮影する場合**: PowerShell では `%USERPROFILE%` が展開されないので
   `$env:USERPROFILE` を使う(または cmd で実行)
+- **多言語ページを新設する時**: Layout の `altHref` prop に対応言語 URL を渡せば `<LangRedirect />`
+  が自動で判定・転送を開始する。加えて、そのページ内に配置する言語切替リンクには必ず
+  `?lang=ja` / `?lang=en` を付与すること(付けないと自動判定に上書きされ、意図した言語で
+  表示できない)。`altHref` を渡さないページ(ハブ `/` など)は判定なし・そのまま表示。
 - **日本語版 LP を修正したら英語版(`src/pages/en/drivedam/index.astro`)も追随させる**:
   日英は同一構造の別ファイル(共通化していない)ため、コピー・構造・FAQ(inline script 内)の
   変更は放置すると乖離する。JA 側を触るコミットでは必ず EN 側の同箇所を確認すること

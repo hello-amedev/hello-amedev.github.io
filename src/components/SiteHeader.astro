@@ -30,7 +30,9 @@ const isEn = lang === "en";
 				</>
 			)}
 			{altHref && (
-				isEn ? <a href={altHref}>日本語</a> : <a href={altHref}>EN</a>
+				isEn
+					? <a href={`${altHref}?lang=ja`}>日本語</a>
+					: <a href={`${altHref}?lang=en`}>EN</a>
 			)}
 		</nav>
 	</div>

@@ -10,6 +10,7 @@ import "@fontsource/noto-sans-jp/500.css";
 import "@fontsource/noto-sans-jp/600.css";
 import "@fontsource/noto-sans-jp/700.css";
 import "../styles/drivedam.css";
+import LangRedirect from "../components/LangRedirect.astro";
 
 interface Props {
 	title: string;
@@ -41,6 +42,7 @@ const enUrl = altHref ? new URL(enHref!, Astro.site) : undefined;
 	<head>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		{altHref && <LangRedirect />}
 		<meta name="theme-color" content="#F6F8FA" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<link rel="icon" href="/favicon.ico" />
