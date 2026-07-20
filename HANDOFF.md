@@ -102,8 +102,10 @@ e4060bc / 76feda0 / 次コミット)で本番公開済み。デザインコン�
     英語ラベルの字幅に合わせ rect 幅・× 位置を微調整(「Red」は文字と × が重なる不具合を
     実測で発見・修正)。
 25. **EN 専用 CSS 微調整**: `html[lang="en"]` で hero-title の letter-spacing -.035em +
-    font-size 下限 44→37px(モバイルの英文 8 行折り返し対策。デスクトップは不変)、
-    price-meta 区切りを半角「·」に。旧 `.i18n-tag` / `.hero-en` プレビュー残骸は削除。
+    `font-size:clamp(37px,5.7vw,78px)`(JA は 6.6vw/92px のまま。英文の最長行は
+    フォントサイズ×15.28 の幅が必要と実測し、768px 以上で 3 行に収まるよう逆算。
+    あめさんの「5 行は不自然」指摘への対応)、price-meta 区切りを半角「·」に。
+    旧 `.i18n-tag` / `.hero-en` プレビュー残骸は削除。
 26. **英語コピーの一次ソースは EN ページの HTML 実装**(`src/pages/en/drivedam/index.astro`)。
     プライバシーポリシー英訳は `src/pages/en/privacy/index.astro`。
 
@@ -114,8 +116,13 @@ e4060bc / 76feda0 / 次コミット)で本番公開済み。デザインコン�
    (Header・hero-cta・price-cta+ハンバーガーオーバーレイ)。ストア URL 確定後に一気に置換。
 3. JSON-LD (SoftwareApplication schema) の追加: ストア公開後、価格・レビュー等を含めて追加すると Google 検索でリッチスニペット化
 4. 引き続きあめさんの指摘反映(90 点目標)
-5. EN 版スクショの差し替え検討(現状は日本語 UI のスクショを共用。英語 UI のスクショが
-   用意できたら `/en/` 側だけ差し替え)
+5. **EN 版スクショの差し替え**(あめさんが用意予定・2026-07-20)。命名規約:
+   日本語版と同じベース名 + `-en` サフィックス(例 `hero-main-en.png`
+   `func-thumbs-en.png`)。置き場は `design-poc/assets/`(非追跡)→ 反映時に
+   `public/drivedam/assets/` へコピー。対象 19 枚(app-icon は共用・func-download は
+   未使用のため不要)。可能なら日本語版と同ピクセルサイズ・同構図で(HTML の
+   width/height 属性が固定のため無修正で差し替え可能。違う場合は属性を調整する)。
+   揃った分から順次差し替えでよい
 6. `func-download.png` は現在未使用(継続保留)
 
 ## 1. プロジェクト概要

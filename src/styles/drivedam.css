@@ -712,7 +712,7 @@ section{position:relative}
 .foot-base a:hover{border-color:var(--ink-3)}
 
 /* --- lang="en" 微調整 --- */
-html[lang="en"] .hero-title{letter-spacing:-.035em;font-size:clamp(37px,6.6vw,92px)}
+html[lang="en"] .hero-title{letter-spacing:-.035em;font-size:clamp(37px,5.7vw,78px)}
 html[lang="en"] .price-meta span+span::before{content:"·"}
 
 /* --- focus / a11y --- */
