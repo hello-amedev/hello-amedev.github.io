@@ -111,16 +111,14 @@ e4060bc / 76feda0 / 次コミット)で本番公開済み。デザインコン�
 
 **次セッションの最初の作業**:
 1. 専用の og:image を作る(現状 hero-main.png を暫定利用中。1200×630 の SNS 特化画像に
-   差し替えると SNS シェア時の見栄えが上がる)
+   差し替えると SNS シェア時の見栄えが上がる)。日英で別画像にするか同一で行くかも要検討
 2. ストア公開時の CTA 差し替え: 「近日 Microsoft Store で公開予定」は JA/EN 各 3 箇所
    (Header・hero-cta・price-cta+ハンバーガーオーバーレイ)。ストア URL 確定後に一気に置換。
-3. JSON-LD (SoftwareApplication schema) の追加: ストア公開後、価格・レビュー等を含めて追加すると Google 検索でリッチスニペット化
+   JA/EN の両方を忘れず更新すること
+3. JSON-LD (SoftwareApplication schema) の追加: ストア公開後、価格・レビュー等を含めて
+   追加すると Google 検索でリッチスニペット化。日英両ページに入れる
 4. 引き続きあめさんの指摘反映(90 点目標)
-5. ~~EN 版スクショの差し替え~~ → **完了**(2026-07-20 第 8 コミット)。命名規約
-   `<name>-en.png` で 19 枚を `public/drivedam/assets/` に配置。うち 5 枚
-   (share2 / export1 / export2 / rename / move)は言語差で画像縦幅が数十 px 変わったため
-   EN LP 側の width/height 属性を EN 実寸に個別に更新済み。残り 14 枚は JA と同寸
-6. `func-download.png` は現在未使用(継続保留)
+5. `func-download.png` は現在未使用(継続保留)
 
 ## 1. プロジェクト概要
 
