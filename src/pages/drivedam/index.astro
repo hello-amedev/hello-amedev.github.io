@@ -17,8 +17,22 @@ import DrivedamLayout from "../../layouts/DrivedamLayout.astro";
       <a href="#faq">FAQ</a>
     </nav>
     <span class="head-link" style="cursor:default">近日公開予定</span>
+    <button class="head-burger" id="headBurger" aria-label="メニューを開く" aria-expanded="false" aria-controls="headOverlay">
+      <span></span><span></span><span></span>
+    </button>
   </div>
 </header>
+
+<div class="head-overlay" id="headOverlay" aria-hidden="true">
+  <nav class="head-overlay-nav" aria-label="ページ内メニュー(モバイル)">
+    <a href="#about">Drive DAM とは</a>
+    <a href="#traits">特徴</a>
+    <a href="#funcs">機能</a>
+    <a href="#price">価格</a>
+    <a href="#faq">FAQ</a>
+  </nav>
+  <p class="head-overlay-foot">近日 Microsoft Store で公開予定</p>
+</div>
 
 <!-- ============ HERO ============ -->
 <section class="hero" id="hero">
@@ -431,6 +445,28 @@ import DrivedamLayout from "../../layouts/DrivedamLayout.astro";
 (function(){
 "use strict";
 var REDUCE = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+/* ---------- ハンバーガーメニュー(モバイル) ---------- */
+var burger = document.getElementById("headBurger");
+var overlay = document.getElementById("headOverlay");
+if(burger && overlay){
+  function setMenu(open){
+    overlay.classList.toggle("open", open);
+    burger.setAttribute("aria-expanded", open ? "true" : "false");
+    overlay.setAttribute("aria-hidden", open ? "false" : "true");
+    burger.setAttribute("aria-label", open ? "メニューを閉じる" : "メニューを開く");
+    document.body.style.overflow = open ? "hidden" : "";
+  }
+  burger.addEventListener("click", function(){
+    setMenu(!overlay.classList.contains("open"));
+  });
+  overlay.querySelectorAll("a").forEach(function(a){
+    a.addEventListener("click", function(){ setMenu(false); });
+  });
+  document.addEventListener("keydown", function(e){
+    if(e.key === "Escape" && overlay.classList.contains("open")) setMenu(false);
+  });
+}
 
 /* ---------- FAQ(確定コピー 3.9・5 問) ---------- */
 var FAQ = [

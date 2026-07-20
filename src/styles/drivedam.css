@@ -112,6 +112,51 @@ body::after{
   padding-bottom:2px;
 }
 .head-nav a:hover{background-size:100% 1px;color:var(--ink)}
+
+/* --- hamburger + overlay(モバイル用) --- */
+.head-burger{
+  display:none;
+  width:40px;height:40px;padding:10px;
+  background:none;border:none;cursor:pointer;
+  position:relative;z-index:110;
+}
+.head-burger span{
+  display:block;width:20px;height:1.5px;
+  background:var(--ink);margin:5px auto;
+  transition:transform .3s var(--ease),opacity .2s var(--ease);
+  transform-origin:center;
+}
+.head-burger[aria-expanded="true"] span:nth-child(1){transform:translateY(6.5px) rotate(45deg)}
+.head-burger[aria-expanded="true"] span:nth-child(2){opacity:0}
+.head-burger[aria-expanded="true"] span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg)}
+.head-overlay{
+  position:fixed;inset:0;z-index:99;
+  background:rgba(246,248,250,.98);backdrop-filter:blur(12px);
+  opacity:0;visibility:hidden;
+  transition:opacity .3s var(--ease),visibility .3s var(--ease);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:0 24px;
+}
+.head-overlay.open{opacity:1;visibility:visible}
+.head-overlay-nav{display:flex;flex-direction:column;gap:28px;text-align:center}
+.head-overlay-nav a{
+  font-size:22px;font-weight:600;color:var(--ink);
+  letter-spacing:-.01em;padding:6px 0;
+  opacity:0;transform:translateY(10px);
+  transition:opacity .4s var(--ease),transform .4s var(--ease);
+}
+.head-overlay.open .head-overlay-nav a{opacity:1;transform:none}
+.head-overlay.open .head-overlay-nav a:nth-child(1){transition-delay:.05s}
+.head-overlay.open .head-overlay-nav a:nth-child(2){transition-delay:.10s}
+.head-overlay.open .head-overlay-nav a:nth-child(3){transition-delay:.15s}
+.head-overlay.open .head-overlay-nav a:nth-child(4){transition-delay:.20s}
+.head-overlay.open .head-overlay-nav a:nth-child(5){transition-delay:.25s}
+.head-overlay-foot{
+  position:absolute;bottom:56px;left:0;right:0;
+  text-align:center;
+  font-size:13px;color:var(--ink-2);letter-spacing:.02em;
+}
+
 .progress{
   position:fixed;top:0;left:0;height:2px;width:100%;z-index:101;
   background:var(--ink);opacity:.22;transform:scaleX(0);transform-origin:left center;
@@ -704,6 +749,8 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-off
   .foot-col{grid-column:1/13;margin-bottom:32px}
   .foot-cta{grid-column:1/13}
   .head-nav{display:none}
+  .head-burger{display:block}
+  .head-link{display:none}
 }
 @media (max-width:640px){
   .steps-grid{grid-template-columns:1fr;row-gap:36px}
