@@ -8,7 +8,7 @@ import DrivedamLayout from "../../layouts/DrivedamLayout.astro";
 
 <header class="site-head" id="siteHead">
   <div class="head-in">
-    <a class="brand" href="/"><img src="/drivedam/assets/app-icon.png" alt="">Drive DAM</a>
+    <a class="brand" href="/drivedam/"><img src="/drivedam/assets/app-icon.png" alt="">Drive DAM</a>
     <nav class="head-nav" aria-label="ページ内メニュー">
       <a href="#about">Drive DAM とは</a>
       <a href="#traits">特徴</a>
@@ -270,7 +270,7 @@ import DrivedamLayout from "../../layouts/DrivedamLayout.astro";
           <div class="fcard w6" data-reveal>
             <div class="fcard-vis nat"><img src="/drivedam/assets/func-files.png" alt="MP4・PDF・XLSX が画像と混在して一覧表示されているフォルダ" loading="lazy" width="2556" height="1595"></div>
             <h4 class="fcard-h">すべてのファイルを可視化</h4>
-            <p class="fcard-b">画像はもちろん、PDF・動画・Office・ZIP も種別を表示します。フォルダの中に何があるかを、開かずに把握できます。</p>
+            <p class="fcard-b">画像管理が主機能ですが、それ以外のファイルも種別を表示し、タグやメモを付けて管理できます。<br><span class="func-note">※画像以外のサムネイル表示には未対応です。</span></p>
           </div>
           <div class="fcard w6" data-reveal>
             <div class="fcard-vis nat"><img src="/drivedam/assets/func-zoom.png" alt="プレビュー画面。元画像を大きく表示し、下部にエクスプローラーで表示・既定のアプリで開く・ダウンロード・等倍のボタン" loading="lazy" width="2556" height="1595"></div>
@@ -306,7 +306,7 @@ import DrivedamLayout from "../../layouts/DrivedamLayout.astro";
           <div class="fcard" data-reveal>
             <div class="fcard-vis modal"><img src="/drivedam/assets/func-export2.png" alt="トリミングして書き出しダイアログ全体。比率プリセットとカスタム比率を選んで切り抜き" loading="lazy" width="1261" height="1309"></div>
             <h4 class="fcard-h">書き出し(トリミング)</h4>
-            <p class="fcard-b">正方形・SNS 向けなどのプリセットや任意の比率で切り抜いて、書き出します。複数枚をまとめて処理することもできます。</p>
+            <p class="fcard-b">正方形・SNS向けなどのプリセットや任意の比率で、トリミングと同時にリサイズして書き出せます。複数枚をまとめて処理することもできます。</p>
           </div>
         </div>
       </div>
@@ -351,8 +351,8 @@ import DrivedamLayout from "../../layouts/DrivedamLayout.astro";
               <img src="/drivedam/assets/func-safe2.png" alt="非表示にした画像が薄く表示された一覧。表示メニューで「非表示にした画像」を切り替え" loading="lazy" width="1524" height="705" style="left:6%;top:10%;width:88%">
               <img src="/drivedam/assets/func-safe1.png" alt="「非表示にする」ボタン。ファイル本体とタグは残り、いつでも戻せる" loading="lazy" width="537" height="213" style="left:10%;top:58%;width:52%">
             </div>
-            <h4 class="fcard-h">誤って消す心配がない設計</h4>
-            <p class="fcard-b">削除機能はありません。見せたくない画像は自分の一覧から非表示にでき、いつでも戻せます。ファイル本体とタグは残ります。</p>
+            <h4 class="fcard-h">元のフォルダ・ファイルを編集しない安心設計</h4>
+            <p class="fcard-b">元の画像フォルダのファイルは削除できないようになっています。複数人で共有フォルダを扱う時にも安心な設計です。<br><span class="func-note">※不要なファイルについては、自分の一覧上で非表示にする機能があります。</span></p>
           </div>
         </div>
       </div>
@@ -369,30 +369,6 @@ import DrivedamLayout from "../../layouts/DrivedamLayout.astro";
           </div>
         </div>
       </div>
-    </div>
-  </div>
-</section>
-
-<!-- ============ ASSURE(チーム活用を支える安心設計) ============ -->
-<section class="assure sec-pad" id="assure">
-  <div class="wrap">
-    <div class="cap" data-cap>安心設計</div>
-    <h2 class="assure-h" data-reveal>チームでの活用を支える、安心設計。</h2>
-    <div class="assure-row" data-reveal>
-      <p class="assure-t">削除機能はありません</p>
-      <p class="assure-b">誤操作でファイルが消える心配を、仕組みとして取り除いています。見せたくない画像は「あとから戻せる非表示」で自分の一覧から外せます。他のメンバーの表示には影響しません。</p>
-    </div>
-    <div class="assure-row" data-reveal>
-      <p class="assure-t">画像ファイルは変更されません</p>
-      <p class="assure-b">タグやメモは画像のとなりの小さなファイルに保存します。リサイズ書き出し・トリミング書き出しも、元の画像はそのままに別ファイルとして保存します。</p>
-    </div>
-    <div class="assure-row" data-reveal>
-      <p class="assure-t">共有範囲は、フォルダのアクセス権のまま</p>
-      <p class="assure-b">共有フォルダのアクセス権限が、そのままタグ・メモの共有範囲になります。新しい権限管理を覚える必要はありません。</p>
-    </div>
-    <div class="assure-row" data-reveal>
-      <p class="assure-t">やめても、データは残ります</p>
-      <p class="assure-b">タグ・メモは共有フォルダ内に残るため、アンインストールしても消えません。再インストールすれば同じ状態で再開できます。</p>
     </div>
   </div>
 </section>
@@ -426,8 +402,8 @@ import DrivedamLayout from "../../layouts/DrivedamLayout.astro";
   <div class="wrap">
     <div class="foot-grid">
       <div class="foot-brand">
-        <span class="brand">Drive DAM</span>
-        <p>広報やマーケティングのための画像管理ツール。画像のとなりに、タグとメモを置く。</p>
+        <span class="brand"><img src="/drivedam/assets/app-icon.png" alt="">Drive DAM</span>
+        <p>ローカルフォルダでも、オンラインストレージ等でもそのまま使えるデジタルアセット管理。共有フォルダを通して、チームでの画像管理・活用を効率化します。</p>
       </div>
       <div class="foot-col">
         <p class="foot-t">対応ストレージ</p>
@@ -435,7 +411,7 @@ import DrivedamLayout from "../../layouts/DrivedamLayout.astro";
       </div>
     </div>
     <div class="foot-base">
-      <span>© ame_dev</span>
+      <a href="/">© ame_dev</a>
       <a href="/privacy/">プライバシーポリシー</a>
     </div>
   </div>
@@ -471,10 +447,11 @@ if(burger && overlay){
 /* ---------- FAQ(確定コピー 3.9・5 問) ---------- */
 var FAQ = [
 ["画像ファイルは変更されますか?","いいえ。タグやメモは画像と同じフォルダ内の <code>_dam/</code> に保存し、画像ファイルそのものには手を加えません。"],
+["Drive DAMをアンインストールしたら、タグやメモはどうなりますか?","タグ・メモはローカルや共有フォルダ内の <code>_dam</code> フォルダに保存されるため、Drive DAMをアンインストールしてもそのまま残ります。チームメンバーの利用には影響ありません。再インストールしてもう一度フォルダを登録すれば、同じ状態で再開できます。また、設定のエクスポート・インポートを利用すれば、フォルダの登録状態や、ブックマークも復元できます。"],
 ["共有フォルダのアクセス権がない人にも、タグやメモは見えますか?","見えません。共有フォルダのアクセス権限が、そのままタグ・メモの共有範囲になります。"],
 ["AI で自動的にタグ付けされますか?","いいえ。タグは手作業で付け、チームで共有して育てる運用です。自動分類による意図しない整理はありません。"],
-["Mac の人もタグを見られますか?","アプリ本体は Windows 専用ですが、共有フォルダ自体は Mac/iPhone からも見えます。タグやメモの作成・閲覧は、Windows 端末でのみ可能です。"],
-["個人開発のようですが、サービス終了のリスクは?","タグやメモは共有フォルダ内の <code>_dam/</code> に保存され、アプリの提供有無に関わらず手元に残ります。買い切りなので、サービス停止による追加課金もありません。"]
+["Macには対応していますか?","Drive DAMはWindows用アプリです。Macには現在対応していません。生成されたサムネイル・設定ファイルは共有フォルダ上に表示されますが、Drive DAMを利用することはできません。Mac版については、今後リリースされる可能性があります。"],
+["サムネイルやタグのデータを完全に削除する方法は?","フォルダを登録しているDrive DAMユーザーが居ない状態で、<code>_dam</code> フォルダおよび <code>_dam_thumbs</code> フォルダを削除してください。フォルダ数が多い場合は、同名フォルダを検索してすべて削除してください。"]
 ];
 var faqList = document.getElementById("faqList");
 FAQ.forEach(function(qa){

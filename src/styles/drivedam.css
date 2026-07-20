@@ -580,22 +580,8 @@ section{position:relative}
 .fband-copy .fcard-b{font-size:14px;line-height:2}
 .fband-vis{grid-column:5/13}
 
-/* (30 日セクションは廃止) */
-/* --- assure(副軸・誤って消す心配なし) --- */
-.assure-h{
-  font-size:clamp(26px,3vw,44px);font-weight:600;color:var(--ink);
-  line-height:1.4;letter-spacing:-.015em;margin-bottom:clamp(40px,5vw,64px);
-}
-.assure-row{
-  display:grid;grid-template-columns:repeat(12,1fr);column-gap:clamp(16px,2.4vw,32px);
-  padding:clamp(28px,3.5vw,40px) 0;border-top:1px solid var(--line);
-}
-.assure-row:last-child{border-bottom:1px solid var(--line)}
-.assure-t{grid-column:1/5;font-weight:600;color:var(--ink);font-size:16.5px;line-height:1.8}
-.assure-b{grid-column:5/12;font-size:15px;line-height:2.0}
-
 /* --- price(コンバージョンエリア。墨面+中央光背)
-       紙の上に角丸の墨パネルを置く構図。assure との間に十分な呼吸を取る --- */
+       紙の上に角丸の墨パネルを置く構図。fmore との間に十分な呼吸を取る --- */
 .price{
   background:var(--night);color:var(--paper-night);position:relative;overflow:hidden;
   margin-top:clamp(110px,13vw,190px);
@@ -697,8 +683,9 @@ section{position:relative}
   display:grid;grid-template-columns:repeat(12,1fr);column-gap:clamp(16px,2.4vw,32px);
   padding:clamp(64px,8vw,104px) 0 clamp(40px,5vw,64px);
 }
-.foot-brand{grid-column:1/5}
+.foot-brand{grid-column:1/6}
 .foot-brand .brand{font-size:16px}
+.foot-brand .brand img{width:22px;height:22px}
 .foot-brand p{font-size:13px;line-height:2.0;color:var(--ink-3);margin-top:14px;max-width:300px}
 .foot-col{grid-column:6/13}
 .foot-t{
@@ -708,7 +695,6 @@ section{position:relative}
 .foot-col ul{list-style:none}
 .foot-col li{font-size:13.5px;line-height:1.8;padding:5px 0;color:var(--ink-2)}
 .foot-desc{font-size:13.5px;line-height:2.0;color:var(--ink-2);max-width:340px}
-.foot-cta{grid-column:9/13}
 .foot-base{
   display:flex;justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap;
   border-top:1px solid var(--line);padding:24px 0 32px;
@@ -743,11 +729,8 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-off
   .fband-copy,.fband-vis{grid-column:1/13}
   .fband-vis{margin-top:18px}
   .trait-grid{grid-template-columns:1fr;max-width:520px}
-  .assure-t{grid-column:1/13;margin-bottom:8px}
-  .assure-b{grid-column:1/13}
   .foot-brand{grid-column:1/13;margin-bottom:40px}
   .foot-col{grid-column:1/13;margin-bottom:32px}
-  .foot-cta{grid-column:1/13}
   .head-nav{display:none}
   .head-burger{display:block}
   .head-link{display:none}
