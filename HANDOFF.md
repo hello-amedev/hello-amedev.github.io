@@ -129,6 +129,17 @@
     - **動作確認**: dev サーバー(localhost:4321)で 5 シナリオ通過(同言語アクセス /
       異言語アクセス / ?lang=xx 明示スイッチ 2 方向 / 内部リンクで言語保持)。
 
+### 第8コミット(Drive DAM ページに独自 favicon)
+28. **Drive DAM のページ(JA/EN)だけ独自 favicon を設定**: ハブ・privacy と区別するため、
+    Drive DAM LP のブラウザタブアイコンを Drive DAM アプリアイコンに差し替え。
+    - **新規** `public/drivedam/favicon-32.png`(32×32、ブラウザタブ用)+
+      `public/drivedam/apple-touch-icon.png`(180×180、iOS Home Screen 用)。
+      いずれも `public/drivedam/assets/app-icon.png`(256×256)から PowerShell + .NET
+      (HighQualityBicubic)で縮小生成。生成スクリプトは scratchpad に一時保存(残さず)。
+    - **DrivedamLayout.astro** の favicon リンクを上記 2 枚に差し替え(旧 `/favicon.svg` +
+      `/favicon.ico` の 3 行 → 新 PNG の 2 行)。ハブ・privacy が使う `Base.astro` は無変更で
+      既存の `/favicon.svg` のまま。
+
 **次セッションの最初の作業**:
 1. 専用の og:image を作る(現状 hero-main.png を暫定利用中。1200×630 の SNS 特化画像に
    差し替えると SNS シェア時の見栄えが上がる)。日英で別画像にするか同一で行くかも要検討
