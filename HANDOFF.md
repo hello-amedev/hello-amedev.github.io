@@ -6,8 +6,9 @@
 ## 0. 次の Claude へ(2026-07-23 セッション終了時の状態)
 
 **Drive DAM が Microsoft Store に公開され、サイト側の CTA を JA/EN 各 4 箇所ずつ
-「近日公開予定」表記からストア URL への活性リンクに一斉差し替え(第9コミット)、さらに
-ヒーロー・価格の CTA をバッジ型 2 段組+深藍+光だまりの新デザインに刷新済み(第10コミット)**。
+「近日公開予定」表記からストア URL への活性リンクに一斉差し替え(第9コミット)、
+ヒーロー・価格の CTA をバッジ型 2 段組+深藍+光だまりの新デザインに刷新(第10コミット)、
+専用 og:image(日英別 1200×630)と JSON-LD(SoftwareApplication)を追加済み(第11コミット)**。
 それ以前の到達点として、Astro 実装済みの Drive DAM LP をブラッシュアップし、モバイル対応・
 SEO 整備・CV エリア修正・英語版(/en/)追加・言語自動転送(Microsoft Store 対応)まで完了。
 これまでのコミット履歴は 74cc677 → 79725bc(詳細は `git log` 参照)+ 次コミット
@@ -175,14 +176,35 @@ SEO 整備・CV エリア修正・英語版(/en/)追加・言語自動転送(Mic
     - **ストア URL はフロントマターの `storeUrl` 定数に集約**(ヘッダー・オーバーレイ・
       バッジ 2 つの計 4 箇所が参照)。
 
+### 第11コミット(専用 og:image + JSON-LD・2026-07-24)
+32. **専用 og:image を日英別に制作**(`public/drivedam/og-image.png` / `og-image-en.png`・
+    いずれも 1200×630): 構図は「実スクショ主役+コピー添え」(あめさん選定)。左に
+    アプリアイコン+ロゴ+キャッチコピー(JA「数万枚の画像から、目的の 1 枚へ。」/
+    EN「From tens of thousands of images to the one you need.」・アクセント青)+
+    「Microsoft Store で公開中」、右に額装スクショ(hero-main / hero-main-en)を右端
+    ブリードで配置。背景はクールグレー+青い光 2 灯。
+    - **制作方法**: scratchpad に HTML テンプレート(フォントは main 側 node_modules の
+      fontsource を file:// 参照)→ headless Chrome `--screenshot --window-size=1200,630`
+      で書き出し。テンプレートは scratchpad 一時ファイル(残さず)。
+    - **DrivedamLayout**: og:image を lang 別に切り替え、width/height を 1200×630 に更新。
+33. **JSON-LD(SoftwareApplication)を日英両ページに追加**: DrivedamLayout に `store`
+    props(`url` / `price` / `currency` / `version`)を新設し、`<head>` 末尾に
+    `application/ld+json` を出力。description・canonical・og:image は Layout の既存値を
+    共用(重複定義なし)。価格はストア API(storeedgefd.dsx.mp.microsoft.com)から実測:
+    **JA ¥2,500(JPY)/ EN $19.99(USD)**、カテゴリ MultimediaApplication、
+    author は Organization "ame_dev"。
+    - **保守メモ**: ストア価格やバージョンを変えたら、各ページの `store={{...}}` も更新する
+      (version はヒーロー下ノート・価格メタの文言とセットで)。
+34. **バージョン表記を v1.0.1(2026-07-23)に更新**: サイト全体が v0.13.1(2026-07-18)の
+    ままだったのを、ストア公開版に同期(ヒーロー下ノート・価格メタ・JSON-LD の 3 箇所×
+    日英)。ストアの実パッケージ `amedev.DriveDAM_1.0.1.0` を DisplayCatalog API
+    (displaycatalog.mp.microsoft.com)で確認して裏取り済み。
+
 **次セッションの最初の作業**:
-1. 専用の og:image を作る(現状 hero-main.png を暫定利用中。1200×630 の SNS 特化画像に
-   差し替えると SNS シェア時の見栄えが上がる)。日英で別画像にするか同一で行くかも要検討
-2. JSON-LD (SoftwareApplication schema) の追加: ストアの価格・レビュー等を含めて
-   追加すると Google 検索でリッチスニペット化。日英両ページに入れる。ストア公開済みなので
-   今すぐ着手可能
-3. 引き続きあめさんの指摘反映(90 点目標)
-4. `func-download.png` は現在未使用(継続保留)
+1. 引き続きあめさんの指摘反映(90 点目標)
+2. `func-download.png` は現在未使用(継続保留)
+3. (任意)ハブ `/` ・privacy の og:image は Base.astro の既定のまま。ハブ用 og:image を
+   作るかは将来製品が並んだ時に再検討
 
 ## 1. プロジェクト概要
 
@@ -198,8 +220,8 @@ SEO 整備・CV エリア修正・英語版(/en/)追加・言語自動転送(Mic
 - **公開済み**: `https://hello-amedev.github.io/`(ハブ)/ `/drivedam/`(LP)/ `/privacy/`(ポリシー)
 - **GitHub リポジトリ**: `hello-amedev/hello-amedev.github.io`(Public User Site)
 - **GitHub Pages Source**: GitHub Actions(`build_type: workflow`・main push で自動デプロイ)
-- **最新コミット**: CTA リンク差し替え(第9)+ バッジ型デザイン刷新(第10)を
-  push 予定。それ以前の履歴含めて詳細は `git log` 参照。
+- **最新コミット**: CTA リンク差し替え+バッジ型デザイン刷新(69a4c53・push 済み)、
+  og:image + JSON-LD(第11・次コミット)。それ以前の履歴含めて詳細は `git log` 参照。
 - **design-poc/・copy/ は .gitignore で非追跡化**(内部 PoC 資材はローカルのみ)
 - **dev サーバー起動中の場合あり**: 作業終了時は `npx astro dev stop` を忘れずに
 
@@ -244,7 +266,8 @@ SEO 整備・CV エリア修正・英語版(/en/)追加・言語自動転送(Mic
 - **サブ**: ローカルフォルダでも、オンラインストレージ等でも**そのまま使える**デジタルアセット管理。<br>共有フォルダを通して、チームでの画像管理・活用を効率化します。
 - **CTA**: バッジ型 `<StoreBadge>`「Microsoft Store で / 入手する」(ストアへの新規タブ
   リンク・2026-07-23 更新。EN は「Get it on / Microsoft Store」)
-- **ノート**: v0.13.1(2026-07-18)・Windows 10 以降対応(Eagle 方式)
+- **ノート**: v1.0.1(2026-07-23)・Windows 10 以降対応(Eagle 方式。バージョンはストア
+  公開版と同期させる・2026-07-24 更新)
 
 ### 3.3 Drive DAM とは(about)
 - **見出し**: 広報やマーケティングのための、<br>画像管理ツール。
@@ -291,7 +314,7 @@ SEO 整備・CV エリア修正・英語版(/en/)追加・言語自動転送(Mic
   無料でお使いいただけます。
 - **CTA**: バッジ型 `<StoreBadge night>`「Microsoft Store で / 入手する」(墨面用の
   明るい藍バリアント・2026-07-23 更新)
-- **メタ**: v0.13.1(2026-07-18)・Windows 10 以降対応(ヒーロー下ノートと同一文言)
+- **メタ**: v1.0.1(2026-07-23)・Windows 10 以降対応(ヒーロー下ノートと同一文言)
 
 ### 3.9 FAQ(6 問・2026-07-20 大幅改訂)
 1. **画像ファイルは変更されますか?** いいえ。タグやメモは画像と同じフォルダ内の `_dam/` に
@@ -372,7 +395,9 @@ SEO 整備・CV エリア修正・英語版(/en/)追加・言語自動転送(Mic
   ロケール別 URL(JA `?hl=ja-jp&gl=JP` / EN `?hl=en-us&gl=US`)・`ocid=pdpshare` は除外・
   `.head-overlay-foot a` の下線スタイルを追加してオーバーレイ内でも押せる感を明示 /
   続けて CTA デザインを検討(4 案 → 案 D 複合 → 質感 4 種を実 HTML で比較)し、
-  バッジ型 2 段組+深藍+光だまりで確定・`StoreBadge.astro` として実装
+  バッジ型 2 段組+深藍+光だまりで確定・`StoreBadge.astro` として実装 /
+  専用 og:image を日英別に制作(headless Chrome で HTML テンプレートから書き出し)+
+  JSON-LD(SoftwareApplication・実売価格入り)を日英両ページに追加
 
 ### 今回セッションで新規に確立した方針
 1. **カード内での「画面の一部を覗く」演出は縁接続型で**: 全体を見せたい時は薄青パネル+

@@ -4,7 +4,11 @@ import StoreBadge from "../../components/StoreBadge.astro";
 const storeUrl = "https://apps.microsoft.com/detail/9P4L43W1XP7P?hl=ja-jp&gl=JP";
 ---
 
-<DrivedamLayout title="Drive DAM — 数万枚の画像から、目的の 1 枚へ" altHref="/en/drivedam/">
+<DrivedamLayout
+  title="Drive DAM — 数万枚の画像から、目的の 1 枚へ"
+  altHref="/en/drivedam/"
+  store={{ url: storeUrl, price: "2500", currency: "JPY", version: "1.0.1" }}
+>
 
 <div class="progress" id="progress" aria-hidden="true"></div>
 
@@ -53,7 +57,7 @@ const storeUrl = "https://apps.microsoft.com/detail/9P4L43W1XP7P?hl=ja-jp&gl=JP"
         <div class="hero-cta">
           <StoreBadge href={storeUrl} eyebrow="Microsoft Store で" label="入手する" />
         </div>
-        <p class="hero-note">v0.13.1(2026-07-18)・Windows 10 以降対応</p>
+        <p class="hero-note">v1.0.1(2026-07-23)・Windows 10 以降対応</p>
       </div>
     </div>
     <figure class="hero-stage" id="heroStage">
@@ -387,7 +391,7 @@ const storeUrl = "https://apps.microsoft.com/detail/9P4L43W1XP7P?hl=ja-jp&gl=JP"
       <StoreBadge href={storeUrl} eyebrow="Microsoft Store で" label="入手する" night />
     </div>
     <p class="price-meta" data-reveal>
-      <span>v0.13.1(2026-07-18)</span><span>Windows 10 以降対応</span>
+      <span>v1.0.1(2026-07-23)</span><span>Windows 10 以降対応</span>
     </p>
   </div>
 </section>

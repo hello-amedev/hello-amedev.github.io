@@ -17,20 +17,42 @@ interface Props {
 	description?: string;
 	lang?: "ja" | "en";
 	altHref?: string;
+	store?: { url: string; price: string; currency: string; version: string };
 }
 
 const {
 	title,
 	lang = "ja",
 	altHref,
+	store,
 	description = lang === "en"
 		? "Digital asset management for small teams that works in place on your shared folders — Google Drive, Dropbox, Box, office file servers, or local folders. Manage tens of thousands of images together, safely and fast."
 		: "Google Drive・Dropbox・Box・社内ファイルサーバーの共有フォルダで、そのまま使える中小チーム向けのデジタルアセット管理アプリ Drive DAM。数万枚の画像を、複数人で、安全かつ高速に管理できます。",
 } = Astro.props;
 
 const canonical = new URL(Astro.url.pathname, Astro.site);
-const ogImage = new URL("/drivedam/assets/hero-main.png", Astro.site);
+const ogImage = new URL(
+	lang === "en" ? "/drivedam/og-image-en.png" : "/drivedam/og-image.png",
+	Astro.site,
+);
 const ogLocale = lang === "en" ? "en_US" : "ja_JP";
+const jsonLd = store
+	? {
+			"@context": "https://schema.org",
+			"@type": "SoftwareApplication",
+			name: "Drive DAM",
+			operatingSystem: "Windows 10, Windows 11",
+			applicationCategory: "MultimediaApplication",
+			description,
+			image: ogImage.href,
+			url: canonical.href,
+			installUrl: store.url,
+			softwareVersion: store.version,
+			author: { "@type": "Organization", name: "ame_dev" },
+			inLanguage: lang,
+			offers: { "@type": "Offer", price: store.price, priceCurrency: store.currency },
+		}
+	: undefined;
 const jaHref = lang === "ja" ? Astro.url.pathname : altHref;
 const enHref = lang === "en" ? Astro.url.pathname : altHref;
 const jaUrl = altHref ? new URL(jaHref!, Astro.site) : undefined;
@@ -62,13 +84,14 @@ const enUrl = altHref ? new URL(enHref!, Astro.site) : undefined;
 		<meta property="og:url" content={canonical} />
 		<meta property="og:locale" content={ogLocale} />
 		<meta property="og:image" content={ogImage} />
-		<meta property="og:image:width" content="2556" />
-		<meta property="og:image:height" content="1595" />
+		<meta property="og:image:width" content="1200" />
+		<meta property="og:image:height" content="630" />
 		<meta name="twitter:card" content="summary_large_image" />
 		<meta name="twitter:title" content={title} />
 		<meta name="twitter:description" content={description} />
 		<meta name="twitter:image" content={ogImage} />
 		<meta name="generator" content={Astro.generator} />
+		{jsonLd && <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />}
 	</head>
 	<body>
 		<slot />
