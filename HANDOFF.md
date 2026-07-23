@@ -3,12 +3,15 @@
 > 次のセッションはこのファイルを最初に読む。文脈ゼロから再開できるよう維持する。
 > 製品本体(Drive DAM)の最新は `~/Documents/claude-private/drive-dam/HANDOFF.md`。
 
-## 0. 次の Claude へ(2026-07-20 セッション終了時の状態)
+## 0. 次の Claude へ(2026-07-23 セッション終了時の状態)
 
-**Astro 実装済みの Drive DAM LP をブラッシュアップし、モバイル対応・SEO 整備・CV エリア
-修正・英語版(/en/)追加・言語自動転送(Microsoft Store 対応)まで完了**。本セッション
-6 コミット(74cc677 / 97a3e98 / cb12d60 / e4060bc / 76feda0 / 4bdde82)+ 翌セッションで
-言語自動転送 1 コミット(次コミット)で本番公開済み。デザインコンセプトは引き続き
+**Drive DAM が Microsoft Store に公開され、サイト側の CTA を JA/EN 各 4 箇所ずつ
+「近日公開予定」表記からストア URL への活性リンクに一斉差し替え(第9コミット)、さらに
+ヒーロー・価格の CTA をバッジ型 2 段組+深藍+光だまりの新デザインに刷新済み(第10コミット)**。
+それ以前の到達点として、Astro 実装済みの Drive DAM LP をブラッシュアップし、モバイル対応・
+SEO 整備・CV エリア修正・英語版(/en/)追加・言語自動転送(Microsoft Store 対応)まで完了。
+これまでのコミット履歴は 74cc677 → 79725bc(詳細は `git log` 参照)+ 次コミット
+(CTA リンク差し替え)。デザインコンセプトは引き続き
 **「Paper & Ink + Blue Light」**だが、紙色は**クールグレー(`--paper:#F6F8FA`)**に変更済
 (暗パネル側の対の変数 `--paper-night` も第 4 コミットで追随済み)。実装は
 `src/pages/drivedam/index.astro` + `src/styles/drivedam.css` が一次ソース、英語版は
@@ -140,16 +143,46 @@
       `/favicon.ico` の 3 行 → 新 PNG の 2 行)。ハブ・privacy が使う `Base.astro` は無変更で
       既存の `/favicon.svg` のまま。
 
+### 第9コミット(Drive DAM ストア公開に伴う CTA リンク差し替え・2026-07-23)
+29. **JA/EN 各 4 箇所の「近日公開予定」表記を活性リンクに一斉差し替え**: ヘッダー右の
+    小テキスト・モバイルハンバーガー下部の告知・ヒーロー CTA・価格 CTA を、非活性
+    `<span>` から `<a href="ストアURL" target="_blank" rel="noopener noreferrer">` に置換。
+    ロケール別 URL を採用:
+    - JA: `https://apps.microsoft.com/detail/9P4L43W1XP7P?hl=ja-jp&gl=JP`
+    - EN: `https://apps.microsoft.com/detail/9P4L43W1XP7P?hl=en-us&gl=US`
+    - `ocid=pdpshare` は共有経由トラッキング用のため、自サイトからの遷移では外した。
+    確定文言(JA / EN):
+    - ヘッダー右: 「Microsoft Store で入手」/「Get on Microsoft Store」
+    - ハンバーガー下部: 「Microsoft Store で公開中」/「Now on the Microsoft Store」
+    - ヒーロー・価格 CTA: 「Microsoft Store で入手する」/「Get it on Microsoft Store」
+30. **`.head-overlay-foot a` の下線スタイルを追加**: 既存 `.head-link` と同じ意匠
+    (background-image による下線)を採用。常時薄いグレー下線+hover で墨色に変化。
+    オーバーレイ内でも「押せる感」を明示。ハンバーガー下部の告知は `<p>` の中身のみ
+    リンク化(タグ構造は据え置き)。
+
+### 第10コミット(CTA をバッジ型+深藍デザインに刷新・2026-07-23)
+31. **ヒーロー・価格 CTA をストアバッジ型 2 段組に刷新**: 案比較(バッジ型/グロー/
+    スイープ/複合 → 複合案の質感 4 種)をあめさんと選定し、**「バッジ型 × 光だまり ×
+    深藍(墨×青のインクブルー)」**で確定。
+    - **新規** `src/components/StoreBadge.astro`: Microsoft 四角 4 枚のモノトーングリフ+
+      「Microsoft Store で / 入手する」(EN: 「Get it on / Microsoft Store」)の 2 段組。
+      props は `href` / `eyebrow` / `label` / `night`。JA/EN 4 箇所で共用。
+    - **CSS**: 旧 `.btn` / `.btn-primary` / `.btn-ghost` / `.btn-cta` を削除し
+      `.btn-store`(紙面用・深藍)+ `.btn-store-night`(墨面用・一段明るい藍)に置換。
+      表面は上明・下沈のグラデーション+上端 1px ハイライト+青の縁線。
+    - **光だまり**: ボタン下に青い光のプール(`::before` の radial-gradient + blur)が
+      3.6 秒周期で呼吸。hover で常時最大。`prefers-reduced-motion` では停止して opacity .7 固定。
+    - **ストア URL はフロントマターの `storeUrl` 定数に集約**(ヘッダー・オーバーレイ・
+      バッジ 2 つの計 4 箇所が参照)。
+
 **次セッションの最初の作業**:
 1. 専用の og:image を作る(現状 hero-main.png を暫定利用中。1200×630 の SNS 特化画像に
    差し替えると SNS シェア時の見栄えが上がる)。日英で別画像にするか同一で行くかも要検討
-2. ストア公開時の CTA 差し替え: 「近日 Microsoft Store で公開予定」は JA/EN 各 3 箇所
-   (Header・hero-cta・price-cta+ハンバーガーオーバーレイ)。ストア URL 確定後に一気に置換。
-   JA/EN の両方を忘れず更新すること
-3. JSON-LD (SoftwareApplication schema) の追加: ストア公開後、価格・レビュー等を含めて
-   追加すると Google 検索でリッチスニペット化。日英両ページに入れる
-4. 引き続きあめさんの指摘反映(90 点目標)
-5. `func-download.png` は現在未使用(継続保留)
+2. JSON-LD (SoftwareApplication schema) の追加: ストアの価格・レビュー等を含めて
+   追加すると Google 検索でリッチスニペット化。日英両ページに入れる。ストア公開済みなので
+   今すぐ着手可能
+3. 引き続きあめさんの指摘反映(90 点目標)
+4. `func-download.png` は現在未使用(継続保留)
 
 ## 1. プロジェクト概要
 
@@ -160,13 +193,13 @@
   User Site なのでルート(`/`)配信 = `base` 調整不要。
 - **設置場所**: `~/Documents/claude-private/ame-dev-site/`(**worktree 運用外**。実質 main 側で作業)。
 
-## 2. 現在の状態(2026-07-20)
+## 2. 現在の状態(2026-07-23)
 
 - **公開済み**: `https://hello-amedev.github.io/`(ハブ)/ `/drivedam/`(LP)/ `/privacy/`(ポリシー)
 - **GitHub リポジトリ**: `hello-amedev/hello-amedev.github.io`(Public User Site)
 - **GitHub Pages Source**: GitHub Actions(`build_type: workflow`・main push で自動デプロイ)
-- **最新コミット**: 本セッションのブラッシュアップ分(背景色・スクショ 3 枚・ヘッダーメニュー等)
-  を push 済み。詳細は `git log` 参照。
+- **最新コミット**: CTA リンク差し替え(第9)+ バッジ型デザイン刷新(第10)を
+  push 予定。それ以前の履歴含めて詳細は `git log` 参照。
 - **design-poc/・copy/ は .gitignore で非追跡化**(内部 PoC 資材はローカルのみ)
 - **dev サーバー起動中の場合あり**: 作業終了時は `npx astro dev stop` を忘れずに
 
@@ -202,13 +235,15 @@
 - **左(ロゴ)**: `/drivedam/`(自ページ)にリンク。ame_dev ハブへは飛ばない(2026-07-20 変更)
 - **ページ内メニュー**: Drive DAM とは/特徴/機能/ダウンロード/FAQ(リンク先は `#price` のまま。
   金額表示のない CV エリアに「価格」は実態と合わないため「ダウンロード」に変更・2026-07-20)
-- **右**: 「近日公開予定」(静的表示・リンクなし)。1024px 以下ではハンバーガーメニューに統合
+- **右**: 「Microsoft Store で入手」(ストアへの新規タブリンク・2026-07-23 更新)。
+  1024px 以下ではハンバーガーメニューに統合(下部リンクは「Microsoft Store で公開中」)
 
 ### 3.2 ヒーロー
 - **eyebrow**: なし(削除済み)
 - **メイン**: 数千枚の画像から、目的の **1 枚**へ。<br>ひとりでも、チームでも。
 - **サブ**: ローカルフォルダでも、オンラインストレージ等でも**そのまま使える**デジタルアセット管理。<br>共有フォルダを通して、チームでの画像管理・活用を効率化します。
-- **CTA**: 「近日 Microsoft Store で公開予定」(単一非活性ボタン)
+- **CTA**: バッジ型 `<StoreBadge>`「Microsoft Store で / 入手する」(ストアへの新規タブ
+  リンク・2026-07-23 更新。EN は「Get it on / Microsoft Store」)
 - **ノート**: v0.13.1(2026-07-18)・Windows 10 以降対応(Eagle 方式)
 
 ### 3.3 Drive DAM とは(about)
@@ -254,7 +289,8 @@
 - **タイトル**: 30 日間、無料で試せます。
 - **リード**: **サブスク不要、買い切りでずっと使えます。**(改行)30 日間すべての機能を
   無料でお使いいただけます。
-- **CTA**: 「近日 Microsoft Store で公開予定」(単一非活性ボタン)
+- **CTA**: バッジ型 `<StoreBadge night>`「Microsoft Store で / 入手する」(墨面用の
+  明るい藍バリアント・2026-07-23 更新)
 - **メタ**: v0.13.1(2026-07-18)・Windows 10 以降対応(ヒーロー下ノートと同一文言)
 
 ### 3.9 FAQ(6 問・2026-07-20 大幅改訂)
@@ -331,6 +367,12 @@
   hreflang 相互リンク・言語切替リンク・SVG 英語化・EN 専用 CSS 微調整まで) /
   EN ヒーローの折り返し修正(clamp 5.7vw/78px) /
   EN スクショ 19 枚を反映(寸法差ある 5 枚は attr を個別調整)
+- Session 7 (2026-07-23): Drive DAM が Microsoft Store に公開されたため、サイト側の
+  「近日公開予定」表記(JA/EN 各 4 箇所)をストア URL への活性リンクに一斉差し替え。
+  ロケール別 URL(JA `?hl=ja-jp&gl=JP` / EN `?hl=en-us&gl=US`)・`ocid=pdpshare` は除外・
+  `.head-overlay-foot a` の下線スタイルを追加してオーバーレイ内でも押せる感を明示 /
+  続けて CTA デザインを検討(4 案 → 案 D 複合 → 質感 4 種を実 HTML で比較)し、
+  バッジ型 2 段組+深藍+光だまりで確定・`StoreBadge.astro` として実装
 
 ### 今回セッションで新規に確立した方針
 1. **カード内での「画面の一部を覗く」演出は縁接続型で**: 全体を見せたい時は薄青パネル+
@@ -357,7 +399,11 @@
 ## 6. 既知の落とし穴
 
 - **User Site なので `base` は付けない**
-- **CTA は非活性の単一ボタン**。ストア公開時に URL 化して差し替え(現状「近日公開予定」)
+- **CTA はストアへの活性リンク済み**(2026-07-23〜)。ストア URL を変える時は各ページの
+  フロントマター `storeUrl` 定数を修正(JA/EN で別 URL。ヘッダー・オーバーレイ・
+  バッジ 2 つが参照)
+- **CTA の光だまり(`.btn-store::before`)は `.btn-store` の `z-index:0` とセット**。
+  z-index を外すと疑似要素(z-index:-1)がセクション背景の裏に回って光が消える
 - **dev はデーモン常駐**。停止: `cd ~/Documents/claude-private/ame-dev-site && npx astro dev stop`
 - **worktree 運用は実質してない**: このプロジェクトは main 側の作業ツリーで直接編集する
   運用が定着(前セッション終了時から `design-poc/` などが未コミットで積み上がっている)。

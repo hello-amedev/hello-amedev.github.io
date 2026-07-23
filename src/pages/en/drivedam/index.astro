@@ -1,5 +1,7 @@
 ---
 import DrivedamLayout from "../../../layouts/DrivedamLayout.astro";
+import StoreBadge from "../../../components/StoreBadge.astro";
+const storeUrl = "https://apps.microsoft.com/detail/9P4L43W1XP7P?hl=en-us&gl=US";
 ---
 
 <DrivedamLayout
@@ -21,7 +23,7 @@ import DrivedamLayout from "../../../layouts/DrivedamLayout.astro";
       <a href="#price">Download</a>
       <a href="#faq">FAQ</a>
     </nav>
-    <span class="head-link" style="cursor:default">Coming soon</span>
+    <a class="head-link" href={storeUrl} target="_blank" rel="noopener noreferrer">Get on Microsoft Store</a>
     <a class="head-lang" href="/drivedam/?lang=ja">日本語</a>
     <button class="head-burger" id="headBurger" aria-label="Open menu" aria-expanded="false" aria-controls="headOverlay">
       <span></span><span></span><span></span>
@@ -38,7 +40,7 @@ import DrivedamLayout from "../../../layouts/DrivedamLayout.astro";
     <a href="#faq">FAQ</a>
     <a href="/drivedam/?lang=ja">日本語</a>
   </nav>
-  <p class="head-overlay-foot">Coming soon to the Microsoft Store</p>
+  <p class="head-overlay-foot"><a href={storeUrl} target="_blank" rel="noopener noreferrer">Now on the Microsoft Store</a></p>
 </div>
 
 <!-- ============ HERO ============ -->
@@ -54,7 +56,7 @@ import DrivedamLayout from "../../../layouts/DrivedamLayout.astro";
       <div class="hero-lead-in">
         <p class="hero-sub">Digital asset management that <strong style="display:inline-block">works in place</strong> — in local folders and cloud storage alike.<br>Organize, find, and use images together, right through your shared folders.</p>
         <div class="hero-cta">
-          <span class="btn btn-primary" style="cursor:default">Coming soon to the Microsoft Store</span>
+          <StoreBadge href={storeUrl} eyebrow="Get it on" label="Microsoft Store" />
         </div>
         <p class="hero-note">v0.13.1 (2026-07-18) · Windows 10 or later</p>
       </div>
@@ -387,7 +389,7 @@ import DrivedamLayout from "../../../layouts/DrivedamLayout.astro";
     <h2 class="price-h" data-reveal>Try it free for 30 days.</h2>
     <p class="price-lead" data-reveal><strong>No subscription — buy once, use it for good.</strong><br>Every feature is free to use for the first 30 days.</p>
     <div data-reveal>
-      <span class="btn-cta" style="cursor:default">Coming soon to the Microsoft Store</span>
+      <StoreBadge href={storeUrl} eyebrow="Get it on" label="Microsoft Store" night />
     </div>
     <p class="price-meta" data-reveal>
       <span>v0.13.1 (2026-07-18)</span><span>Windows 10 or later</span>

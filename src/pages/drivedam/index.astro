@@ -1,5 +1,7 @@
 ---
 import DrivedamLayout from "../../layouts/DrivedamLayout.astro";
+import StoreBadge from "../../components/StoreBadge.astro";
+const storeUrl = "https://apps.microsoft.com/detail/9P4L43W1XP7P?hl=ja-jp&gl=JP";
 ---
 
 <DrivedamLayout title="Drive DAM — 数万枚の画像から、目的の 1 枚へ" altHref="/en/drivedam/">
@@ -16,7 +18,7 @@ import DrivedamLayout from "../../layouts/DrivedamLayout.astro";
       <a href="#price">ダウンロード</a>
       <a href="#faq">FAQ</a>
     </nav>
-    <span class="head-link" style="cursor:default">近日公開予定</span>
+    <a class="head-link" href={storeUrl} target="_blank" rel="noopener noreferrer">Microsoft Store で入手</a>
     <a class="head-lang" href="/en/drivedam/?lang=en">EN</a>
     <button class="head-burger" id="headBurger" aria-label="メニューを開く" aria-expanded="false" aria-controls="headOverlay">
       <span></span><span></span><span></span>
@@ -33,7 +35,7 @@ import DrivedamLayout from "../../layouts/DrivedamLayout.astro";
     <a href="#faq">FAQ</a>
     <a href="/en/drivedam/?lang=en">English</a>
   </nav>
-  <p class="head-overlay-foot">近日 Microsoft Store で公開予定</p>
+  <p class="head-overlay-foot"><a href={storeUrl} target="_blank" rel="noopener noreferrer">Microsoft Store で公開中</a></p>
 </div>
 
 <!-- ============ HERO ============ -->
@@ -49,7 +51,7 @@ import DrivedamLayout from "../../layouts/DrivedamLayout.astro";
       <div class="hero-lead-in">
         <p class="hero-sub">ローカルフォルダでも、オンラインストレージ等でも<strong style="display:inline-block">そのまま使える</strong>デジタルアセット管理。<br>共有フォルダを通して、チームでの画像管理・活用を効率化します。</p>
         <div class="hero-cta">
-          <span class="btn btn-primary" style="cursor:default">近日 Microsoft Store で公開予定</span>
+          <StoreBadge href={storeUrl} eyebrow="Microsoft Store で" label="入手する" />
         </div>
         <p class="hero-note">v0.13.1(2026-07-18)・Windows 10 以降対応</p>
       </div>
@@ -382,7 +384,7 @@ import DrivedamLayout from "../../layouts/DrivedamLayout.astro";
     <h2 class="price-h" data-reveal>30 日間、無料で試せます。</h2>
     <p class="price-lead" data-reveal><strong>サブスク不要、買い切りでずっと使えます。</strong><br>30 日間すべての機能を無料でお使いいただけます。</p>
     <div data-reveal>
-      <span class="btn-cta" style="cursor:default">近日 Microsoft Store で公開予定</span>
+      <StoreBadge href={storeUrl} eyebrow="Microsoft Store で" label="入手する" night />
     </div>
     <p class="price-meta" data-reveal>
       <span>v0.13.1(2026-07-18)</span><span>Windows 10 以降対応</span>

@@ -1,0 +1,13 @@
+---
+interface Props {
+  href: string;
+  eyebrow: string;
+  label: string;
+  night?: boolean;
+}
+const { href, eyebrow, label, night = false } = Astro.props;
+---
+<a class:list={["btn-store", { "btn-store-night": night }]} href={href} target="_blank" rel="noopener noreferrer">
+  <svg class="store-glyph" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M2.3 2.3h9v9h-9zM12.7 2.3h9v9h-9zM2.3 12.7h9v9h-9zM12.7 12.7h9v9h-9z"/></svg>
+  <span class="store-tx"><span class="store-eyebrow">{eyebrow}</span><span class="store-main">{label}</span></span>
+</a>
