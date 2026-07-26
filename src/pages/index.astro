@@ -1,161 +1,557 @@
 ---
+import "@fontsource/noto-sans-jp/400.css";
+import "@fontsource/noto-sans-jp/500.css";
+import "@fontsource/noto-sans-jp/700.css";
 import Base from "../layouts/Base.astro";
+import "../styles/hub.css";
+import { apps, artProject, author } from "../data/apps";
 
-const products = [
-	{
-		name: "Drive DAM",
-		tag: "チーム向け画像管理",
-		desc: "Google Drive・Dropbox・Box・社内ファイルサーバー の共有フォルダで、そのまま使えるチーム向け画像管理アプリです。タグ・色・メモをメンバーで共有し、画像ファイルには手を加えません。",
-		href: "/drivedam/",
-		status: "available",
-	},
-];
+/**
+ * ヒーローで浮遊させる位置と向き。中身（作品の情報）は apps.ts、
+ * 置き場所と見せ方はこちら、と役割を分けている。
+ *   x / y     : 広い画面での位置。中央のテキスト（およそ x 24〜76% / y 32〜68%）を避ける
+ *   xSm / ySm : 900px 以下での位置。上下の帯に寄せて中央を空ける
+ *   depth     : 1 が手前。大きく・速く・マウスによく追従する
+ *   ry / rx   : ガラス板の基準の傾き。外側にあるものほど内側を向かせて奥行きを出す。
+ *               角度は小さく保つこと（大きく傾けると正方形が潰れて、厚みのある板ではなく
+ *               「横に圧縮された板」に見えてしまう）
+ */
+const layout: Record<
+	string,
+	{ x: string; y: string; xSm: string; ySm: string; depth: 1 | 2 | 3; ry: number; rx: number }
+> = {
+	drivedam:   { x: "13%", y: "30%", xSm: "14%", ySm: "14%", depth: 1, ry: 9,   rx: 2 },
+	tsumist:    { x: "85%", y: "24%", xSm: "40%", ySm: "9%",  depth: 1, ry: -10, rx: 3 },
+	mitamama:   { x: "26%", y: "13%", xSm: "66%", ySm: "13%", depth: 2, ry: 6,   rx: 5 },
+	framefit:   { x: "91%", y: "60%", xSm: "12%", ySm: "82%", depth: 2, ry: -11, rx: -3 },
+	snapside:   { x: "9%",  y: "66%", xSm: "36%", ySm: "89%", depth: 2, ry: 10,  rx: -4 },
+	steep:      { x: "74%", y: "85%", xSm: "62%", ySm: "84%", depth: 1, ry: -8,  rx: -5 },
+	stockboard: { x: "30%", y: "84%", xSm: "87%", ySm: "90%", depth: 3, ry: 6,   rx: -4 },
+	facilita:   { x: "63%", y: "12%", xSm: "88%", ySm: "21%", depth: 3, ry: -5,  rx: 4 },
+};
+
+const featured = apps.find((a) => a.featured);
+const rest = apps.filter((a) => !a.featured);
+
+const title = "ame_dev — 自分や、自分のような誰かのためのアプリを作る";
+const description =
+	"ame_dev がひとりでつくった Windows アプリ・Chrome 拡張・Web アプリの一覧です。Drive DAM / Tsumist / Mitamama / FrameFit / SnapSide / Steep / StockBoard を公開中。デジタルアートの AI for ART プロジェクトも。";
 ---
 
-<Base title="ame_dev — 小さなチームの道具をつくる" current="hub">
-	<!-- ハブ・ヒーロー -->
-	<section class="hub-hero">
-		<div class="container">
-			<span class="eyebrow eyebrow--code">ame_dev</span>
-			<h1 class="hub-hero__title">小さなチームの仕事を、<br />すこし軽くする道具を。</h1>
-			<p class="hub-hero__sub">
-				ame_dev は、日々の業務にそっと馴染むアプリをつくっています。
-				いまの使い方を大きく変えずに、できることを増やす——そんな道具を目指しています。
-			</p>
-			<a class="btn btn--primary" href="/drivedam/">Drive DAM を見る</a>
+<Base title={title} description={description} current="hub" page="hub" bare>
+	<!-- ヘッダー：スクロールすると背景が立ち上がる -->
+	<header class="hb-header" id="hb-header">
+		<div class="hb-wrap hb-header-inner">
+			<a class="hb-brand" href="/">
+				<span class="hb-brand-dot" aria-hidden="true"></span>ame_dev
+			</a>
+			<nav class="hb-nav" aria-label="ページ内メニュー">
+				<a href="#works">Works</a>
+				<a href="#art" data-optional>AI for ART</a>
+				<a href="#about">About</a>
+			</nav>
+		</div>
+	</header>
+
+	<!-- ============================================================
+	     ヒーロー：ガラスの板が浮遊し、選ぶと空間ごとその作品の色に染まる
+	     ============================================================ -->
+	<section class="hb-hero" id="hero">
+		<div class="hb-orbs" aria-hidden="true">
+			<span class="hb-orb hb-orb-a"></span>
+			<span class="hb-orb hb-orb-b"></span>
+			<span class="hb-orb hb-orb-c"></span>
+			<span class="hb-orb hb-orb-d"></span>
+			<span class="hb-orb hb-orb-e"></span>
+			<span class="hb-orb hb-orb-f"></span>
+			<span class="hb-orb hb-orb-wash"></span>
+		</div>
+		<span class="hb-grain-layer" aria-hidden="true"></span>
+
+		<!-- 浮遊アイコン。リンク先があるものは <a>、準備中は <button> -->
+		<div class="hb-orbit">
+			{apps.map((app) => {
+				const pos = layout[app.id];
+				const style = [
+					`--x:${pos.x}`,
+					`--y:${pos.y}`,
+					`--x-sm:${pos.xSm}`,
+					`--y-sm:${pos.ySm}`,
+					`--ry0:${pos.ry}deg`,
+					`--rx0:${pos.rx}deg`,
+					`--delay:${(pos.depth - 1) * 0.9 + (app.id.length % 3) * 0.7}s`,
+				].join(";");
+				const inner = (
+					<span class="hb-orbit-par">
+						<span class="hb-orbit-float">
+							<span class="hb-orbit-pane">
+								<img
+									src={`/assets/apps/${app.id}.png`}
+									alt=""
+									width="256"
+									height="256"
+									loading="eager"
+									decoding="async"
+								/>
+							</span>
+						</span>
+					</span>
+				);
+				const shared = {
+					class: "hb-orbit-item",
+					"data-app": app.id,
+					"data-depth": String(pos.depth),
+					"data-cutout": app.iconCutout ? true : undefined,
+					"data-acc": app.accent,
+					"data-acc-soft": app.accentSoft,
+					style,
+				};
+				return app.href ? (
+					<a
+						{...shared}
+						href={app.href}
+						target={app.external ? "_blank" : undefined}
+						rel={app.external ? "noopener noreferrer" : undefined}
+						aria-label={`${app.name}（${app.kindLabel}）— ${app.tagline}`}
+					>
+						{inner}
+					</a>
+				) : (
+					<button
+						{...shared}
+						type="button"
+						aria-label={`${app.name}（${app.kindLabel}）— ${app.tagline}`}
+					>
+						{inner}
+					</button>
+				);
+			})}
+		</div>
+
+		<!-- 中央のテキスト。ブランド ⇄ 選んだ作品 を同じ場所で入れ替える -->
+		<div class="hb-hero-center">
+			<div class="hb-panel" data-panel="brand" data-on>
+				<p class="hb-eyebrow">ame_dev</p>
+				<h1 class="hb-hero-title">自分や、自分のような誰かのための<br />アプリを作る。</h1>
+				<p class="hb-hero-sub">
+					Windows アプリ・Chrome 拡張・Web アプリ、そしてデジタルアート。<br />
+					ひとりでつくって、公開しています。
+				</p>
+			</div>
+
+			{apps.map((app) => (
+				<div class="hb-panel" data-panel={app.id} aria-hidden="true">
+					<p class="hb-app-kind">{app.kindLabel}</p>
+					<p class="hb-app-name">{app.name}</p>
+					<p class="hb-app-tagline">{app.tagline}</p>
+					<p class="hb-app-lead">{app.lead}</p>
+					{app.href ? (
+						<a
+							class="hb-app-go"
+							href={app.href}
+							target={app.external ? "_blank" : undefined}
+							rel={app.external ? "noopener noreferrer" : undefined}
+							tabindex="-1"
+						>
+							{app.hrefLabel} →
+						</a>
+					) : (
+						<p class="hb-app-go">公開に向けて準備中です</p>
+					)}
+				</div>
+			))}
+		</div>
+
+		<div class="hb-scroll" aria-hidden="true">
+			<span>SCROLL</span>
+			<span class="hb-scroll-line"></span>
 		</div>
 	</section>
 
-	<!-- 製品一覧 -->
-	<section class="section" id="products">
-		<div class="container">
-			<div class="section-head">
-				<span class="eyebrow eyebrow--code">製品</span>
-				<h2 class="section-title">いま公開している道具</h2>
+	<!-- ============================================================
+	     Works：主力製品を 1 枚だけ大きく、ほかはアイコンのタイルで揃える
+	     ============================================================ -->
+	<section class="hb-section hb-works" id="works">
+		<div class="hb-wrap">
+			<div class="hb-sec-head hb-reveal">
+				<h2 class="hb-eyebrow">Works</h2>
+				<p class="hb-sec-lead">
+					仕事や生活のなかで欲しいと思ったものを、ひとつずつ開発しています。
+				</p>
 			</div>
-			<div class="product-grid">
-				{products.map((p) => (
-					<a class="product-card" href={p.href}>
-						<div class="product-card__top">
-							<span class="product-card__mark">D</span>
-							<span class="product-card__tag">{p.tag}</span>
+
+			<ul class="hb-grid">
+				{featured && (
+					<li
+						class="hb-card hb-feature hb-grain hb-reveal"
+						style={`--acc:${featured.accent};--acc-soft:${featured.accentSoft}`}
+					>
+						<div class="hb-feature-body">
+							<p class="hb-feature-badge">{featured.kindLabel}</p>
+							<h3 class="hb-feature-name">
+								<img
+									class="hb-feature-icon"
+									src={`/assets/apps/${featured.id}.png`}
+									alt=""
+									width="256"
+									height="256"
+									loading="eager"
+									decoding="async"
+								/>
+								{featured.name}
+							</h3>
+							<p class="hb-feature-catch">
+								{(featured.featuredCatch ?? [featured.tagline]).map((line, i) => (
+									<>
+										{i > 0 && <br />}
+										{line}
+									</>
+								))}
+							</p>
+							<p class="hb-feature-text">{featured.lead}</p>
+							<div class="hb-feature-foot">
+								<a class="hb-card-link" href={featured.href}>
+									{featured.hrefLabel}
+									<span class="hb-arrow" aria-hidden="true">→</span>
+								</a>
+							</div>
 						</div>
-						<h3 class="product-card__name">{p.name}</h3>
-						<p class="product-card__desc">{p.desc}</p>
-						<span class="product-card__more">くわしく見る →</span>
-					</a>
+						<div class="hb-feature-visual">
+							<img
+								src={featured.shot}
+								alt={featured.shotAlt}
+								width={featured.shotW}
+								height={featured.shotH}
+								loading="eager"
+								decoding="async"
+							/>
+						</div>
+					</li>
+				)}
+
+				{rest.map((app, i) => (
+					<li
+						class="hb-card hb-reveal"
+						data-soon={app.href ? undefined : true}
+						style={`--acc:${app.accent};--acc-soft:${app.accentSoft};--rd:${(i % 3) * 90}ms`}
+					>
+						<div class="hb-card-visual hb-grain" data-cutout={app.iconCutout ? true : undefined}>
+							<img
+								class="hb-card-icon"
+								src={`/assets/apps/${app.id}.png`}
+								alt=""
+								width="256"
+								height="256"
+								loading="lazy"
+								decoding="async"
+							/>
+						</div>
+						<div class="hb-card-body">
+							<p class="hb-card-kind">{app.kindLabel}</p>
+							<h3 class="hb-card-name">{app.name}</h3>
+							<p class="hb-card-tagline">{app.tagline}</p>
+							<p class="hb-card-lead">{app.lead}</p>
+							<div class="hb-card-foot">
+								{app.href ? (
+									<a
+										class="hb-card-link"
+										href={app.href}
+										target={app.external ? "_blank" : undefined}
+										rel={app.external ? "noopener noreferrer" : undefined}
+									>
+										{app.hrefLabel}
+										<span class="hb-arrow" aria-hidden="true">→</span>
+									</a>
+								) : (
+									<p class="hb-card-soon">公開に向けて準備中です</p>
+								)}
+							</div>
+						</div>
+					</li>
 				))}
-				<div class="product-card product-card--soon">
-					<div class="product-card__top">
-						<span class="product-card__mark product-card__mark--soon">+</span>
+			</ul>
+		</div>
+	</section>
+
+	<!-- ============================================================
+	     AI for ART：白の紙面のまま紹介を読み、作品へ進んだ瞬間に
+	     世界ごと闇へ反転する。文字色も一緒に反転する
+	     ============================================================ -->
+	<section class="hb-art" id="art">
+		<div class="hb-art-stage" data-art-stage>
+			<!-- 背景層。条件がそろえば JS が data-live の実物（iframe）を重ねる。
+			     重ねるまで／重ねない環境では、育った状態の静止画がそのまま見える -->
+			<div class="hb-art-bgwrap" aria-hidden="true">
+				<div class="hb-art-sticky">
+					<div class="hb-art-live" data-art-live data-live={artProject.work.href}>
+						<img
+							src={artProject.work.shot}
+							alt=""
+							width={artProject.work.shotW}
+							height={artProject.work.shotH}
+							loading="lazy"
+							decoding="async"
+						/>
 					</div>
-					<h3 class="product-card__name product-card__name--soon">次の道具を準備中</h3>
-					<p class="product-card__desc">
-						新しいアプリを順次公開していきます。お知らせを希望される方はお問い合わせください。
-					</p>
+					<div class="hb-art-veil"></div>
+					<div class="hb-art-curtain"></div>
+					<span class="hb-grain-layer"></span>
 				</div>
 			</div>
+
+			<div class="hb-art-copy hb-wrap">
+				<!-- 前半: 白の世界で読むプロジェクト紹介。主導線は説明の直下 -->
+				<div class="hb-art-intro hb-reveal">
+					<p class="hb-art-label">{artProject.name}</p>
+					<p class="hb-art-statement">{artProject.statement}</p>
+					<p class="hb-art-cta">
+						<a href={artProject.href} target="_blank" rel="noopener noreferrer">
+							AI for ART を見る →
+						</a>
+					</p>
+				</div>
+
+				<!-- 後半: ここに差しかかると世界が闇へ反転し、作品が浮かび上がる -->
+				<div class="hb-art-work-wrap">
+					<div class="hb-art-work hb-reveal" data-art-work>
+						<p class="hb-art-title">
+							<span class="hb-art-title-ja">{artProject.work.title}</span>
+							<em class="hb-art-title-en">{artProject.work.titleEn}</em>
+						</p>
+						<p class="hb-art-sub">{artProject.work.sub}</p>
+						<p class="hb-art-body">{artProject.work.body}</p>
+						<p class="hb-art-links">
+							<a href={artProject.work.href} target="_blank" rel="noopener noreferrer">
+								作品を全画面で見る
+							</a>
+							{artProject.work.downloads.map((d) => (
+								<a href={d.href} target="_blank" rel="noopener noreferrer">
+									{d.label} でダウンロード
+								</a>
+							))}
+						</p>
+						<p class="hb-art-partner">
+							<span>Partner</span>
+							<em>{artProject.work.partner}</em>
+						</p>
+					</div>
+				</div>
+			</div>
+
+			<div class="hb-art-end" aria-hidden="true"></div>
 		</div>
 	</section>
+
+	<!-- ============================================================
+	     About：つくり手
+	     ============================================================ -->
+	<section class="hb-section hb-about" id="about">
+		<div class="hb-wrap">
+			<div class="hb-about-inner hb-reveal">
+				<h2 class="hb-eyebrow">About</h2>
+				<p class="hb-about-bio">{author.bio}</p>
+				<ul class="hb-about-links">
+					{author.links.map((l) => (
+						<li>
+							<a
+								href={l.href}
+								target={l.href.startsWith("mailto:") ? undefined : "_blank"}
+								rel={l.href.startsWith("mailto:") ? undefined : "noopener noreferrer"}
+							>
+								{l.label}
+							</a>
+						</li>
+					))}
+				</ul>
+			</div>
+		</div>
+	</section>
+
+	<footer class="hb-footer">
+		<div class="hb-wrap hb-footer-inner">
+			<p>© {new Date().getFullYear()} ame_dev</p>
+			<p class="hb-footer-links">
+				<a href="/privacy/">プライバシーポリシー</a>
+				<a href="mailto:amemitai@gmail.com">お問い合わせ</a>
+			</p>
+		</div>
+	</footer>
+
+	<noscript>
+		<style>
+			/* JS が動かない環境では、スクロール演出で隠れたままにならないようにする。
+			   AI for ART は白の紙面のまま読める(反転は起きない) */
+			.hb-reveal { opacity: 1 !important; transform: none !important; }
+		</style>
+	</noscript>
 </Base>
 
-<style>
-	.hub-hero {
-		background:
-			radial-gradient(900px 420px at 85% -10%, var(--blue-soft), transparent 62%),
-			linear-gradient(180deg, #ffffff, var(--blue-softer));
-		padding-block: 96px 84px;
-		text-align: center;
-	}
-	.hub-hero__title {
-		font-size: clamp(2rem, 1.3rem + 3vw, 3.1rem);
-		line-height: 1.3;
-		margin-bottom: 24px;
-	}
-	.hub-hero__sub {
-		max-width: 34em;
-		margin: 0 auto 32px;
-		color: var(--ink-muted);
-		font-size: 1.08rem;
-		line-height: 1.95;
+<script>
+	const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+	/* -----------------------------------------------------------
+	   ヒーローの操作
+	     - マウス環境: アイコンにホバー（またはキーボードフォーカス）で選択
+	     - タッチ環境: 1 回目のタップで選択、同じものをもう一度で遷移
+	   ----------------------------------------------------------- */
+	const hero = document.getElementById("hero");
+
+	if (hero) {
+		const items = Array.from(hero.querySelectorAll<HTMLElement>(".hb-orbit-item"));
+		const panels = Array.from(hero.querySelectorAll<HTMLElement>("[data-panel]"));
+		const canHover = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+
+		let activeId: string | null = null;
+
+		function setActive(id: string | null) {
+			activeId = id;
+			if (id) hero!.setAttribute("data-active", id);
+			else hero!.removeAttribute("data-active");
+
+			for (const el of items) el.toggleAttribute("data-on", el.dataset.app === id);
+			for (const el of panels) el.toggleAttribute("data-on", el.dataset.panel === (id ?? "brand"));
+
+			const src = id ? items.find((el) => el.dataset.app === id) : undefined;
+			// 値を空にすると CSS 側の既定色（.hb-hero の --acc）に戻る
+			hero!.style.setProperty("--acc", src?.dataset.acc ?? "");
+			hero!.style.setProperty("--acc-soft", src?.dataset.accSoft ?? "");
+		}
+
+		// 選択は固定式: ホバーを外しても戻さない（戻すと中央の紹介文の
+		// リンクへポインタを運ぶ前に消えてしまう）。次のアイコンで上書きされる
+		for (const el of items) {
+			const id = el.dataset.app!;
+			el.addEventListener("pointerenter", () => {
+				if (canHover) setActive(id);
+			});
+			el.addEventListener("focus", () => setActive(id));
+			el.addEventListener("click", (e) => {
+				if (canHover) return; // マウス環境はそのまま配布先へ
+				if (activeId !== id) {
+					e.preventDefault(); // 1 回目のタップは「選ぶ」だけ
+					setActive(id);
+				}
+			});
+		}
+
+		// 背景をタップしたら選択を解除してブランドの文言に戻す（タッチ環境のみ）
+		hero.addEventListener("pointerdown", (e) => {
+			if (!canHover && !(e.target as HTMLElement).closest(".hb-orbit-item")) setActive(null);
+		});
+
+		// マウス位置に合わせた視差と、ガラス板の向きの揺らぎ
+		if (canHover && !reduceMotion) {
+			let queued = 0;
+			let nx = 0;
+			let ny = 0;
+			hero.addEventListener("pointermove", (e) => {
+				const r = hero!.getBoundingClientRect();
+				nx = ((e.clientX - r.left) / r.width) * 2 - 1;
+				ny = ((e.clientY - r.top) / r.height) * 2 - 1;
+				if (queued) return;
+				queued = requestAnimationFrame(() => {
+					hero!.style.setProperty("--mx", nx.toFixed(3));
+					hero!.style.setProperty("--my", ny.toFixed(3));
+					queued = 0;
+				});
+			});
+			hero.addEventListener("pointerleave", () => {
+				hero!.style.setProperty("--mx", "0");
+				hero!.style.setProperty("--my", "0");
+			});
+		}
 	}
 
-	.product-grid {
-		display: grid;
-		grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
-		gap: 24px;
+	/* -----------------------------------------------------------
+	   AI for ART
+	     JS の仕事は 2 つ:
+	     - 作品の詳細ブロックに差しかかったら stage に data-dark を立て、
+	       世界（背景と文字色）を一気に反転させる。抜けたら戻す
+	     - 見えている間だけ実物（iframe）を差し込み、離れたら外す
+	     動きを減らす設定・狭い画面・JS 不発時は、白の紙面のまま読める
+	   ----------------------------------------------------------- */
+	const stage = document.querySelector<HTMLElement>("[data-art-stage]");
+	const liveBox = document.querySelector<HTMLElement>("[data-art-live]");
+
+	if (stage && liveBox) {
+		const liveSrc = liveBox.dataset.live;
+		const wantsLive =
+			!reduceMotion && window.matchMedia("(min-width: 768px)").matches && !!liveSrc;
+		let frame: HTMLIFrameElement | null = null;
+
+		function mountLive() {
+			if (frame || !wantsLive) return;
+			frame = document.createElement("iframe");
+			frame.src = liveSrc!;
+			frame.title = "生命の夜（AI for ART）";
+			frame.loading = "lazy";
+			frame.setAttribute("scrolling", "no");
+			frame.setAttribute("tabindex", "-1");
+			// 静止画の下地の「上」に置く（CSS 側で screen 合成して光を足す）
+			liveBox!.append(frame);
+			liveBox!.setAttribute("data-live-on", "");
+		}
+		function unmountLive() {
+			if (!frame) return;
+			frame.remove();
+			frame = null;
+			liveBox!.removeAttribute("data-live-on");
+		}
+
+		const io = new IntersectionObserver(
+			(entries) => {
+				for (const entry of entries) {
+					if (entry.isIntersecting) mountLive();
+					else unmountLive();
+				}
+			},
+			{ rootMargin: "200px 0px" },
+		);
+		io.observe(stage);
+
+		// 世界の反転。作品の詳細が画面に近づいたら暗転し、
+		// セクションの終わりが近づいたら紙面へ還す
+		const workEl = stage.querySelector<HTMLElement>("[data-art-work]");
+		let ticking = 0;
+		const syncDark = () => {
+			if (ticking) return;
+			ticking = requestAnimationFrame(() => {
+				const vh = window.innerHeight;
+				const wt = workEl
+					? workEl.getBoundingClientRect().top
+					: stage.getBoundingClientRect().top;
+				// 出口では戻さない。作品に入ったら暗いまま、背景ごと上へ抜けていく。
+				// 上へスクロールして紹介文まで戻ったときだけ紙面へ還す
+				stage.toggleAttribute("data-dark", wt < vh * 0.78);
+				ticking = 0;
+			});
+		};
+		syncDark();
+		window.addEventListener("scroll", syncDark, { passive: true });
+		window.addEventListener("resize", syncDark, { passive: true });
 	}
-	.product-card {
-		display: block;
-		background: #fff;
-		border: 1px solid var(--border);
-		border-radius: var(--radius-lg);
-		padding: 30px 28px;
-		box-shadow: var(--shadow-sm);
-		transition: transform 0.15s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+
+	/* ヘッダー：少しでもスクロールしたら背景を出す */
+	const header = document.getElementById("hb-header");
+	if (header) {
+		const sync = () => header.setAttribute("data-scrolled", String(window.scrollY > 24));
+		sync();
+		window.addEventListener("scroll", sync, { passive: true });
 	}
-	.product-card:hover {
-		transform: translateY(-3px);
-		box-shadow: var(--shadow);
-		text-decoration: none;
-		border-color: var(--border-strong);
+
+	/* スクロールで各要素を浮かび上がらせる */
+	const revealables = document.querySelectorAll<HTMLElement>(".hb-reveal");
+	if (revealables.length) {
+		const io = new IntersectionObserver(
+			(entries) => {
+				for (const entry of entries) {
+					if (!entry.isIntersecting) continue;
+					entry.target.classList.add("is-in");
+					io.unobserve(entry.target);
+				}
+			},
+			{ rootMargin: "0px 0px -10% 0px", threshold: 0.06 },
+		);
+		for (const el of revealables) io.observe(el);
 	}
-	.product-card__top {
-		display: flex;
-		align-items: center;
-		gap: 14px;
-		margin-bottom: 18px;
-	}
-	.product-card__mark {
-		width: 44px;
-		height: 44px;
-		border-radius: 11px;
-		background: linear-gradient(135deg, var(--blue), var(--blue-deep));
-		color: #fff;
-		display: grid;
-		place-items: center;
-		font-weight: 800;
-		font-size: 1.3rem;
-		box-shadow: var(--shadow-sm);
-		flex: none;
-	}
-	.product-card__mark--soon {
-		background: var(--blue-soft);
-		color: var(--blue);
-	}
-	.product-card__tag {
-		font-size: 0.82rem;
-		font-weight: 700;
-		color: var(--blue-deep);
-		background: var(--blue-soft);
-		padding: 4px 12px;
-		border-radius: 999px;
-	}
-	.product-card__name {
-		font-size: 1.3rem;
-		margin-bottom: 10px;
-	}
-	.product-card__name--soon {
-		color: var(--ink-muted);
-	}
-	.product-card__desc {
-		color: var(--ink-muted);
-		font-size: 0.95rem;
-		margin-bottom: 16px;
-	}
-	.product-card__more {
-		font-weight: 700;
-		color: var(--blue-deep);
-		font-size: 0.92rem;
-	}
-	.product-card--soon {
-		border-style: dashed;
-		box-shadow: none;
-		cursor: default;
-	}
-	.product-card--soon:hover {
-		transform: none;
-		box-shadow: none;
-		border-color: var(--border);
-	}
-</style>
+</script>

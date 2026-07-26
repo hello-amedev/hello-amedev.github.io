@@ -1,0 +1,1335 @@
+/* =========================================================
+   ame_dev 総合 TOP（`/`）専用スタイル
+   コンセプト: 「白の紙面に、パステルの光とガラスの道具」
+     - 白に近い明るい紙面。パステルのメッシュグラデーションが
+       ゆっくり漂い、全面にフィルム粒子（グレイン）が乗る
+     - アプリアイコンは極薄のガラス板。縁のシャープな 2 本の線で
+       厚みを見せる（余計なレイヤーは持たない）
+     - AI for ART だけは、スクロールに合わせて画面全体が
+       作品の闇にふわっと沈み、また明るい紙面に戻ってくる
+   スコープは html[data-page="hub"]。クラスは `hb-` 接頭辞
+   ========================================================= */
+
+/* --acc / --acc-soft はホバーで差し替える。@property を登録しておくと
+   色の切り替えが transition で滑らかに繋がる（非対応環境では即時切替）*/
+@property --acc {
+	syntax: "<color>";
+	inherits: true;
+	initial-value: #3f6fd8;
+}
+@property --acc-soft {
+	syntax: "<color>";
+	inherits: true;
+	initial-value: #8fb4ff;
+}
+
+html[data-page="hub"] {
+	/* 紙面と墨。参考にした Grads 系のメッシュ素材と同じ、
+	   「ほぼ白 + 深い紺の文字」の組み合わせ */
+	--paper: #fbfbf9;
+	--paper-2: #f4f5f2;
+	--ink-0: #1b2540;
+	--ink-1: #38425f;
+	--ink-2: #5a6584;
+	--ink-3: #8a93ac;
+	--hairline: rgba(27, 37, 64, 0.1);
+	--hairline-strong: rgba(27, 37, 64, 0.2);
+	--gold: #b98f3e;
+
+	/* フィルム粒子。ノイズの明度をアルファに変換した「墨の粒」のタイル。
+	   白地では overlay / soft-light は数学的にほぼ無効化される（基底が 1 に近いと
+	   結果も 1 のまま）ので、通常合成で暗い粒を直接まぶす方式にしている */
+	--grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 0.10  0 0 0 0 0.12  0 0 0 0 0.18  0.9 0 0 0 -0.45'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23g)'/%3E%3C/svg%3E");
+
+	--hb-maxw: 1180px;
+	--font-jp: "Noto Sans JP", "Inter", system-ui, sans-serif;
+
+	background: var(--paper);
+	color-scheme: light;
+}
+
+html[data-page="hub"] body {
+	background: var(--paper);
+	color: var(--ink-1);
+	font-family: var(--font-jp);
+	overflow-x: hidden;
+}
+
+html[data-page="hub"] h1,
+html[data-page="hub"] h2,
+html[data-page="hub"] h3,
+html[data-page="hub"] h4 {
+	color: var(--ink-0);
+}
+
+html[data-page="hub"] strong {
+	color: var(--ink-0);
+}
+
+html[data-page="hub"] :focus-visible {
+	outline: 2px solid var(--acc);
+	outline-offset: 3px;
+}
+
+.hb-wrap {
+	width: 100%;
+	max-width: var(--hb-maxw);
+	margin-inline: auto;
+	padding-inline: 24px;
+}
+
+/* グレインの共通指定。position:relative な要素に敷く。
+   ::after を持たない要素にはクラスで、すでに ::after を使っている要素には
+   .hb-grain-layer の実要素で重ねる（同じ疑似要素の取り合いを避けるため） */
+.hb-grain::after,
+.hb-grain-layer {
+	content: "";
+	position: absolute;
+	inset: 0;
+	pointer-events: none;
+	border-radius: inherit; /* 角丸の内側で切る。付け忘れると角で四角くはみ出す */
+	background-image: var(--grain);
+	background-size: 140px 140px;
+	opacity: var(--grain-a, 0.5);
+}
+
+/* 読み上げ専用テキスト */
+.hb-sr {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	padding: 0;
+	margin: -1px;
+	overflow: hidden;
+	clip-path: inset(50%);
+	white-space: nowrap;
+	border: 0;
+}
+
+/* ---------------------------------------------------------
+   ヘッダー（スクロールで紙面のすりガラスが立ち上がる）
+   --------------------------------------------------------- */
+
+.hb-header {
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	z-index: 60;
+	transition: background 0.3s ease, border-color 0.3s ease, backdrop-filter 0.3s ease;
+	border-bottom: 1px solid transparent;
+}
+.hb-header[data-scrolled="true"] {
+	background: rgba(251, 251, 249, 0.72);
+	backdrop-filter: saturate(160%) blur(14px);
+	border-bottom-color: var(--hairline);
+}
+.hb-header-inner {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	height: 66px;
+	gap: 20px;
+}
+.hb-brand {
+	font-family: var(--font-mono);
+	font-size: 0.98rem;
+	font-weight: 600;
+	letter-spacing: 0.06em;
+	color: var(--ink-0);
+	text-decoration: none;
+	display: inline-flex;
+	align-items: center;
+	gap: 9px;
+}
+.hb-brand:hover {
+	text-decoration: none;
+}
+.hb-brand-dot {
+	width: 7px;
+	height: 7px;
+	border-radius: 50%;
+	background: var(--acc);
+	box-shadow: 0 0 0 3px color-mix(in srgb, var(--acc) 18%, transparent);
+}
+.hb-nav {
+	display: flex;
+	align-items: center;
+	gap: 26px;
+	font-size: 0.87rem;
+	font-weight: 500;
+}
+.hb-nav a {
+	color: var(--ink-2);
+	text-decoration: none;
+	transition: color 0.2s ease;
+}
+.hb-nav a:hover {
+	color: var(--ink-0);
+	text-decoration: none;
+}
+@media (max-width: 640px) {
+	.hb-nav {
+		gap: 18px;
+		font-size: 0.8rem;
+	}
+	.hb-nav a[data-optional] {
+		display: none;
+	}
+}
+
+/* ---------------------------------------------------------
+   ヒーロー：パステルのメッシュと、ガラスの板
+   --------------------------------------------------------- */
+
+.hb-hero {
+	position: relative;
+	min-height: 100svh;
+	display: grid;
+	place-items: center;
+	overflow: hidden;
+	isolation: isolate;
+	--acc: #3f6fd8;
+	--acc-soft: #8fb4ff;
+	transition: --acc 0.75s ease, --acc-soft 0.75s ease;
+	/* マウス位置（-1〜1）。JS が更新する */
+	--mx: 0;
+	--my: 0;
+}
+
+/* --- メッシュグラデーション ---
+   参考画像（Grads）の構図に合わせる:
+     - ほぼ白の紙面に、パステルの大きな色面が 4 隅を占める
+     - 各色は中心で平坦（プラトー）→ 長い裾で白に溶ける
+     - 色同士は重ねすぎず、白の呼吸を残す
+   2 枚だけ選択中アプリの色（--acc）に薄く追随し、ホバーで
+   空間全体がその作品の気配に変わる。
+   周期は 19〜43 秒で揃えず、同じ配色が戻らないようにする */
+.hb-orbs {
+	position: absolute;
+	inset: -14%;
+	z-index: -2;
+	pointer-events: none;
+	background: linear-gradient(168deg, #fdfdfc 0%, #f8f7f2 54%, #fbfaf6 100%);
+}
+/* 色面は「radial の長い減衰」ではなく「輪郭のある形を blur でぼかす」方式。
+   参考画像のエアブラシのような、形が見えるのに柔らかい縁は、
+   縁の溶け幅が形の大きさに比例しない blur でしか再現できない */
+.hb-orb {
+	position: absolute;
+	will-change: transform;
+	transition: opacity 0.9s ease;
+}
+/* 構図は非対称に:
+     淡黄の角丸の面が右上を支配し、珊瑚が左上の角に差し、
+     下辺は水色→青紫→菫→桃のスペクトルの帯が受ける。
+     中央左は白のまま空けておく */
+.hb-orb-a {
+	width: 58vw; height: 46vw; left: -20vw; top: -18vw;
+	border-radius: 46%;
+	background: linear-gradient(160deg, rgb(243 148 120 / 0.8) 0%, rgb(247 180 143 / 0.55) 100%);
+	filter: blur(52px);
+	animation: hb-blob-a 31s ease-in-out infinite;
+}
+.hb-orb-b {
+	width: 60vw; height: 58vw; right: -8vw; top: -16vw;
+	border-radius: 24%;
+	background: linear-gradient(205deg, rgb(249 239 170 / 0.96) 0%, rgb(246 229 133 / 0.9) 55%, rgb(250 238 168 / 0.82) 100%);
+	filter: blur(48px);
+	animation: hb-blob-b 37s ease-in-out infinite;
+}
+/* 下辺のスペクトル帯（参考画像の下端の、色相が流れていく面） */
+.hb-orb-c {
+	left: -12vw; right: -12vw; height: 44vh; bottom: -20vh;
+	border-radius: 48% 52% 0 0 / 100% 100% 0 0;
+	background: linear-gradient(
+		92deg,
+		rgb(148 222 236 / 0.8) 0%,
+		rgb(150 176 245 / 0.72) 36%,
+		rgb(178 152 240 / 0.62) 66%,
+		rgb(233 178 224 / 0.5) 100%
+	);
+	filter: blur(56px);
+	animation: hb-blob-c 23s ease-in-out infinite;
+}
+/* 右下を一段深くする菫。帯に重なって「たまり」を作る */
+.hb-orb-d {
+	width: 34vw; height: 26vw; right: -8vw; bottom: -8vh;
+	border-radius: 50%;
+	background: rgb(149 121 236 / 0.42);
+	filter: blur(60px);
+	animation: hb-blob-d 43s ease-in-out infinite;
+}
+/* 選択中アプリの色に追随する 2 枚（薄く、空気だけ変える） */
+.hb-orb-e {
+	width: 44vw; height: 38vw; left: 48vw; top: 10vh;
+	border-radius: 50%;
+	background: color-mix(in srgb, var(--acc) 22%, transparent);
+	filter: blur(70px);
+	animation: hb-blob-e 27s ease-in-out infinite;
+}
+.hb-orb-f {
+	width: 38vw; height: 32vw; left: 14vw; bottom: 4vh;
+	border-radius: 50%;
+	background: color-mix(in srgb, var(--acc-soft) 20%, transparent);
+	filter: blur(70px);
+	animation: hb-blob-f 19s ease-in-out infinite;
+}
+/* アプリ選択時に全面へ被さるウォッシュ。パステル四色を退かせて、
+   空間全体をその作品の色へ大胆に染め替える */
+.hb-orb-wash {
+	inset: 0;
+	border-radius: 0;
+	background: linear-gradient(
+		140deg,
+		color-mix(in srgb, var(--acc) 36%, transparent) 0%,
+		color-mix(in srgb, var(--acc-soft) 30%, transparent) 52%,
+		color-mix(in srgb, var(--acc) 14%, transparent) 100%
+	);
+	opacity: 0;
+	transition: opacity 0.9s ease;
+}
+.hb-hero[data-active] .hb-orb-wash {
+	opacity: 1;
+}
+.hb-hero[data-active] :is(.hb-orb-a, .hb-orb-b, .hb-orb-c, .hb-orb-d) {
+	opacity: 0.34;
+}
+
+@keyframes hb-blob-a {
+	0%,
+	100% { transform: translate3d(0, 0, 0) rotate(-6deg) scale(1); }
+	33%  { transform: translate3d(5vw, 4vh, 0) rotate(4deg) scale(1.1); }
+	66%  { transform: translate3d(-2vw, 7vh, 0) rotate(10deg) scale(0.95); }
+}
+@keyframes hb-blob-b {
+	0%,
+	100% { transform: translate3d(0, 0, 0) rotate(8deg) scale(1.04); }
+	40%  { transform: translate3d(-6vw, 6vh, 0) rotate(-4deg) scale(0.92); }
+	70%  { transform: translate3d(-1vw, -4vh, 0) rotate(2deg) scale(1.1); }
+}
+@keyframes hb-blob-c {
+	0%,
+	100% { transform: translate3d(0, 0, 0) rotate(3deg) scale(1); }
+	50%  { transform: translate3d(-7vw, -5vh, 0) rotate(-7deg) scale(1.12); }
+}
+@keyframes hb-blob-d {
+	0%,
+	100% { transform: translate3d(0, 0, 0) scale(0.92); }
+	45%  { transform: translate3d(-8vw, 6vh, 0) scale(1.14); }
+	75%  { transform: translate3d(4vw, -5vh, 0) scale(1); }
+}
+@keyframes hb-blob-e {
+	0%,
+	100% { transform: translate3d(0, 0, 0) rotate(0deg) scale(1.06); }
+	50%  { transform: translate3d(8vw, -6vh, 0) rotate(9deg) scale(0.9); }
+}
+@keyframes hb-blob-f {
+	0%,
+	100% { transform: translate3d(0, 0, 0) rotate(-5deg) scale(1); }
+	50%  { transform: translate3d(-5vw, -8vh, 0) rotate(6deg) scale(1.14); }
+}
+
+/* 中央の文字の後ろだけ、紙面をごく薄く戻して可読性を確保。
+   強くしすぎるとメッシュ全体が白く抜けてしまう（一度やった失敗）。
+   下端はページの地色に溶かして次のセクションへ繋ぐ */
+.hb-hero::after {
+	content: "";
+	position: absolute;
+	inset: 0;
+	z-index: -1;
+	pointer-events: none;
+	background-image:
+		radial-gradient(36% 30% at 48% 46%, rgba(251, 251, 249, 0.5), rgba(251, 251, 249, 0) 100%),
+		linear-gradient(180deg, rgba(251, 251, 249, 0) 0%, rgba(251, 251, 249, 0) 80%, var(--paper) 100%);
+}
+.hb-hero > .hb-grain-layer {
+	z-index: -1;
+	--grain-a: 0.5;
+}
+
+/* --- ガラスの板 ---
+   「極薄のガラスにアイコンを封じ込めた」見立て。厚みは別レイヤーでは
+   なく、下端に走るシャープな 2 本の線（白い縁 + その下の細い影）で
+   表現する。ぼかした影を大きく重ねると野暮ったくなるので、
+   線は blur 0 で刻み、落ち影だけ柔らかくする */
+.hb-orbit {
+	position: absolute;
+	inset: 0;
+	z-index: 2;
+	pointer-events: none;
+	perspective: 1400px;
+	perspective-origin: 50% 45%;
+}
+.hb-orbit-item {
+	position: absolute;
+	left: var(--x);
+	top: var(--y);
+	transform: translate(-50%, -50%);
+	pointer-events: auto;
+	text-decoration: none;
+	transition: opacity 0.45s ease, filter 0.45s ease;
+}
+.hb-orbit-item:hover {
+	text-decoration: none;
+}
+/* 準備中のアプリは <button>。ボタンの既定の見た目を消す */
+button.hb-orbit-item {
+	appearance: none;
+	background: none;
+	border: 0;
+	padding: 0;
+	font: inherit;
+	color: inherit;
+	cursor: default;
+}
+
+/* 視差 → 浮遊 → 傾き の 3 つを別レイヤーに分けて、変形を干渉させない */
+.hb-orbit-par {
+	display: block;
+	transform: translate3d(calc(var(--mx) * var(--push)), calc(var(--my) * var(--push)), 0);
+	transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.hb-orbit-float {
+	display: block;
+	animation: hb-float var(--dur) ease-in-out var(--delay) infinite;
+}
+@keyframes hb-float {
+	0%, 100% { transform: translate3d(0, 0, 0); }
+	50% { transform: translate3d(0, -13px, 0); }
+}
+
+/* 板 = アイコンそのもの。枠や余白は持たせない。
+   ガラスらしさは (1) 表面を斜めに走る光の膜、(2) 下端に覗く
+   2 本のシャープな線（光る縁 + その下の影 = 板の厚み）だけで出す */
+.hb-orbit-pane {
+	position: relative;
+	display: block;
+	width: var(--size);
+	height: var(--size);
+	border-radius: 24%;
+	/* 傾きはごく浅く。深くすると正方形が潰れて「圧縮された板」に見える */
+	transform: rotateY(calc(var(--ry0) + var(--mx) * 2.5deg))
+		rotateX(calc(var(--rx0) - var(--my) * 2deg));
+	/* 厚みは「接地する影のライン」1 本だけで示す。
+	   白い縁の線は板から浮いて見える（ミスに見える）ため使わない */
+	box-shadow:
+		0 1.5px 0 rgba(27, 37, 64, 0.15),
+		0 16px 30px rgba(27, 37, 64, 0.18);
+	transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.4s ease;
+}
+.hb-orbit-pane img {
+	display: block;
+	width: 100%;
+	height: 100%;
+	border-radius: inherit;
+}
+/* 表面のガラスの膜。アイコンの絵の上に薄い光沢をラミネートする */
+.hb-orbit-pane::after {
+	content: "";
+	position: absolute;
+	inset: 0;
+	border-radius: inherit;
+	pointer-events: none;
+	background: linear-gradient(
+		138deg,
+		rgba(255, 255, 255, 0.42) 0%,
+		rgba(255, 255, 255, 0.1) 30%,
+		rgba(255, 255, 255, 0) 52%
+	);
+	box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5);
+}
+/* 背景が透過しているアイコンは、白磁のタイルに載せて 1 枚の板にする */
+.hb-orbit-item[data-cutout] .hb-orbit-pane img {
+	padding: 15%;
+	background: linear-gradient(155deg, #ffffff 0%, #f0f1ed 100%);
+	box-sizing: border-box;
+}
+
+/* 奥行き 3 段。手前ほど大きく・速く・よく動く */
+.hb-orbit-item[data-depth="1"] { --size: 92px; --push: 20px; --dur: 7s; opacity: 1; }
+.hb-orbit-item[data-depth="2"] { --size: 74px; --push: 13px; --dur: 9s; opacity: 0.92; }
+.hb-orbit-item[data-depth="3"] { --size: 58px; --push: 8px;  --dur: 11s; opacity: 0.8; }
+
+/* どれか 1 つを選んでいる間は、それ以外を薄く退かせる */
+.hb-hero[data-active] .hb-orbit-item {
+	opacity: 0.3;
+	filter: saturate(0.35);
+}
+.hb-hero[data-active] .hb-orbit-item[data-on] {
+	opacity: 1;
+	filter: none;
+}
+/* 選んだ板だけが、こちらを向いて大きくなり、作品の色の輪が灯る */
+.hb-orbit-item[data-on] .hb-orbit-pane {
+	transform: rotateY(0deg) rotateX(0deg) scale(1.16);
+	box-shadow:
+		0 1.5px 0 rgba(27, 37, 64, 0.15),
+		0 0 0 6px color-mix(in srgb, var(--acc) 15%, transparent),
+		0 24px 48px rgba(27, 37, 64, 0.22);
+}
+
+/* --- 中央のテキスト（ブランド ⇄ 選んだアプリ を差し替える） --- */
+
+.hb-hero-center {
+	position: relative;
+	z-index: 3;
+	width: min(880px, calc(100% - 48px));
+	text-align: center;
+	display: grid;
+	pointer-events: none;
+}
+.hb-panel {
+	grid-area: 1 / 1;
+	opacity: 0;
+	transform: translateY(10px);
+	transition: opacity 0.42s ease, transform 0.42s cubic-bezier(0.22, 1, 0.36, 1);
+	pointer-events: none;
+}
+/* 選択は固定式（ホバーを外しても戻らない）なので、
+   表示中のパネルはそのままクリックできるようにする */
+.hb-panel[data-on] {
+	opacity: 1;
+	transform: translateY(0);
+	pointer-events: auto;
+}
+
+/* セクションの見出しはこの小さなラベルだけ（大きな日本語見出しは置かない）。
+   h2 として使うので、見出し既定の色・太さを打ち消しておく */
+.hb-eyebrow {
+	font-family: var(--font-mono);
+	font-size: 0.82rem;
+	font-weight: 500;
+	letter-spacing: 0.24em;
+	margin-bottom: 22px;
+}
+html[data-page="hub"] h2.hb-eyebrow {
+	color: var(--ink-3);
+}
+/* 改行位置は <br> で決めているので、自動の均し（balance）は入れない */
+.hb-hero-title {
+	font-size: clamp(1.7rem, 1.05rem + 2.6vw, 2.9rem);
+	font-weight: 700;
+	line-height: 1.5;
+	letter-spacing: 0.01em;
+	color: var(--ink-0);
+}
+.hb-hero-sub {
+	margin-top: 26px;
+	font-size: clamp(0.9rem, 0.84rem + 0.3vw, 1.02rem);
+	line-height: 2;
+	color: var(--ink-1);
+}
+
+/* 選んだアプリのパネル */
+.hb-app-kind {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	font-size: 0.76rem;
+	letter-spacing: 0.14em;
+	color: var(--ink-2);
+	border: 1px solid var(--hairline);
+	border-radius: 999px;
+	padding: 5px 15px;
+	margin-bottom: 20px;
+	background: rgba(255, 255, 255, 0.6);
+}
+.hb-app-name {
+	font-size: clamp(1.9rem, 1.2rem + 2.6vw, 3.1rem);
+	font-weight: 700;
+	line-height: 1.2;
+	letter-spacing: 0.01em;
+	color: var(--ink-0);
+}
+.hb-app-tagline {
+	margin-top: 16px;
+	font-size: clamp(1.02rem, 0.92rem + 0.5vw, 1.32rem);
+	font-weight: 500;
+	line-height: 1.6;
+	color: var(--ink-1);
+	text-wrap: balance;
+}
+.hb-app-lead {
+	margin-top: 16px;
+	font-size: 0.92rem;
+	line-height: 1.95;
+	color: var(--ink-2);
+	max-width: 34em;
+	margin-inline: auto;
+	text-wrap: pretty;
+}
+.hb-app-go {
+	display: inline-block;
+	margin-top: 22px;
+	font-size: 0.87rem;
+	font-weight: 600;
+	/* 明るい紙面では、アクセントを墨に寄せて沈める（薄色のアプリ対策） */
+	color: var(--acc);
+	color: color-mix(in srgb, var(--acc) 72%, var(--ink-0));
+	transition: color 0.6s ease;
+	text-decoration: none;
+}
+a.hb-app-go {
+	padding-bottom: 3px;
+	border-bottom: 1px solid color-mix(in srgb, var(--acc) 42%, transparent);
+}
+a.hb-app-go:hover {
+	text-decoration: none;
+	border-bottom-color: currentColor;
+}
+
+/* スクロール誘導 */
+.hb-scroll {
+	position: absolute;
+	left: 50%;
+	bottom: 26px;
+	transform: translateX(-50%);
+	z-index: 3;
+	font-family: var(--font-mono);
+	font-size: 0.7rem;
+	letter-spacing: 0.22em;
+	color: var(--ink-3);
+	display: grid;
+	justify-items: center;
+	gap: 10px;
+	transition: opacity 0.4s ease;
+}
+.hb-hero[data-active] .hb-scroll {
+	opacity: 0;
+}
+.hb-scroll-line {
+	width: 1px;
+	height: 40px;
+	background: linear-gradient(180deg, var(--ink-3), transparent);
+	animation: hb-scroll-pulse 2.4s ease-in-out infinite;
+}
+@keyframes hb-scroll-pulse {
+	0%, 100% { opacity: 0.3; transform: scaleY(0.7); transform-origin: top; }
+	50% { opacity: 1; transform: scaleY(1); transform-origin: top; }
+}
+
+/* 狭い画面：中央のテキストを避けて、上下の帯にアイコンを寄せる */
+@media (max-width: 900px) {
+	.hb-orbit-item[data-depth="1"] { --size: 64px; --push: 14px; }
+	.hb-orbit-item[data-depth="2"] { --size: 54px; --push: 10px; }
+	.hb-orbit-item[data-depth="3"] { --size: 45px; --push: 6px; }
+	.hb-orbit-item { left: var(--x-sm, var(--x)); top: var(--y-sm, var(--y)); }
+}
+@media (max-width: 600px) {
+	.hb-hero-center { width: calc(100% - 36px); }
+	.hb-app-lead { font-size: 0.86rem; line-height: 1.85; }
+	.hb-orbit-item[data-depth="1"] { --size: 56px; }
+	.hb-orbit-item[data-depth="2"] { --size: 48px; }
+	.hb-orbit-item[data-depth="3"] { --size: 41px; }
+}
+
+/* ---------------------------------------------------------
+   セクション共通
+   --------------------------------------------------------- */
+
+.hb-section {
+	position: relative;
+	padding-block: clamp(80px, 9vw, 132px);
+}
+.hb-sec-head {
+	max-width: 44em;
+	margin-bottom: clamp(40px, 5vw, 64px);
+}
+.hb-sec-title {
+	font-size: clamp(1.5rem, 1.1rem + 1.5vw, 2.15rem);
+	font-weight: 700;
+	line-height: 1.45;
+	color: var(--ink-0);
+}
+.hb-sec-lead {
+	margin-top: 18px;
+	font-size: 0.97rem;
+	line-height: 2;
+	color: var(--ink-2);
+}
+
+/* スクロールで浮かび上がる。JS 不発時のために noscript 側で強制表示する */
+.hb-reveal {
+	opacity: 0;
+	transform: translateY(22px);
+	transition: opacity 0.75s cubic-bezier(0.22, 1, 0.36, 1),
+		transform 0.75s cubic-bezier(0.22, 1, 0.36, 1);
+	transition-delay: var(--rd, 0ms);
+}
+.hb-reveal.is-in {
+	opacity: 1;
+	transform: none;
+}
+
+/* ---------------------------------------------------------
+   Works：作品カード
+   --------------------------------------------------------- */
+
+.hb-works {
+	background: var(--paper);
+	position: relative;
+}
+/* ヒーローの残光。メッシュの下辺の色が、境界を越えて薄く尾を引く。
+   ヒーローとの間に「線」を作らないための橋 */
+.hb-works::before {
+	content: "";
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	height: 320px;
+	pointer-events: none;
+	background-image:
+		radial-gradient(42% 240px at 16% 0%, rgb(148 222 236 / 0.15), transparent 72%),
+		radial-gradient(38% 220px at 52% 0%, rgb(150 176 245 / 0.13), transparent 72%),
+		radial-gradient(40% 230px at 86% 0%, rgb(233 178 224 / 0.11), transparent 72%);
+}
+.hb-grid {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+	gap: 26px;
+}
+.hb-card {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	background: #fff;
+	border: 1px solid var(--hairline);
+	border-radius: 20px;
+	overflow: hidden;
+	box-shadow: 0 10px 30px rgba(27, 37, 64, 0.05);
+	transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.3s ease,
+		box-shadow 0.3s ease;
+}
+/* background の一括指定は background-image まで消してしまう。
+   グラデーションを持つカードがあるので、ホバーでは背景を触らない */
+.hb-card:has(.hb-card-link:hover),
+.hb-card:has(.hb-card-link:focus-visible) {
+	transform: translateY(-4px);
+	border-color: var(--hairline-strong);
+	box-shadow: 0 24px 50px rgba(27, 37, 64, 0.12);
+}
+
+/* --- アイコンのタイル ---
+   作品の色をパステルに薄めた面。下と左上の 2 方向から色を差し、
+   グレインで質感を足す（ライトの淡い階調は帯が出にくい） */
+.hb-card-visual {
+	position: relative;
+	aspect-ratio: 16 / 10;
+	overflow: hidden;
+	border-bottom: 1px solid var(--hairline);
+	display: grid;
+	place-items: center;
+	background-image:
+		radial-gradient(120% 90% at 50% 128%, color-mix(in srgb, var(--acc) 34%, transparent) 0%, transparent 62%),
+		radial-gradient(80% 64% at 12% -14%, color-mix(in srgb, var(--acc-soft) 36%, transparent) 0%, transparent 58%),
+		linear-gradient(0deg, #fefefd, #fefefd);
+	--grain-a: 0.42;
+}
+/* ヒーローの板と同じ言語（下端の縁 2 本 + 落ち影）で揃える */
+.hb-card-icon {
+	position: relative;
+	z-index: 1;
+	width: 86px;
+	height: 86px;
+	border-radius: 23%;
+	box-shadow:
+		0 1.5px 0 rgba(27, 37, 64, 0.14),
+		0 14px 26px rgba(27, 37, 64, 0.16);
+	transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.hb-card-visual[data-cutout] .hb-card-icon {
+	padding: 13px;
+	background: linear-gradient(155deg, #ffffff 0%, #f0f1ed 100%);
+	box-sizing: border-box;
+}
+.hb-card:has(.hb-card-link:hover) .hb-card-icon {
+	transform: translateY(-5px) scale(1.06);
+}
+
+.hb-card-body {
+	padding: 24px 24px 26px;
+	display: flex;
+	flex-direction: column;
+	flex: 1;
+}
+.hb-card-kind {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	font-size: 0.73rem;
+	letter-spacing: 0.1em;
+	color: var(--ink-3);
+	margin-bottom: 12px;
+}
+.hb-card-kind::before {
+	content: "";
+	width: 6px;
+	height: 6px;
+	border-radius: 50%;
+	background: var(--acc);
+	flex: none;
+}
+.hb-card-name {
+	font-size: 1.28rem;
+	font-weight: 700;
+	line-height: 1.3;
+	color: var(--ink-0);
+}
+.hb-card-tagline {
+	margin-top: 10px;
+	font-size: 0.97rem;
+	font-weight: 500;
+	line-height: 1.65;
+	color: var(--ink-1);
+}
+.hb-card-lead {
+	margin-top: 12px;
+	font-size: 0.86rem;
+	line-height: 1.9;
+	color: var(--ink-2);
+	text-wrap: pretty;
+}
+.hb-card-foot {
+	margin-top: auto;
+	padding-top: 20px;
+}
+.hb-card-link {
+	font-size: 0.87rem;
+	font-weight: 600;
+	color: var(--acc);
+	color: color-mix(in srgb, var(--acc) 72%, var(--ink-0));
+	text-decoration: none;
+	display: inline-flex;
+	align-items: center;
+	gap: 7px;
+}
+.hb-card-link:hover {
+	text-decoration: none;
+}
+/* カード全体をクリック領域にする（本文のテキスト選択は残す） */
+.hb-card-link::after {
+	content: "";
+	position: absolute;
+	inset: 0;
+	border-radius: inherit;
+}
+.hb-card-link .hb-arrow {
+	transition: transform 0.25s ease;
+}
+.hb-card:has(.hb-card-link:hover) .hb-arrow {
+	transform: translateX(4px);
+}
+.hb-card-soon {
+	font-size: 0.82rem;
+	color: var(--ink-3);
+}
+/* 準備中のカードは押せないので、縁と面を一段引かせる */
+.hb-card[data-soon] {
+	border-style: dashed;
+	background: #fcfcfa;
+	box-shadow: none;
+}
+.hb-card[data-soon] .hb-card-icon {
+	opacity: 0.8;
+}
+
+/* --- 主力製品のカード（Drive DAM）---
+   ストアのメインビジュアルと同じ構図・同じ空気:
+   淡い青のグラデーションに深い墨の大きなキャッチ、実画面は正面のまま
+   カードの縁で切る。1 枚だけ全幅にして、ほかの作品と格を変える */
+.hb-feature {
+	grid-column: 1 / -1;
+	flex-direction: row;
+	align-items: stretch;
+	overflow: hidden;
+	background-image:
+		radial-gradient(92% 150% at 6% 116%, color-mix(in srgb, var(--acc) 26%, transparent) 0%, transparent 60%),
+		radial-gradient(76% 120% at 94% -24%, color-mix(in srgb, var(--acc-soft) 34%, transparent) 0%, transparent 58%),
+		linear-gradient(150deg, #ffffff 0%, #f4f7fd 100%);
+	--grain-a: 0.34;
+}
+.hb-feature-body {
+	position: relative;
+	z-index: 2;
+	padding: clamp(30px, 3.4vw, 52px);
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	flex: 0 1 52%;
+	min-width: 0;
+}
+.hb-feature-badge {
+	display: inline-block;
+	align-self: flex-start;
+	font-size: 0.72rem;
+	letter-spacing: 0.16em;
+	color: var(--ink-2);
+	border: 1px solid var(--hairline);
+	border-radius: 999px;
+	padding: 5px 14px;
+	margin-bottom: 22px;
+	background: rgba(255, 255, 255, 0.75);
+}
+/* アイコンは種別バッジではなく製品名に添える */
+.hb-feature-name {
+	display: flex;
+	align-items: center;
+	gap: 11px;
+	font-size: 1.12rem;
+	font-weight: 600;
+	letter-spacing: 0.06em;
+	color: var(--ink-1);
+	margin-bottom: 14px;
+}
+.hb-feature-icon {
+	width: 30px;
+	height: 30px;
+	border-radius: 23%;
+	flex: none;
+	box-shadow:
+		0 1.5px 0 rgba(27, 37, 64, 0.14),
+		0 5px 12px rgba(27, 37, 64, 0.16);
+}
+/* 1 行目「数万枚の画像から、目的の 1 枚へ。」が 2 行に折れない大きさに抑える */
+.hb-feature-catch {
+	font-size: clamp(1.3rem, 0.95rem + 1.25vw, 1.95rem);
+	font-weight: 700;
+	line-height: 1.5;
+	color: var(--ink-0);
+	letter-spacing: 0.01em;
+}
+.hb-feature-text {
+	margin-top: 22px;
+	font-size: 0.9rem;
+	line-height: 2;
+	color: var(--ink-1);
+	max-width: 30em;
+	text-wrap: pretty;
+}
+.hb-feature-foot {
+	margin-top: 28px;
+}
+/* 実画面。元のスクリーンショットをそのまま置く。
+   囲いの線・独立した表示エリアは作らない — カードの面に直接ウィンドウが
+   浮かんでいて、右端はカード全体の縁だけで切れる（overflow はカード側）。
+   ストアのメインビジュアルと同じ見せ方 */
+.hb-feature-visual {
+	position: relative;
+	z-index: 1;
+	flex: 1 1 48%;
+	min-width: 0;
+}
+.hb-feature-visual img {
+	position: absolute;
+	top: 10%;
+	left: 0;
+	width: 116%;
+	height: auto;
+	border-radius: 8px;
+	box-shadow: 0 32px 64px rgba(27, 37, 64, 0.2), 0 6px 16px rgba(27, 37, 64, 0.1);
+	transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.hb-feature:has(.hb-card-link:hover) .hb-feature-visual img {
+	transform: translateY(-6px);
+}
+
+@media (max-width: 860px) {
+	.hb-feature {
+		flex-direction: column;
+	}
+	.hb-feature-body {
+		flex: none;
+		padding-bottom: 26px;
+	}
+	.hb-feature-visual {
+		flex: none;
+		height: 232px;
+	}
+	.hb-feature-visual img {
+		top: 0;
+		left: 6%;
+		width: 116%;
+	}
+}
+
+/* ---------------------------------------------------------
+   AI for ART：スクロールに合わせて、画面全体が作品の闇に
+   ふわっと沈み、また紙面に戻ってくる
+   --------------------------------------------------------- */
+
+.hb-art {
+	background: transparent; /* 白の紙面のまま入る。闇は sticky 層の中だけ */
+}
+/* 仕組み（世界の反転）:
+     - セクションには白の紙面のまま入り、プロジェクトの紹介文を普通に読む
+     - 作品の詳細へ進んだ瞬間、JS が stage に data-dark を立て、
+       背景（sticky の闇 + 作品）が画面全体で一気に立ち上がる。
+       同時にセクション内の文字色が白系へ反転する
+     - 白→黒のグラデーション帯は使わない（安っぽく見えるため廃止）
+     - セクションを抜けるときは逆再生で紙面に還る */
+.hb-art-stage {
+	position: relative;
+}
+/* 背景を重ねるためのラッパー。負のマージンで重ねると sticky の可動範囲の
+   計算が壊れて、背景がステージを越えてページ最後まで貼り付いてしまう
+   （実測でページ最下部まで残るバグになった）。絶対配置で重ねるのが正しい */
+.hb-art-bgwrap {
+	position: absolute;
+	inset: 0;
+	z-index: 0;
+}
+.hb-art-sticky {
+	position: sticky;
+	top: 0;
+	height: 100svh;
+	overflow: hidden;
+	opacity: 0;
+	transition: opacity 0.65s ease;
+}
+.hb-art-stage[data-dark] .hb-art-sticky {
+	opacity: 1;
+}
+/* 反転が解けたあとの白の余白。About までのひと呼吸 */
+.hb-art-end {
+	position: relative;
+	z-index: 1;
+	height: 22svh;
+}
+/* 実物（iframe）と静止画が重なる器。
+   作品の右下にシステム表示が出るので、器より一回り大きく描画して枠外に追い出す。
+   作品は世代 1 から始まり直後はまばらなので、育った状態の静止画を下地に敷き、
+   その上に実物を screen（光を足す合成）で重ねる */
+.hb-art-live {
+	position: absolute;
+	inset: 0;
+	overflow: hidden;
+	background: #000;
+	isolation: isolate;
+}
+.hb-art-live > iframe,
+.hb-art-live > img {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 152%;
+	height: 136%;
+	border: 0;
+	display: block;
+	object-fit: cover;
+}
+.hb-art-live > iframe {
+	mix-blend-mode: screen;
+}
+/* 実物が乗ったら、下地の静止画はゆっくり完全に溶かして消す。
+   残したままだと「動かない光の筋」が焼き付きのように混ざってしまう。
+   実物が外れた環境（モバイル・reduced-motion・JS なし）では静止画のまま */
+.hb-art-live[data-live-on] > img {
+	opacity: 0;
+	transition: opacity 4s ease 2.5s;
+}
+/* 幕。世界が反転した直後はまず無地の闇があり、
+   ひと呼吸おいて幕が開き、アートの光が浮かび上がる */
+.hb-art-curtain {
+	position: absolute;
+	inset: 0;
+	background: #05070d;
+	opacity: 1;
+	transition: opacity 2s ease 0.7s;
+	pointer-events: none;
+}
+.hb-art-stage[data-dark] .hb-art-curtain {
+	opacity: 0;
+}
+/* 文字を読ませるための暗幕 */
+.hb-art-veil {
+	position: absolute;
+	inset: 0;
+	pointer-events: none;
+	background-image: radial-gradient(
+		64% 56% at 50% 50%,
+		rgba(4, 6, 12, 0.86),
+		rgba(4, 6, 12, 0.5) 62%,
+		rgba(4, 6, 12, 0.72) 100%
+	);
+	opacity: 0.66;
+}
+.hb-art-copy {
+	position: relative;
+	z-index: 2;
+	text-align: center;
+}
+/* 前半（白の世界で読む紹介）と後半（闇の中の作品）のブロック */
+.hb-art-intro {
+	padding-block: 20svh 6svh;
+}
+.hb-art-work-wrap {
+	padding-block: 14svh 26svh;
+}
+
+/* 文字は白の紙面向けを基本にし、世界が反転したら白系へ切り替える。
+   色はすべて transition で反転に追随する */
+.hb-art-label {
+	font-family: var(--font-mono);
+	font-size: 0.78rem;
+	letter-spacing: 0.42em;
+	text-transform: uppercase;
+	color: var(--gold);
+	margin-bottom: 26px;
+	transition: color 0.6s ease;
+}
+.hb-art-statement {
+	font-size: clamp(1rem, 0.9rem + 0.65vw, 1.38rem);
+	line-height: 2.05;
+	color: var(--ink-1);
+	max-width: 30em;
+	margin-inline: auto;
+	text-wrap: balance;
+	transition: color 0.6s ease;
+}
+/* プロジェクトの入口への主導線。説明文の直下に独立して置く */
+.hb-art-cta {
+	margin-top: 30px;
+}
+.hb-art-cta a {
+	display: inline-block;
+	padding: 11px 26px;
+	border-radius: 999px;
+	font-size: 0.88rem;
+	letter-spacing: 0.04em;
+	text-decoration: none;
+	color: #7d6023;
+	border: 1px solid rgba(185, 143, 62, 0.5);
+	transition: color 0.6s ease, border-color 0.6s ease, background 0.3s ease;
+}
+.hb-art-cta a:hover {
+	text-decoration: none;
+	background: rgba(185, 143, 62, 0.09);
+}
+.hb-art-work {
+	display: inline-block;
+	max-width: 34em;
+}
+.hb-art-title {
+	display: flex;
+	align-items: baseline;
+	justify-content: center;
+	flex-wrap: wrap;
+	gap: 6px 14px;
+}
+.hb-art-title-ja {
+	font-size: clamp(1.15rem, 1rem + 0.6vw, 1.5rem);
+	font-weight: 500;
+	color: var(--ink-0);
+	letter-spacing: 0.06em;
+	transition: color 0.6s ease;
+}
+.hb-art-title-en {
+	font-style: normal;
+	font-size: 0.82rem;
+	letter-spacing: 0.16em;
+	color: var(--gold);
+	transition: color 0.6s ease;
+}
+.hb-art-sub {
+	margin-top: 14px;
+	font-size: 0.88rem;
+	color: var(--ink-2);
+	letter-spacing: 0.04em;
+	transition: color 0.6s ease;
+}
+.hb-art-body {
+	margin-top: 18px;
+	font-size: 0.9rem;
+	line-height: 2.05;
+	color: var(--ink-2);
+	text-wrap: pretty;
+	transition: color 0.6s ease;
+}
+.hb-art-links {
+	margin-top: 30px;
+	display: flex;
+	justify-content: center;
+	flex-wrap: wrap;
+	gap: 12px 26px;
+	font-size: 0.86rem;
+}
+.hb-art-links a {
+	color: var(--ink-1);
+	text-decoration: none;
+	padding-bottom: 4px;
+	border-bottom: 1px solid rgba(185, 143, 62, 0.38);
+	transition: color 0.6s ease, border-color 0.3s ease;
+}
+.hb-art-links a:hover {
+	color: var(--gold);
+	border-bottom-color: currentColor;
+	text-decoration: none;
+}
+.hb-art-partner {
+	margin-top: 30px;
+	display: inline-flex;
+	align-items: baseline;
+	gap: 14px;
+	color: var(--ink-3);
+	transition: color 0.6s ease;
+}
+.hb-art-partner span {
+	font-family: var(--font-mono);
+	font-size: 0.66rem;
+	letter-spacing: 0.3em;
+	text-transform: uppercase;
+}
+.hb-art-partner em {
+	font-style: normal;
+	font-size: 0.8rem;
+	letter-spacing: 0.05em;
+}
+
+/* --- 世界が反転したときの文字色 --- */
+.hb-art-stage[data-dark] .hb-art-label,
+.hb-art-stage[data-dark] .hb-art-title-en {
+	color: #c9ad72;
+}
+.hb-art-stage[data-dark] .hb-art-statement {
+	color: #d6dceb;
+}
+.hb-art-stage[data-dark] .hb-art-title-ja {
+	color: #fff;
+}
+.hb-art-stage[data-dark] .hb-art-sub,
+.hb-art-stage[data-dark] .hb-art-body {
+	color: #9aa4bc;
+}
+.hb-art-stage[data-dark] .hb-art-cta a {
+	color: #e6cf9b;
+	border-color: rgba(198, 169, 106, 0.42);
+}
+.hb-art-stage[data-dark] .hb-art-cta a:hover {
+	background: rgba(198, 169, 106, 0.12);
+}
+.hb-art-stage[data-dark] .hb-art-links a {
+	color: #d6dceb;
+	border-bottom-color: rgba(198, 169, 106, 0.32);
+}
+.hb-art-stage[data-dark] .hb-art-links a:hover {
+	color: #e6cf9b;
+}
+.hb-art-stage[data-dark] .hb-art-partner {
+	color: #737e97;
+}
+
+@media (max-width: 700px) {
+	.hb-art-intro { padding-block: 14svh 4svh; }
+	.hb-art-work-wrap { padding-block: 10svh 22svh; }
+	.hb-art-end { height: 16svh; }
+	.hb-art-body { font-size: 0.85rem; line-height: 1.95; }
+	.hb-art-links { gap: 10px 18px; font-size: 0.82rem; }
+}
+
+/* ---------------------------------------------------------
+   About / フッター
+   --------------------------------------------------------- */
+
+.hb-about {
+	background: var(--paper-2);
+	/* ART の切り替え余白（.hb-art-end）とセットで、最下部での作品はみ出しを防ぐ */
+	min-height: 48svh;
+}
+.hb-about-inner {
+	max-width: 44em;
+}
+.hb-about-bio {
+	font-size: clamp(1rem, 0.92rem + 0.4vw, 1.15rem);
+	line-height: 2.15;
+	color: var(--ink-1);
+	text-wrap: pretty;
+}
+.hb-about-links {
+	margin-top: 34px;
+	display: flex;
+	flex-wrap: wrap;
+	gap: 12px 14px;
+	list-style: none;
+	padding: 0;
+}
+.hb-about-links a {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	font-size: 0.87rem;
+	color: var(--ink-1);
+	text-decoration: none;
+	border: 1px solid var(--hairline);
+	border-radius: 999px;
+	padding: 9px 18px;
+	background: #fff;
+	transition: border-color 0.25s ease, background 0.25s ease, color 0.25s ease;
+}
+.hb-about-links a:hover {
+	text-decoration: none;
+	color: var(--ink-0);
+	border-color: var(--hairline-strong);
+	background: #fdfdfb;
+}
+
+.hb-footer {
+	background: var(--paper);
+	border-top: 1px solid var(--hairline);
+	padding-block: 40px 34px;
+	font-size: 0.82rem;
+	color: var(--ink-3);
+}
+.hb-footer-inner {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	flex-wrap: wrap;
+	gap: 12px 24px;
+}
+.hb-footer a {
+	color: var(--ink-2);
+	text-decoration: none;
+}
+.hb-footer a:hover {
+	color: var(--ink-0);
+	text-decoration: none;
+}
+.hb-footer-links {
+	display: flex;
+	gap: 22px;
+	flex-wrap: wrap;
+}
+
+/* ---------------------------------------------------------
+   動きを減らす設定
+   漂い・浮遊・フェードをすべて止める。色の切り替えだけは残す
+   （切ると「どれを選んでいるか」が分からなくなるため）
+   --------------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+	.hb-orb,
+	.hb-orbit-float,
+	.hb-scroll-line {
+		animation: none !important;
+	}
+	.hb-orbit-par {
+		transform: none !important;
+	}
+	.hb-reveal {
+		opacity: 1 !important;
+		transform: none !important;
+	}
+	/* 演出はやめて、反転も幕も即時に切り替える */
+	.hb-art-sticky {
+		transition: none !important;
+	}
+	.hb-art-curtain {
+		opacity: 0 !important;
+		transition: none !important;
+	}
+}

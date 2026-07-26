@@ -14,6 +14,16 @@ interface Props {
 	current?: "hub" | "drivedam";
 	lang?: "ja" | "en";
 	altHref?: string;
+	/** 明度。dark を渡すと <html data-theme="dark"> が付き、暗いページ用の CSS が効く */
+	theme?: "light" | "dark";
+	/** ページ識別子。<html data-page> に出て、ページ専用 CSS のスコープになる */
+	page?: string;
+	/** true にすると共通ヘッダー・フッターを出さない(ページ側が自前で用意する時) */
+	bare?: boolean;
+	/** og:image を差し替える(未指定なら Drive DAM のヒーロー画像) */
+	ogImagePath?: string;
+	ogImageWidth?: number;
+	ogImageHeight?: number;
 }
 
 const {
@@ -22,10 +32,16 @@ const {
 	current,
 	lang = "ja",
 	altHref,
+	theme = "light",
+	page,
+	bare = false,
+	ogImagePath = "/drivedam/assets/hero-main.png",
+	ogImageWidth = 2556,
+	ogImageHeight = 1595,
 } = Astro.props;
 
 const canonical = new URL(Astro.url.pathname, Astro.site);
-const ogImage = new URL("/drivedam/assets/hero-main.png", Astro.site);
+const ogImage = new URL(ogImagePath, Astro.site);
 const ogLocale = lang === "en" ? "en_US" : "ja_JP";
 
 const jaHref = lang === "ja" ? Astro.url.pathname : altHref;
@@ -35,12 +51,12 @@ const enUrl = enHref ? new URL(enHref, Astro.site) : undefined;
 ---
 
 <!doctype html>
-<html lang={lang}>
+<html lang={lang} data-theme={theme} data-page={page}>
 	<head>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		{altHref && <LangRedirect />}
-		<meta name="theme-color" content="#F6F8FA" />
+		<meta name="theme-color" content={theme === "dark" ? "#080B14" : "#F6F8FA"} />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<link rel="icon" href="/favicon.ico" />
 		<link rel="apple-touch-icon" href="/favicon.svg" />
@@ -60,8 +76,8 @@ const enUrl = enHref ? new URL(enHref, Astro.site) : undefined;
 		<meta property="og:url" content={canonical} />
 		<meta property="og:locale" content={ogLocale} />
 		<meta property="og:image" content={ogImage} />
-		<meta property="og:image:width" content="2556" />
-		<meta property="og:image:height" content="1595" />
+		<meta property="og:image:width" content={String(ogImageWidth)} />
+		<meta property="og:image:height" content={String(ogImageHeight)} />
 		<meta name="twitter:card" content="summary_large_image" />
 		<meta name="twitter:title" content={title} />
 		<meta name="twitter:description" content={description} />
@@ -69,10 +85,10 @@ const enUrl = enHref ? new URL(enHref, Astro.site) : undefined;
 		<meta name="generator" content={Astro.generator} />
 	</head>
 	<body>
-		<SiteHeader current={current} lang={lang} altHref={altHref} />
+		{!bare && <SiteHeader current={current} lang={lang} altHref={altHref} />}
 		<main>
 			<slot />
 		</main>
-		<SiteFooter lang={lang} />
+		{!bare && <SiteFooter lang={lang} />}
 	</body>
 </html>
