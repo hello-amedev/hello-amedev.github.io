@@ -3,7 +3,20 @@
 > 次のセッションはこのファイルを最初に読む。文脈ゼロから再開できるよう維持する。
 > 製品本体(Drive DAM)の最新は `~/Documents/claude-private/drive-dam/HANDOFF.md`。
 
-## 0. 次の Claude へ(2026-07-23 セッション終了時の状態)
+## 0. 次の Claude へ(2026-07-26 セッション終了時の状態)
+
+**最新(2026-07-26)**: **更新履歴ページを日英で新設**(`/drivedam/releases/` ・
+`/en/drivedam/releases/`)し、あわせて**サイト内のバージョン表記を
+`src/data/releases.ts` に一元化**した。以前は「v1.0.1(2026-07-23)」が
+ヒーロー下ノート・価格メタ・JSON-LD の日英 計 6 箇所に直書きされていて、
+更新のたびに 6 箇所を手で直す + 日英が乖離する状態だった。**今後のバージョン更新は
+`src/data/releases.ts` の配列先頭に 1 ブロック足すだけでよい**(6 章の落とし穴も参照)。
+Drive DAM 本体は v1.0.2 を Store に提出済み(認定待ち)で、サイト側はその内容まで反映してある。
+**認定通過を確認してから push する**段取り。
+
+以下は 2026-07-23 セッション終了時点の記述。
+
+## 0-旧. 次の Claude へ(2026-07-23 セッション終了時の状態)
 
 **Drive DAM が Microsoft Store に公開され、サイト側の CTA を JA/EN 各 4 箇所ずつ
 「近日公開予定」表記からストア URL への活性リンクに一斉差し替え(第9コミット)、
@@ -201,6 +214,8 @@ SEO 整備・CV エリア修正・英語版(/en/)追加・言語自動転送(Mic
     (displaycatalog.mp.microsoft.com)で確認して裏取り済み。
 
 **次セッションの最初の作業**:
+0. **Drive DAM v1.0.2 の Store 認定通過を確認 → ローカル 2 コミットを push**
+   (認定が通らず内容が変わる場合は `src/data/releases.ts` の v1.0.2 ブロックを直してから)
 1. 引き続きあめさんの指摘反映(90 点目標)
 2. `func-download.png` は現在未使用(継続保留)
 3. (任意)ハブ `/` ・privacy の og:image は Base.astro の既定のまま。ハブ用 og:image を
@@ -215,9 +230,14 @@ SEO 整備・CV エリア修正・英語版(/en/)追加・言語自動転送(Mic
   User Site なのでルート(`/`)配信 = `base` 調整不要。
 - **設置場所**: `~/Documents/claude-private/ame-dev-site/`(**worktree 運用外**。実質 main 側で作業)。
 
-## 2. 現在の状態(2026-07-23)
+## 2. 現在の状態(2026-07-26)
 
 - **公開済み**: `https://hello-amedev.github.io/`(ハブ)/ `/drivedam/`(LP)/ `/privacy/`(ポリシー)
+- **未 push(ローカル 2 コミット)**: 更新履歴ページ日英 + バージョン表記の一元化(`a9749b8`)、
+  CLAUDE.md 削除(`6984312`・AGENTS.md と内容同一だったため一本化)。
+  **Drive DAM v1.0.2 の認定通過を確認してから push する**(ページに v1.0.2 を載せてあるため)
+- **ページ構成**: `/` `/drivedam/` `/drivedam/releases/` `/privacy/` +
+  `/en/drivedam/` `/en/drivedam/releases/` `/en/privacy/` の 7 ページ
 - **GitHub リポジトリ**: `hello-amedev/hello-amedev.github.io`(Public User Site)
 - **GitHub Pages Source**: GitHub Actions(`build_type: workflow`・main push で自動デプロイ)
 - **最新コミット**: CTA リンク差し替え+バッジ型デザイン刷新(69a4c53・push 済み)、
@@ -338,6 +358,22 @@ SEO 整備・CV エリア修正・英語版(/en/)追加・言語自動転送(Mic
 (削除: 「個人開発のようですが、サービス終了のリスクは?」→ わざわざ個人開発を強調する
 必要はないと判断)
 
+### 3.12 更新履歴ページ(2026-07-26 新設)
+- **URL**: `/drivedam/releases/`(日)/ `/en/drivedam/releases/`(英)。将来ほかの製品が
+  並んだときも `/<製品>/releases/` で揃うよう、サイト共通の `/releases/` にはしていない
+- **見出し**: 「Drive DAM の更新履歴」/ "Drive DAM release notes"
+- **リード**: 「Microsoft Store で公開した各バージョンの変更内容です。/ 更新は Microsoft Store
+  から自動で配信されます。」(英: "What changed in each version published on the Microsoft Store. /
+  Updates are delivered automatically through the Microsoft Store.")
+- **収録範囲**: **Store で一般に入手できたバージョンのみ**(v1.0.0 以降)。v0.9.x〜v0.13.x は
+  社内試用配布のみなので載せない(入手できないバージョンの説明になるため)
+- **文面**: Store の「このバージョンの最新情報」と同じものを使う。原典は drive-dam 側の
+  `docs/store-listing.md`。サイト独自に詳しく書きたくなったら項目を足せる構造にしてある
+- **導線**: ヒーロー下ノートと価格メタのバージョン表記(`.ver-link`)+ フッターの
+  「Drive DAM について」列。**ヘッダーのページ内メニューには入れない**
+  (5 項目すべてがページ内アンカーなので、別ページへのリンクを混ぜると挙動が揃わない)
+- **JSON-LD は出さない**(SoftwareApplication を製品ページと二重に主張しないため)
+
 ### 3.10 トーン規定の要点(コピーに適用済み)
 - 事実を淡々と説明する敬体(です・ます調)
 - 「ひとつだけ」「合言葉」「安心して」「大切な」「資産」「事故」「ばっちり」は使わない
@@ -423,6 +459,14 @@ SEO 整備・CV エリア修正・英語版(/en/)追加・言語自動転送(Mic
 
 ## 6. 既知の落とし穴
 
+- **⚠️ バージョン表記は `src/data/releases.ts` が唯一の一次ソース。ページ側に直書きしない**
+  (2026-07-26 に一元化)。新バージョンを公開したら、この配列の**先頭に 1 ブロック足すだけ**で
+  更新履歴ページ・ヒーロー下ノート・価格メタ・JSON-LD の `softwareVersion`(日英すべて)が
+  追随する。**日付は Store の一般公開日**を入れる(ビルド日でもサイト更新日でもない。
+  v1.0.1 が 2026-07-23 と書かれていたのを 2026-07-22 に訂正した経緯あり)
+- **更新履歴ページの本文は reveal で隠れている**。見出し・リードは常時表示だが、
+  各バージョンの項目は IntersectionObserver で表示する。JS 不発時のために `<noscript>` で
+  強制表示する `<style>` を入れてあるので、**reveal のクラス名を変えたら noscript 側も直す**
 - **User Site なので `base` は付けない**
 - **CTA はストアへの活性リンク済み**(2026-07-23〜)。ストア URL を変える時は各ページの
   フロントマター `storeUrl` 定数を修正(JA/EN で別 URL。ヘッダー・オーバーレイ・
