@@ -1,13 +1,16 @@
 ---
 import DrivedamLayout from "../../layouts/DrivedamLayout.astro";
 import StoreBadge from "../../components/StoreBadge.astro";
+import { latest } from "../../data/releases";
 const storeUrl = "https://apps.microsoft.com/detail/9P4L43W1XP7P?hl=ja-jp&gl=JP";
+// バージョン表記は src/data/releases.ts が一次ソース。ここでは直書きしない
+const verLabel = `v${latest.version}(${latest.date})`;
 ---
 
 <DrivedamLayout
   title="Drive DAM — 数万枚の画像から、目的の 1 枚へ"
   altHref="/en/drivedam/"
-  store={{ url: storeUrl, price: "2500", currency: "JPY", version: "1.0.1" }}
+  store={{ url: storeUrl, price: "2500", currency: "JPY", version: latest.version }}
 >
 
 <div class="progress" id="progress" aria-hidden="true"></div>
@@ -57,7 +60,7 @@ const storeUrl = "https://apps.microsoft.com/detail/9P4L43W1XP7P?hl=ja-jp&gl=JP"
         <div class="hero-cta">
           <StoreBadge href={storeUrl} eyebrow="Microsoft Store で" label="入手する" />
         </div>
-        <p class="hero-note">v1.0.1(2026-07-23)・Windows 10 以降対応</p>
+        <p class="hero-note"><a class="ver-link" href="/drivedam/releases/">{verLabel}</a>・Windows 10 以降対応</p>
       </div>
     </div>
     <figure class="hero-stage" id="heroStage">
@@ -391,7 +394,7 @@ const storeUrl = "https://apps.microsoft.com/detail/9P4L43W1XP7P?hl=ja-jp&gl=JP"
       <StoreBadge href={storeUrl} eyebrow="Microsoft Store で" label="入手する" night />
     </div>
     <p class="price-meta" data-reveal>
-      <span>v1.0.1(2026-07-23)</span><span>Windows 10 以降対応</span>
+      <span><a class="ver-link" href="/drivedam/releases/">{verLabel}</a></span><span>Windows 10 以降対応</span>
     </p>
   </div>
 </section>
@@ -416,6 +419,13 @@ const storeUrl = "https://apps.microsoft.com/detail/9P4L43W1XP7P?hl=ja-jp&gl=JP"
       <div class="foot-col">
         <p class="foot-t">対応ストレージ</p>
         <p class="foot-desc">Google Drive などエクスプローラー上で利用できるオンラインストレージ、社内ファイルサーバー、ローカルフォルダに対応</p>
+      </div>
+      <div class="foot-col">
+        <p class="foot-t">Drive DAM について</p>
+        <ul>
+          <li><a href="/drivedam/">製品ページ</a></li>
+          <li><a href="/drivedam/releases/">更新履歴</a></li>
+        </ul>
       </div>
     </div>
     <div class="foot-base">

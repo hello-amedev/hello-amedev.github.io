@@ -1,0 +1,140 @@
+---
+import DrivedamLayout from "../../../../layouts/DrivedamLayout.astro";
+import { releases } from "../../../../data/releases";
+const storeUrl = "https://apps.microsoft.com/detail/9P4L43W1XP7P?hl=en-us&gl=US";
+---
+
+<DrivedamLayout
+  title="Release notes — Drive DAM"
+  description="Release notes for Drive DAM. What changed in each version published on the Microsoft Store."
+  lang="en"
+  altHref="/drivedam/releases/"
+>
+
+<header class="site-head is-solid" id="siteHead">
+  <div class="head-in">
+    <a class="brand" href="/en/drivedam/"><img src="/drivedam/assets/app-icon.png" alt="">Drive DAM</a>
+    <nav class="head-nav" aria-label="Product page menu">
+      <a href="/en/drivedam/#about">About</a>
+      <a href="/en/drivedam/#traits">Highlights</a>
+      <a href="/en/drivedam/#funcs">Features</a>
+      <a href="/en/drivedam/#price">Download</a>
+      <a href="/en/drivedam/#faq">FAQ</a>
+    </nav>
+    <a class="head-link" href={storeUrl} target="_blank" rel="noopener noreferrer">Get on Microsoft Store</a>
+    <a class="head-lang" href="/drivedam/releases/?lang=ja">日本語</a>
+    <button class="head-burger" id="headBurger" aria-label="Open menu" aria-expanded="false" aria-controls="headOverlay">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<div class="head-overlay" id="headOverlay" aria-hidden="true">
+  <nav class="head-overlay-nav" aria-label="Product page menu (mobile)">
+    <a href="/en/drivedam/#about">About</a>
+    <a href="/en/drivedam/#traits">Highlights</a>
+    <a href="/en/drivedam/#funcs">Features</a>
+    <a href="/en/drivedam/#price">Download</a>
+    <a href="/en/drivedam/#faq">FAQ</a>
+    <a href="/drivedam/releases/?lang=ja">日本語</a>
+  </nav>
+  <p class="head-overlay-foot"><a href={storeUrl} target="_blank" rel="noopener noreferrer">Now on the Microsoft Store</a></p>
+</div>
+
+<!-- Without JS the reveal never fires and the body would be invisible — show it all in that case -->
+<noscript>
+  <style>.cap,.rel-item,.rel-back{opacity:1;transform:none}</style>
+</noscript>
+
+<main class="rel-page">
+  <div class="wrap">
+    <div class="cap" data-cap>Release notes</div>
+    <h1 class="rel-h">Drive DAM release notes</h1>
+    <p class="rel-lead">
+      What changed in each version published on the Microsoft Store.<br>
+      Updates are delivered automatically through the Microsoft Store.
+    </p>
+
+    <ol class="rel-list">
+      {releases.map((r) => (
+        <li class="rel-item" data-reveal>
+          <div class="rel-meta">
+            <span class="rel-ver">v{r.version}</span>
+            <time class="rel-date" datetime={r.date}>{r.date}</time>
+          </div>
+          <ul class="rel-body">
+            {r.en.map((line) => <li>{line}</li>)}
+          </ul>
+        </li>
+      ))}
+    </ol>
+
+    <p class="rel-back" data-reveal><a href="/en/drivedam/">Back to the Drive DAM product page</a></p>
+  </div>
+</main>
+
+<footer class="site-foot">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <span class="brand"><img src="/drivedam/assets/app-icon.png" alt="">Drive DAM</span>
+        <p>Digital asset management that works in place — in local folders and cloud storage alike. Organize, find, and use images together, right through your shared folders.</p>
+      </div>
+      <div class="foot-col">
+        <p class="foot-t">Supported storage</p>
+        <p class="foot-desc">Works with online storage that appears in Explorer (such as Google Drive), office file servers, and local folders</p>
+      </div>
+      <div class="foot-col">
+        <p class="foot-t">About Drive DAM</p>
+        <ul>
+          <li><a href="/en/drivedam/">Product page</a></li>
+          <li><a href="/en/drivedam/releases/">Release notes</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot-base">
+      <a href="/">© ame_dev</a>
+      <a href="/en/privacy/">Privacy Policy</a>
+    </div>
+  </div>
+</footer>
+
+<script is:inline>
+(function(){
+"use strict";
+
+/* ---------- Hamburger menu (mobile; same behavior as the LP) ---------- */
+var burger = document.getElementById("headBurger");
+var overlay = document.getElementById("headOverlay");
+if(burger && overlay){
+  function setMenu(open){
+    overlay.classList.toggle("open", open);
+    burger.setAttribute("aria-expanded", open ? "true" : "false");
+    overlay.setAttribute("aria-hidden", open ? "false" : "true");
+    burger.setAttribute("aria-label", open ? "Close menu" : "Open menu");
+    document.body.style.overflow = open ? "hidden" : "";
+  }
+  burger.addEventListener("click", function(){
+    setMenu(!overlay.classList.contains("open"));
+  });
+  overlay.querySelectorAll("a").forEach(function(a){
+    a.addEventListener("click", function(){ setMenu(false); });
+  });
+  document.addEventListener("keydown", function(e){
+    if(e.key === "Escape" && overlay.classList.contains("open")) setMenu(false);
+  });
+}
+
+/* ---------- Reveal (trimmed-down version of the LP's shared IO engine) ---------- */
+var io = new IntersectionObserver(function(entries){
+  entries.forEach(function(en){
+    if(!en.isIntersecting) return;
+    en.target.classList.add("is-in");
+    io.unobserve(en.target);
+  });
+},{threshold:.2, rootMargin:"0px 0px -6% 0px"});
+document.querySelectorAll("[data-reveal],[data-cap]").forEach(function(el){ io.observe(el); });
+})();
+</script>
+
+</DrivedamLayout>

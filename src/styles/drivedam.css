@@ -720,13 +720,16 @@ section{position:relative}
 .foot-brand .brand{font-size:16px}
 .foot-brand .brand img{width:22px;height:22px}
 .foot-brand p{font-size:13px;line-height:2.0;color:var(--ink-3);margin-top:14px;max-width:300px}
-.foot-col{grid-column:6/13}
+.foot-col{grid-column:6/10}
+.foot-col+.foot-col{grid-column:10/13}
 .foot-t{
   font-family:"Inter",sans-serif;font-size:10.5px;font-weight:600;
   letter-spacing:.16em;text-transform:uppercase;color:var(--ink-3);margin-bottom:18px;
 }
 .foot-col ul{list-style:none}
 .foot-col li{font-size:13.5px;line-height:1.8;padding:5px 0;color:var(--ink-2)}
+.foot-col li a{border-bottom:1px solid transparent;transition:border-color .25s var(--ease)}
+.foot-col li a:hover{border-color:var(--ink-3)}
 .foot-desc{font-size:13.5px;line-height:2.0;color:var(--ink-2);max-width:340px}
 .foot-base{
   display:flex;justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap;
@@ -735,6 +738,68 @@ section{position:relative}
 }
 .foot-base a{border-bottom:1px solid transparent;transition:border-color .25s var(--ease)}
 .foot-base a:hover{border-color:var(--ink-3)}
+
+/* --- release notes(更新履歴ページ) --- */
+/* LP と違いヒーローが無いので、ヘッダーは最初から不透明にする(scrolled と同じ見え方) */
+.site-head.is-solid{background:rgba(246,248,250,.92);backdrop-filter:blur(10px)}
+.site-head.is-solid::after{transform:scaleX(1)}
+
+/* 下の余白は .site-foot の margin-top が持つので、ここでは持たない */
+.rel-page{padding-top:calc(68px + clamp(56px,8vw,110px))}
+/* 見出しとリードは reveal を掛けない(LP のヒーローと同じ扱い)。
+   このページは本文がテキストだけなので、JS が動かない環境でも
+   「何のページか」は必ず読める状態にしておく */
+.rel-h{
+  font-size:clamp(28px,3.4vw,48px);font-weight:600;color:var(--ink);
+  letter-spacing:-.02em;line-height:1.35;
+}
+.rel-lead{font-size:14.5px;line-height:2.0;color:var(--ink-3);margin-top:18px;max-width:640px}
+.rel-item.is-in,.rel-back.is-in{opacity:1;transform:none}
+.rel-list{list-style:none;margin-top:clamp(48px,6vw,84px);max-width:920px}
+.rel-item{
+  display:grid;grid-template-columns:180px 1fr;gap:clamp(20px,3vw,44px);
+  padding:clamp(28px,3.4vw,40px) 0;border-top:1px solid var(--line);
+  opacity:0;transform:translateY(10px);
+  transition:opacity .7s var(--ease),transform .7s var(--ease);
+}
+.rel-item:last-child{border-bottom:1px solid var(--line)}
+.rel-meta{display:flex;flex-direction:column;gap:3px}
+.rel-ver{
+  font-family:"Inter",sans-serif;font-size:19px;font-weight:600;
+  color:var(--ink);letter-spacing:-.01em;line-height:1.4;
+}
+.rel-date{font-family:"Inter",sans-serif;font-size:12.5px;color:var(--ink-3);letter-spacing:.02em}
+.rel-body{list-style:none}
+.rel-body li{position:relative;padding-left:19px;font-size:14.5px;line-height:1.95;color:var(--ink-2)}
+.rel-body li+li{margin-top:10px}
+.rel-body li::before{
+  content:"";position:absolute;left:0;top:.8em;
+  width:6px;height:6px;border-radius:2px;background:var(--blue);opacity:.7;
+}
+.rel-back{
+  margin-top:clamp(48px,6vw,80px);font-size:13.5px;
+  opacity:0;transform:translateY(10px);
+  transition:opacity .7s var(--ease),transform .7s var(--ease);
+}
+.rel-back a{
+  color:var(--ink-2);
+  background-image:linear-gradient(var(--ink),var(--ink));
+  background-repeat:no-repeat;background-size:0% 1px;background-position:left calc(100% - 1px);
+  transition:background-size .3s var(--ease),color .3s var(--ease);
+  padding-bottom:2px;
+}
+.rel-back a:hover{background-size:100% 1px;color:var(--ink)}
+
+/* バージョン表記 → 更新履歴ページへの導線。紙面(hero-note)と墨面(price-meta)の
+   両方に乗るので、色は currentColor に任せる(周囲の文字と同じ濃さのまま、
+   常時の下線でリンクだと分かる。hover で下線が太くなる) */
+.ver-link{
+  color:inherit;padding-bottom:2px;
+  background-image:linear-gradient(currentColor,currentColor);
+  background-repeat:no-repeat;background-size:100% 1px;background-position:left calc(100% - 1px);
+  transition:background-size .3s var(--ease);
+}
+.ver-link:hover{background-size:100% 2px}
 
 /* --- lang="en" 微調整 --- */
 html[lang="en"] .hero-title{letter-spacing:-.035em;font-size:clamp(37px,5.7vw,78px)}
@@ -754,7 +819,8 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-off
   .fband-vis{margin-top:18px}
   .trait-grid{grid-template-columns:1fr;max-width:520px}
   .foot-brand{grid-column:1/13;margin-bottom:40px}
-  .foot-col{grid-column:1/13;margin-bottom:32px}
+  .foot-col,.foot-col+.foot-col{grid-column:1/13;margin-bottom:32px}
+  .rel-item{grid-template-columns:1fr;gap:14px}
   .head-nav{display:none}
   .head-burger{display:block}
   .head-link{display:none}
@@ -783,6 +849,7 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-off
   .btn-store::before{animation:none !important;opacity:.7}
   [data-reveal]{opacity:1}
   .shot{opacity:1;transform:none}
+  .rel-item,.rel-back{transform:none}
   .draw path,.draw line,.draw rect,.draw circle,.draw polyline{stroke-dashoffset:0}
   .cap{opacity:1;transform:none}
   .cap::before{transform:scale(1)}

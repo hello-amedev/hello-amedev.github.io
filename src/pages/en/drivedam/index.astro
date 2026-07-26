@@ -1,7 +1,10 @@
 ---
 import DrivedamLayout from "../../../layouts/DrivedamLayout.astro";
 import StoreBadge from "../../../components/StoreBadge.astro";
+import { latest } from "../../../data/releases";
 const storeUrl = "https://apps.microsoft.com/detail/9P4L43W1XP7P?hl=en-us&gl=US";
+// Version strings come from src/data/releases.ts — never hard-code them here
+const verLabel = `v${latest.version} (${latest.date})`;
 ---
 
 <DrivedamLayout
@@ -9,7 +12,7 @@ const storeUrl = "https://apps.microsoft.com/detail/9P4L43W1XP7P?hl=en-us&gl=US"
   description="Digital asset management for small teams that works in place on your shared folders — Google Drive, Dropbox, Box, office file servers, or local folders. Manage tens of thousands of images together, safely and fast."
   lang="en"
   altHref="/drivedam/"
-  store={{ url: storeUrl, price: "19.99", currency: "USD", version: "1.0.1" }}
+  store={{ url: storeUrl, price: "19.99", currency: "USD", version: latest.version }}
 >
 
 <div class="progress" id="progress" aria-hidden="true"></div>
@@ -59,7 +62,7 @@ const storeUrl = "https://apps.microsoft.com/detail/9P4L43W1XP7P?hl=en-us&gl=US"
         <div class="hero-cta">
           <StoreBadge href={storeUrl} eyebrow="Get it on" label="Microsoft Store" />
         </div>
-        <p class="hero-note">v1.0.1 (2026-07-23) · Windows 10 or later</p>
+        <p class="hero-note"><a class="ver-link" href="/en/drivedam/releases/">{verLabel}</a> · Windows 10 or later</p>
       </div>
     </div>
     <figure class="hero-stage" id="heroStage">
@@ -393,7 +396,7 @@ const storeUrl = "https://apps.microsoft.com/detail/9P4L43W1XP7P?hl=en-us&gl=US"
       <StoreBadge href={storeUrl} eyebrow="Get it on" label="Microsoft Store" night />
     </div>
     <p class="price-meta" data-reveal>
-      <span>v1.0.1 (2026-07-23)</span><span>Windows 10 or later</span>
+      <span><a class="ver-link" href="/en/drivedam/releases/">{verLabel}</a></span><span>Windows 10 or later</span>
     </p>
   </div>
 </section>
@@ -418,6 +421,13 @@ const storeUrl = "https://apps.microsoft.com/detail/9P4L43W1XP7P?hl=en-us&gl=US"
       <div class="foot-col">
         <p class="foot-t">Supported storage</p>
         <p class="foot-desc">Works with online storage that appears in Explorer (such as Google Drive), office file servers, and local folders</p>
+      </div>
+      <div class="foot-col">
+        <p class="foot-t">About Drive DAM</p>
+        <ul>
+          <li><a href="/en/drivedam/">Product page</a></li>
+          <li><a href="/en/drivedam/releases/">Release notes</a></li>
+        </ul>
       </div>
     </div>
     <div class="foot-base">
