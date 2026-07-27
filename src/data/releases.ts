@@ -30,7 +30,7 @@ export interface Release {
 export const releases: Release[] = [
 	{
 		version: "1.0.2",
-		date: "2026-07-26",
+		date: "2026-07-27",
 		ja: [
 			"フォルダ登録・タグ操作・書き出しまわりの不具合を幅広く修正し、安定性を高めました。",
 			"書き出しの途中中断と、共有サムネイル再生成中の進捗表示に対応しました。",
