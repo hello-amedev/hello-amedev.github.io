@@ -20,7 +20,7 @@ interface Props {
 	page?: string;
 	/** true にすると共通ヘッダー・フッターを出さない(ページ側が自前で用意する時) */
 	bare?: boolean;
-	/** og:image を差し替える(未指定なら Drive DAM のヒーロー画像) */
+	/** og:image を差し替える(未指定は ame_dev 共通の 1200×630) */
 	ogImagePath?: string;
 	ogImageWidth?: number;
 	ogImageHeight?: number;
@@ -35,9 +35,9 @@ const {
 	theme = "light",
 	page,
 	bare = false,
-	ogImagePath = "/drivedam/assets/hero-main.png",
-	ogImageWidth = 2556,
-	ogImageHeight = 1595,
+	ogImagePath = "/assets/og-image.jpg",
+	ogImageWidth = 1200,
+	ogImageHeight = 630,
 } = Astro.props;
 
 const canonical = new URL(Astro.url.pathname, Astro.site);
