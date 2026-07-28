@@ -29,6 +29,12 @@ export interface Release {
 
 export const releases: Release[] = [
 	{
+		version: "1.0.3",
+		date: "2026-07-28",
+		ja: ["拡大プレビューが「読み込み中」のまま表示されなくなることがある問題を修正しました。"],
+		en: ["Fixed an issue where the full-screen preview could stay stuck on the loading indicator."],
+	},
+	{
 		version: "1.0.2",
 		date: "2026-07-27",
 		ja: [
