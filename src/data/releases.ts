@@ -29,6 +29,40 @@ export interface Release {
 
 export const releases: Release[] = [
 	{
+		version: "1.1.1",
+		date: "2026-07-31",
+		ja: [
+			"サムネイルの画質を大幅に改善しました。",
+			"以前から表示されているサムネイルは、フォルダの右クリックメニュー「共有サムネイルを作り直す」を実行すると新しい画質になります。",
+			"起動時や、ほかの作業からウィンドウに戻ったときの読み込みを大幅に高速化しました。",
+			"表示を速くするため、サムネイルをお使いの PC に自動保存するようにしました(使用量は設定画面で確認できます)。",
+		],
+		en: [
+			"Thumbnail quality is greatly improved.",
+			"Thumbnails created earlier pick up the new quality after running \"Regenerate shared thumbnails\" from a folder's right-click menu.",
+			"Startup, and the refresh that runs when you come back to the window, are now much faster.",
+			"Thumbnails are now stored on your PC automatically for faster display (you can check the space used in Settings).",
+		],
+	},
+	{
+		version: "1.1.0",
+		date: "2026-07-30",
+		ja: [
+			"ブックマークと非表示の記録のしくみを新しくしました。",
+			"チームのメンバーがファイルを移動・名前変更しても外れなくなります(チームでお使いの場合は、全員がこのバージョン以降へ更新してからお使いください)。",
+			"サブフォルダをカードで一覧・移動できるようになり、表示の「戻る/進む」(Ctrl+←/→、マウスの戻るボタン対応)を追加しました。",
+			"フォルダの右クリックメニューも整理しました。",
+			"サムネイルが画面の幅にぴったり並ぶようになりました。",
+		],
+		en: [
+			"Bookmarks and hidden flags are now recorded in a new way.",
+			"They survive teammates moving or renaming files (if you use Drive DAM as a team, please have everyone update to this version or later).",
+			"Subfolders now appear as cards you can browse and open, with back/forward navigation through folder views (Ctrl+←/→, mouse back button).",
+			"The folder right-click menu has also been reorganized.",
+			"Thumbnails now fit the window width exactly.",
+		],
+	},
+	{
 		version: "1.0.3",
 		date: "2026-07-28",
 		ja: ["拡大プレビューが「読み込み中」のまま表示されなくなることがある問題を修正しました。"],
