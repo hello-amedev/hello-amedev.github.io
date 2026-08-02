@@ -25,9 +25,12 @@
 
 次回の残り(SEO/AIO 続き):
 
-1. **Search Console / Bing Webmaster 登録はあめさん操作待ち**。所有権確認の
-   HTML ファイルを受け取ったら `public/` に置いて push。登録後に sitemap
-   (`/sitemap-index.xml`)を送信する
+1. **Search Console / Bing Webmaster とも登録完了(2026-08-02)**。所有権確認
+   ファイルは `public/google0edd9d5dd7f2424f.html` と `public/BingSiteAuth.xml`
+   (**両方とも削除禁止** = 消すと所有権失効)。プロパティはどちらもサイトルート。
+   sitemap は両方に送信済みだが、**GSC 側は「取得できませんでした」表示のまま**
+   (新規プロパティの既知の表示。初回クロール後に「成功」へ変わるのが典型)。
+   数日後に確認し、変わらなければ調査する
 2. **LangRedirect(言語自動転送)の扱いは保留**: Googlebot(英語環境で JS 実行)
    にも転送が効き、日本語 LP がリダイレクト扱いになるリスクを発見済み。
    Search Console で `/drivedam/` のインデックス実態を見てから、
