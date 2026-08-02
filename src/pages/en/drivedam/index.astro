@@ -5,6 +5,26 @@ import { latest } from "../../../data/releases";
 const storeUrl = "https://apps.microsoft.com/detail/9P4L43W1XP7P?hl=en-us&gl=US";
 // Version strings come from src/data/releases.ts — never hard-code them here
 const verLabel = `v${latest.version} (${latest.date})`;
+// FAQ (final copy 3.9, 6 items). Single source for the static list and FAQPage JSON-LD.
+// Rendered statically so non-JS crawlers (AI bots) can read the content.
+const faq: [string, string][] = [
+["Are my image files modified?","No. Tags and notes are stored in a <code>_dam/</code> folder next to your images — the image files themselves are never altered."],
+["What happens to my tags and notes if I uninstall Drive DAM?","Tags and notes live in <code>_dam</code> folders inside your local or shared folders, so they remain after uninstalling — your teammates keep working, unaffected. Reinstall and register the folder again, and you pick up right where you left off. With settings export and import, you can also restore registered folders and bookmarks."],
+["Can people without access to the shared folder see our tags and notes?","No. Access permissions on the shared folder define exactly who can see the tags and notes."],
+["Does it tag images automatically with AI?","No. Tags are applied by hand and refined together as a team. There is no automatic classification quietly reorganizing your library."],
+["Is Mac supported?","Drive DAM is a Windows app; Mac is not supported at present. The generated thumbnails and settings files are visible in the shared folder, but Drive DAM itself will not run there. A Mac version may come in the future."],
+["How do I completely remove the thumbnail and tag data?","Once no Drive DAM user has the folder registered, delete the <code>_dam</code> and <code>_dam_thumbs</code> folders. If there are many, search for folders with those names and delete them all."]
+];
+const stripTags = (s: string) => s.replace(/<[^>]+>/g, "");
+const faqJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: faq.map(([q, a]) => ({
+    "@type": "Question",
+    name: stripTags(q),
+    acceptedAnswer: { "@type": "Answer", text: stripTags(a) },
+  })),
+};
 ---
 
 <DrivedamLayout
@@ -406,7 +426,15 @@ const verLabel = `v${latest.version} (${latest.date})`;
   <div class="wrap">
     <div class="cap" data-cap>FAQ</div>
     <h2 class="faq-h" data-reveal>Frequently asked questions</h2>
-    <ul class="faq-list" id="faqList"></ul>
+    <ul class="faq-list" id="faqList">
+      {faq.map(([q, a]) => (
+        <li class="faq-item">
+          <button class="faq-q" aria-expanded="false"><span set:html={q} /><span class="faq-x" aria-hidden="true"></span></button>
+          <div class="faq-a"><div class="faq-a-in"><p set:html={a} /></div></div>
+        </li>
+      ))}
+    </ul>
+    <script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)} />
   </div>
 </section>
 
@@ -464,27 +492,12 @@ if(burger && overlay){
   });
 }
 
-/* ---------- FAQ(確定コピー 3.9・6 問) ---------- */
-var FAQ = [
-["Are my image files modified?","No. Tags and notes are stored in a <code>_dam/</code> folder next to your images — the image files themselves are never altered."],
-["What happens to my tags and notes if I uninstall Drive DAM?","Tags and notes live in <code>_dam</code> folders inside your local or shared folders, so they remain after uninstalling — your teammates keep working, unaffected. Reinstall and register the folder again, and you pick up right where you left off. With settings export and import, you can also restore registered folders and bookmarks."],
-["Can people without access to the shared folder see our tags and notes?","No. Access permissions on the shared folder define exactly who can see the tags and notes."],
-["Does it tag images automatically with AI?","No. Tags are applied by hand and refined together as a team. There is no automatic classification quietly reorganizing your library."],
-["Is Mac supported?","Drive DAM is a Windows app; Mac is not supported at present. The generated thumbnails and settings files are visible in the shared folder, but Drive DAM itself will not run there. A Mac version may come in the future."],
-["How do I completely remove the thumbnail and tag data?","Once no Drive DAM user has the folder registered, delete the <code>_dam</code> and <code>_dam_thumbs</code> folders. If there are many, search for folders with those names and delete them all."]
-];
-var faqList = document.getElementById("faqList");
-FAQ.forEach(function(qa){
-  var li = document.createElement("li");
-  li.className = "faq-item";
-  li.innerHTML = '<button class="faq-q" aria-expanded="false"><span>'+qa[0]+
-    '</span><span class="faq-x" aria-hidden="true"></span></button>'+
-    '<div class="faq-a"><div class="faq-a-in"><p>'+qa[1]+"</p></div></div>";
+/* ---------- FAQ (content is rendered statically by Astro; this only wires the toggle) ---------- */
+document.querySelectorAll("#faqList .faq-item").forEach(function(li){
   li.querySelector(".faq-q").addEventListener("click",function(){
     var open = li.classList.toggle("open");
     this.setAttribute("aria-expanded", open ? "true" : "false");
   });
-  faqList.appendChild(li);
 });
 
 /* ---------- Reveal エンジン(IO 共用) ---------- */

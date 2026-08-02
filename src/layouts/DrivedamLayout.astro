@@ -36,6 +36,22 @@ const ogImage = new URL(
 	Astro.site,
 );
 const ogLocale = lang === "en" ? "en_US" : "ja_JP";
+const featureList =
+	lang === "en"
+		? [
+				"Fast thumbnail browsing and search for tens of thousands of images",
+				"Organize with tags, color labels, favorites, usage permissions, and notes",
+				"Share tags and thumbnails with your team through the shared folder",
+				"Resize and crop exports with social media size presets",
+				"View HEIC, camera RAW (NEF, CR2, ARW, DNG, and more), and PDF files",
+			]
+		: [
+				"数万枚でも快適なサムネイル一覧と高速検索",
+				"タグ・色ラベル・お気に入り・使用可否・メモで画像を整理",
+				"タグとサムネイルを共有フォルダ経由でチームに共有",
+				"リサイズ・トリミング書き出し(SNS サイズ等のプリセット対応)",
+				"HEIC・カメラ RAW(NEF・CR2・ARW・DNG など)・PDF の表示",
+			];
 const jsonLd = store
 	? {
 			"@context": "https://schema.org",
@@ -51,6 +67,12 @@ const jsonLd = store
 			author: { "@type": "Organization", name: "ame_dev" },
 			inLanguage: lang,
 			offers: { "@type": "Offer", price: store.price, priceCurrency: store.currency },
+			screenshot: new URL(
+				lang === "en" ? "/drivedam/assets/hero-main-en.png" : "/drivedam/assets/hero-main.png",
+				Astro.site,
+			).href,
+			featureList,
+			sameAs: [store.url],
 		}
 	: undefined;
 const jaHref = lang === "ja" ? Astro.url.pathname : altHref;
