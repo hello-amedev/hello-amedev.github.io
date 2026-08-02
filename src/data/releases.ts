@@ -29,6 +29,24 @@ export interface Release {
 
 export const releases: Release[] = [
 	{
+		version: "1.2.0",
+		date: "2026-08-02",
+		ja: [
+			"カメラの RAW ファイル(NEF・CR2・ARW・DNG など)のサムネイル表示・拡大表示・撮影日に対応しました。",
+			"PDF も 1 ページ目のサムネイルが表示され、アプリ内で全ページを閲覧できるようになりました(サムネイルは表示した分だけ作られます)。",
+			"画像以外のファイルをダウンロードフォルダへコピーできるボタンと、サムネイルの種別マーク(NEF・PDF など)を追加しました。",
+			"並び順の設定を「表示・並び替え」パネルにまとめ、昇順・降順を別々に選べるようにしました。",
+			"検索で見つけたファイルの保存フォルダをアプリ内で開けるようになりました(右クリックの「ファイルの場所を開く」、または詳細パネルの保存場所をクリック)。",
+		],
+		en: [
+			"Camera RAW files (NEF, CR2, ARW, DNG, and more) now show thumbnails, open in the full-screen preview, and carry their shoot dates.",
+			"PDFs now show a first-page thumbnail and can be read page by page inside the app (thumbnails are generated only for the PDFs you actually view).",
+			"Added a Download button for non-image files, and small file-type badges (NEF, PDF, etc.) on thumbnails.",
+			"Sorting now lives in a new \"View & sort\" panel, with a separate ascending/descending switch.",
+			"You can now jump to the folder a file lives in without leaving the app — right-click it and choose \"Open file location\", or click the location shown in the detail panel.",
+		],
+	},
+	{
 		version: "1.1.1",
 		date: "2026-07-31",
 		ja: [
