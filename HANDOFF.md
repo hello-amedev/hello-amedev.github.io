@@ -8,19 +8,34 @@
 | なぜこの実装なのか / 過去の経緯 | [docs/site-history.md](docs/site-history.md) |
 | 製品本体 Drive DAM の最新 | `~/Documents/claude-private/drive-dam/HANDOFF.md` |
 
-## 0. 次の Claude へ(2026-07-27 セッション終了時)
+## 0. 次の Claude へ(2026-08-02 セッション終了時)
 
 **未 push なし。ローカル `main` と `origin/main` は一致している。**
 
-このセッションでやったこと:
+このセッションでやったこと(Drive DAM マーケ強化の一環。全体方針・経緯は
+`~/Documents/claude-private/drive-dam/HANDOFF.md` 2 章「マーケ強化セッション第1弾」を参照):
 
-1. **総合 TOP(`/`)をゼロから作り直した**(2 章)。暫定だった 1 画面を、
-   ame_dev のポートフォリオ兼ポータルとして全面刷新。ダーク基調で作り始めたが
-   最終的に**ライトトーンのパステルメッシュ**に転換している
-2. **Drive DAM v1.0.2 を公開**。Store 認定通過を DisplayCatalog API で裏取りし、
-   更新履歴ページとバージョン表記を公開した
-3. **ame_dev 共通の og:image を新設**。Drive DAM ヒーロー画像の流用をやめた
-4. **HANDOFF を 3 ファイルに分割**(515 行 44KB が規約の上限を超えていたため)
+1. **SEO/AIO 強化一式**: FAQ を JS 組み立て → Astro 静的レンダリング + FAQPage
+   JSON-LD に変更(日英、見た目・開閉挙動は不変。一次ソースは各 LP frontmatter の
+   `faq` 配列に移動)/ `@astrojs/sitemap` 導入 + `public/robots.txt` /
+   AI クローラー向け `public/llms.txt` 新設 / SoftwareApplication JSON-LD に
+   screenshot・featureList・sameAs を追記
+2. **LP の title にキーワード追加**(日英とも既存コピーに「| 共有フォルダで使える
+   画像管理(DAM)アプリ」/「| DAM app for Windows」を後置。あめさん案 A 承認)
+
+次回の残り(SEO/AIO 続き):
+
+1. **Search Console / Bing Webmaster 登録はあめさん操作待ち**。所有権確認の
+   HTML ファイルを受け取ったら `public/` に置いて push。登録後に sitemap
+   (`/sitemap-index.xml`)を送信する
+2. **LangRedirect(言語自動転送)の扱いは保留**: Googlebot(英語環境で JS 実行)
+   にも転送が効き、日本語 LP がリダイレクト扱いになるリスクを発見済み。
+   Search Console で `/drivedam/` のインデックス実態を見てから、
+   自動転送をやめて「View in English?」バナー方式に変えるかを判断する
+3. 検索意図に応える記事セクション(英語の比較・How-to 記事、日本語記事)と
+   TOP 英語版は未着手(従来からの「3. 次回着手するなら」も生きている)
+
+過去セッション(2026-07-27 以前)の内容は `docs/site-history.md` を参照。
 
 ## 1. プロジェクト概要
 
