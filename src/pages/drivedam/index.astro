@@ -5,10 +5,30 @@ import { latest } from "../../data/releases";
 const storeUrl = "https://apps.microsoft.com/detail/9P4L43W1XP7P?hl=ja-jp&gl=JP";
 // バージョン表記は src/data/releases.ts が一次ソース。ここでは直書きしない
 const verLabel = `v${latest.version}(${latest.date})`;
+// FAQ(確定コピー 3.9・6 問)。静的レンダリングと FAQPage 構造化データの一次ソース。
+// JS 非実行のクローラー(AI 系)にも本文が見えるよう、組み立てはスクリプトでなくここで行う
+const faq: [string, string][] = [
+["画像ファイルは変更されますか?","いいえ。タグやメモは画像と同じフォルダ内の <code>_dam/</code> に保存し、画像ファイルそのものには手を加えません。"],
+["Drive DAMをアンインストールしたら、タグやメモはどうなりますか?","タグ・メモはローカルや共有フォルダ内の <code>_dam</code> フォルダに保存されるため、Drive DAMをアンインストールしてもそのまま残ります。チームメンバーの利用には影響ありません。再インストールしてもう一度フォルダを登録すれば、同じ状態で再開できます。また、設定のエクスポート・インポートを利用すれば、フォルダの登録状態や、ブックマークも復元できます。"],
+["共有フォルダのアクセス権がない人にも、タグやメモは見えますか?","見えません。共有フォルダのアクセス権限が、そのままタグ・メモの共有範囲になります。"],
+["AI で自動的にタグ付けされますか?","いいえ。タグは手作業で付け、チームで共有して育てる運用です。自動分類による意図しない整理はありません。"],
+["Macには対応していますか?","Drive DAMはWindows用アプリです。Macには現在対応していません。生成されたサムネイル・設定ファイルは共有フォルダ上に表示されますが、Drive DAMを利用することはできません。Mac版については、今後リリースされる可能性があります。"],
+["サムネイルやタグのデータを完全に削除する方法は?","フォルダを登録しているDrive DAMユーザーが居ない状態で、<code>_dam</code> フォルダおよび <code>_dam_thumbs</code> フォルダを削除してください。フォルダ数が多い場合は、同名フォルダを検索してすべて削除してください。"]
+];
+const stripTags = (s: string) => s.replace(/<[^>]+>/g, "");
+const faqJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: faq.map(([q, a]) => ({
+    "@type": "Question",
+    name: stripTags(q),
+    acceptedAnswer: { "@type": "Answer", text: stripTags(a) },
+  })),
+};
 ---
 
 <DrivedamLayout
-  title="Drive DAM — 数万枚の画像から、目的の 1 枚へ"
+  title="Drive DAM — 数万枚の画像から、目的の 1 枚へ | 共有フォルダで使える画像管理(DAM)アプリ"
   altHref="/en/drivedam/"
   store={{ url: storeUrl, price: "2500", currency: "JPY", version: latest.version }}
 >
@@ -404,7 +424,15 @@ const verLabel = `v${latest.version}(${latest.date})`;
   <div class="wrap">
     <div class="cap" data-cap>FAQ</div>
     <h2 class="faq-h" data-reveal>よくあるご質問</h2>
-    <ul class="faq-list" id="faqList"></ul>
+    <ul class="faq-list" id="faqList">
+      {faq.map(([q, a]) => (
+        <li class="faq-item">
+          <button class="faq-q" aria-expanded="false"><span set:html={q} /><span class="faq-x" aria-hidden="true"></span></button>
+          <div class="faq-a"><div class="faq-a-in"><p set:html={a} /></div></div>
+        </li>
+      ))}
+    </ul>
+    <script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)} />
   </div>
 </section>
 
@@ -462,27 +490,12 @@ if(burger && overlay){
   });
 }
 
-/* ---------- FAQ(確定コピー 3.9・5 問) ---------- */
-var FAQ = [
-["画像ファイルは変更されますか?","いいえ。タグやメモは画像と同じフォルダ内の <code>_dam/</code> に保存し、画像ファイルそのものには手を加えません。"],
-["Drive DAMをアンインストールしたら、タグやメモはどうなりますか?","タグ・メモはローカルや共有フォルダ内の <code>_dam</code> フォルダに保存されるため、Drive DAMをアンインストールしてもそのまま残ります。チームメンバーの利用には影響ありません。再インストールしてもう一度フォルダを登録すれば、同じ状態で再開できます。また、設定のエクスポート・インポートを利用すれば、フォルダの登録状態や、ブックマークも復元できます。"],
-["共有フォルダのアクセス権がない人にも、タグやメモは見えますか?","見えません。共有フォルダのアクセス権限が、そのままタグ・メモの共有範囲になります。"],
-["AI で自動的にタグ付けされますか?","いいえ。タグは手作業で付け、チームで共有して育てる運用です。自動分類による意図しない整理はありません。"],
-["Macには対応していますか?","Drive DAMはWindows用アプリです。Macには現在対応していません。生成されたサムネイル・設定ファイルは共有フォルダ上に表示されますが、Drive DAMを利用することはできません。Mac版については、今後リリースされる可能性があります。"],
-["サムネイルやタグのデータを完全に削除する方法は?","フォルダを登録しているDrive DAMユーザーが居ない状態で、<code>_dam</code> フォルダおよび <code>_dam_thumbs</code> フォルダを削除してください。フォルダ数が多い場合は、同名フォルダを検索してすべて削除してください。"]
-];
-var faqList = document.getElementById("faqList");
-FAQ.forEach(function(qa){
-  var li = document.createElement("li");
-  li.className = "faq-item";
-  li.innerHTML = '<button class="faq-q" aria-expanded="false"><span>'+qa[0]+
-    '</span><span class="faq-x" aria-hidden="true"></span></button>'+
-    '<div class="faq-a"><div class="faq-a-in"><p>'+qa[1]+"</p></div></div>";
+/* ---------- FAQ(本文は Astro 側で静的レンダリング。ここは開閉の付与のみ) ---------- */
+document.querySelectorAll("#faqList .faq-item").forEach(function(li){
   li.querySelector(".faq-q").addEventListener("click",function(){
     var open = li.classList.toggle("open");
     this.setAttribute("aria-expanded", open ? "true" : "false");
   });
-  faqList.appendChild(li);
 });
 
 /* ---------- Reveal エンジン(IO 共用) ---------- */

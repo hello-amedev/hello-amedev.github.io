@@ -8,24 +8,67 @@
 | なぜこの実装なのか / 過去の経緯 | [docs/site-history.md](docs/site-history.md) |
 | 製品本体 Drive DAM の最新 | `~/Documents/claude-private/drive-dam/HANDOFF.md` |
 
-## 0. 次の Claude へ(2026-08-02 セッション終了時)
+## 0. 次の Claude へ(2026-08-02 第 2 セッション終了時)
 
-**未 push なし。ローカル `main` と `origin/main` は一致している。デプロイ成功も確認済み。**
+### 第 2 セッション(ブランドロゴ導入)
 
-このセッションでやったこと:
+worktree `claude/ame-dev-brand-logo-ad3c5e` で作業(セッション終了時に main へ
+ff-merge する運用)。
+
+1. **ame_dev ブランドロゴを制定**。雲+雨粒 3 つを 1 枚の連続グラデーション
+   (水色 `#94DEEC` → 青紫 `#96B0F5` → 菫 `#B298F0` → 桃 `#E9B2E0` =
+   TOP のパステルパレット)で描いた SVG。あめさんと 5 案+微調整 6 案を
+   比較して決定(雲は低いスリーク形状、雨粒はしずく形・山型配置)。
+   **マスターは `public/assets/brand/ame-dev-logo.svg`**
+2. **総合 TOP ヘッダー**の青ドットをロゴ(22px インライン SVG、
+   `.hb-brand-logo`)に差し替え
+3. **favicon.svg / favicon.ico を新ロゴに差し替え**(ico は 16/32/48 内包。
+   Pillow で 512px 透過レンダリングからダウンスケール生成)
+4. プロフィール用 PNG 3 種(紙色・ダーク・透過、512px)はあめさんへ納品済み
+   (リポジトリには含めない)
+
+### 第 1 セッション(Drive DAM マーケ強化の一環。全体方針・経緯は
+`~/Documents/claude-private/drive-dam/HANDOFF.md` 2 章「マーケ強化セッション第1弾」を参照)
+
+1. **SEO/AIO 強化一式**: FAQ を JS 組み立て → Astro 静的レンダリング + FAQPage
+   JSON-LD に変更(日英、見た目・開閉挙動は不変。一次ソースは各 LP frontmatter の
+   `faq` 配列に移動)/ `@astrojs/sitemap` 導入 + `public/robots.txt` /
+   AI クローラー向け `public/llms.txt` 新設 / SoftwareApplication JSON-LD に
+   screenshot・featureList・sameAs を追記
+2. **LP の title にキーワード追加**(日英とも既存コピーに「| 共有フォルダで使える
+   画像管理(DAM)アプリ」/「| DAM app for Windows」を後置。あめさん案 A 承認)
+
+次回の残り(SEO/AIO 続き):
+
+1. **Search Console / Bing Webmaster とも登録完了(2026-08-02)**。所有権確認
+   ファイルは `public/google0edd9d5dd7f2424f.html` と `public/BingSiteAuth.xml`
+   (**両方とも削除禁止** = 消すと所有権失効)。プロパティはどちらもサイトルート。
+   sitemap は両方に送信済みだが、**GSC 側は「取得できませんでした」表示のまま**
+   (新規プロパティの既知の表示。初回クロール後に「成功」へ変わるのが典型)。
+   数日後に確認し、変わらなければ調査する
+2. **LangRedirect(言語自動転送)の扱いは保留**: Googlebot(英語環境で JS 実行)
+   にも転送が効き、日本語 LP がリダイレクト扱いになるリスクを発見済み。
+   Search Console で `/drivedam/` のインデックス実態を見てから、
+   自動転送をやめて「View in English?」バナー方式に変えるかを判断する
+3. 検索意図に応える記事セクション(英語の比較・How-to 記事、日本語記事)と
+   TOP 英語版は未着手(従来からの「3. 次回着手するなら」も生きている)
+
+### v1.2.0 反映セッション(本日最初。16:38 の `afe843b` / `d114dba`)
+
+worktree `claude/drive-dam-1-2-0-site-update-9e23c2` で作業。
 
 1. **Drive DAM v1.2.0(2026-08-02 公開)を更新履歴に追加**。`src/data/releases.ts` に
    1 ブロック足しただけで、更新履歴ページ・ヒーロー下ノート・価格メタ・JSON-LD の
-   日英すべてが追随することを本番で確認した
+   日英すべてが追随することを本番で確認した。公開日はストア API で裏取り
+   (`PackageFullName` = `amedev.DriveDAM_1.2.0.0_x64`)
 2. **RAW・PDF のサムネイル対応に合わせて「すべてのファイルを可視化」カードの注記を修正**。
    v1.2.0 で RAW と PDF がサムネイル表示に対応したため、
    「※画像以外のサムネイル表示には未対応です」が事実と食い違っていた。
    日本語 LP・英語 LP・`docs/site-copy.md` の 3 箇所を揃えて直した
 3. **RAW / PDF の機能カード追加は見送った**(3 章の 1 番)。機能カードは実スクショで
-   見せる方針なので、撮影待ち
+   見せる方針で、撮影待ちのため
 
-**ドキュメントとの差分**: このセッションは worktree で作業した。1 章に
-「worktree 運用外」と書いてあったが実際には問題なく回せたので、記述を実態に合わせた。
+過去セッション(2026-07-27 以前)の内容は `docs/site-history.md` を参照。
 
 ## 1. プロジェクト概要
 
@@ -33,9 +76,10 @@
 - **スタック**: Astro 7(minimal / TypeScript strict)。外部フォント・解析・Cookie なし
 - **公開先**: GitHub Pages User Site `hello-amedev/hello-amedev.github.io`。
   User Site なのでルート配信 = `base` 調整不要
-- **設置場所**: `~/Documents/claude-private/ame-dev-site/`。
-  worktree 運用に載せて問題なく回る(2026-08-02 実績)。
-  dev サーバーは `.claude/launch.json`(port 4321)から起動できる
+- **設置場所**: `~/Documents/claude-private/ame-dev-site/`
+  (worktree 運用に移行済み。セッションは `claude/<name>` ブランチで作業し、
+  終了時に main へ ff-merge)。dev サーバーはブラウザペインから起動する場合、
+  `.claude/launch.json`(port 4321)を使う
 
 ## 2. 現在の状態(2026-08-02)
 
@@ -49,6 +93,12 @@
 コンセプトは**「白の紙面に、パステルの光とガラスの道具」**。
 一次ソースは `src/pages/index.astro` + `src/styles/hub.css`、
 作品データは `src/data/apps.ts`。
+
+- **ブランドロゴ**: ヘッダー左上にインライン SVG(gradient id
+  `amedev-brand-g`)。マスターは `public/assets/brand/ame-dev-logo.svg`。
+  favicon(svg / ico)も同ロゴ。プロフィール画像を再生成する時は
+  マスター SVG を 512px でレンダリングする(viewBox を `4 4 40 40` に
+  詰めると円形クロップにちょうど良い)
 
 - **メッシュグラデーション**: 輪郭のある色面を `filter: blur()` でぼかす方式。
   珊瑚(左上)・淡黄(右上)・下辺のスペクトル帯・菫(右下)の非対称構図。

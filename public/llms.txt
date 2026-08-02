@@ -1,0 +1,31 @@
+# ame_dev
+
+ame_dev is an independent Windows app developer based in Japan.
+Official site: https://hello-amedev.github.io/
+Contact: amemitai@gmail.com
+
+## Drive DAM
+
+Drive DAM is a digital asset management (DAM) app for Windows that works directly
+on folders you already have — shared folders on Google Drive, Dropbox, Box, or a
+company file server, as well as local folders. It adds tags, color labels, usage
+permissions, favorites, and fast filtered search on top of the existing folder
+structure, without moving, importing, or modifying files. Tags and thumbnails are
+shared with the whole team through the shared folder itself; no server and no
+account are required, and nothing is sent to any external service.
+
+Key facts:
+
+- Platform: Windows 10 (64-bit) / Windows 11
+- Formats: JPEG, PNG, HEIC, camera RAW (NEF, CR2, ARW, DNG, and more),
+  PDF (in-app viewing), plus tagging and search for videos and Office files
+- Pricing: one-time purchase with a 30-day full-featured free trial (Microsoft Store)
+- Interface languages: English, Japanese
+
+Links:
+
+- Product page (English): https://hello-amedev.github.io/en/drivedam/
+- Product page (Japanese): https://hello-amedev.github.io/drivedam/
+- Release notes: https://hello-amedev.github.io/en/drivedam/releases/
+- Microsoft Store: https://apps.microsoft.com/detail/9P4L43W1XP7P
+- Privacy policy: https://hello-amedev.github.io/en/privacy/

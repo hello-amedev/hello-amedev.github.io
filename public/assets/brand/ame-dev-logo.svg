@@ -1,13 +1,13 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="5 5 38 38" role="img" aria-label="ame_dev">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" role="img" aria-label="ame_dev logo">
 	<defs>
-		<linearGradient id="g" gradientUnits="userSpaceOnUse" x1="12" y1="8" x2="40" y2="44">
+		<linearGradient id="amedev-g" gradientUnits="userSpaceOnUse" x1="12" y1="8" x2="40" y2="44">
 			<stop offset="0" stop-color="#94deec"/>
 			<stop offset="0.45" stop-color="#96b0f5"/>
 			<stop offset="0.75" stop-color="#b298f0"/>
 			<stop offset="1" stop-color="#e9b2e0"/>
 		</linearGradient>
 	</defs>
-	<g fill="url(#g)">
+	<g fill="url(#amedev-g)">
 		<path d="M 8 17.5 A 9.5 9.5 0 0 1 26.5 14.44 A 7 7 0 0 1 40 17 V 21 A 6 6 0 0 1 34 27 H 14 A 6 6 0 0 1 8 21 Z"/>
 		<path d="M 15 29.6 C 16.5 31.6 17.7 33.2 17.7 35 A 2.7 2.7 0 1 1 12.3 35 C 12.3 33.2 13.5 31.6 15 29.6 Z"/>
 		<path d="M 24 33.6 C 25.5 35.6 26.7 37.2 26.7 39 A 2.7 2.7 0 1 1 21.3 39 C 21.3 37.2 22.5 35.6 24 33.6 Z"/>

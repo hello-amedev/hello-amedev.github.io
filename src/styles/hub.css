@@ -145,12 +145,11 @@ html[data-page="hub"] :focus-visible {
 .hb-brand:hover {
 	text-decoration: none;
 }
-.hb-brand-dot {
-	width: 7px;
-	height: 7px;
-	border-radius: 50%;
-	background: var(--acc);
-	box-shadow: 0 0 0 3px color-mix(in srgb, var(--acc) 18%, transparent);
+.hb-brand-logo {
+	width: 22px;
+	height: 22px;
+	display: block;
+	flex-shrink: 0;
 }
 .hb-nav {
 	display: flex;
