@@ -8,12 +8,27 @@
 | なぜこの実装なのか / 過去の経緯 | [docs/site-history.md](docs/site-history.md) |
 | 製品本体 Drive DAM の最新 | `~/Documents/claude-private/drive-dam/HANDOFF.md` |
 
-## 0. 次の Claude へ(2026-08-02 セッション終了時)
+## 0. 次の Claude へ(2026-08-02 第 2 セッション終了時)
 
-**未 push なし。ローカル `main` と `origin/main` は一致している。**
+### 第 2 セッション(ブランドロゴ導入)
 
-このセッションでやったこと(Drive DAM マーケ強化の一環。全体方針・経緯は
-`~/Documents/claude-private/drive-dam/HANDOFF.md` 2 章「マーケ強化セッション第1弾」を参照):
+worktree `claude/ame-dev-brand-logo-ad3c5e` で作業(セッション終了時に main へ
+ff-merge する運用)。
+
+1. **ame_dev ブランドロゴを制定**。雲+雨粒 3 つを 1 枚の連続グラデーション
+   (水色 `#94DEEC` → 青紫 `#96B0F5` → 菫 `#B298F0` → 桃 `#E9B2E0` =
+   TOP のパステルパレット)で描いた SVG。あめさんと 5 案+微調整 6 案を
+   比較して決定(雲は低いスリーク形状、雨粒はしずく形・山型配置)。
+   **マスターは `public/assets/brand/ame-dev-logo.svg`**
+2. **総合 TOP ヘッダー**の青ドットをロゴ(22px インライン SVG、
+   `.hb-brand-logo`)に差し替え
+3. **favicon.svg / favicon.ico を新ロゴに差し替え**(ico は 16/32/48 内包。
+   Pillow で 512px 透過レンダリングからダウンスケール生成)
+4. プロフィール用 PNG 3 種(紙色・ダーク・透過、512px)はあめさんへ納品済み
+   (リポジトリには含めない)
+
+### 第 1 セッション(Drive DAM マーケ強化の一環。全体方針・経緯は
+`~/Documents/claude-private/drive-dam/HANDOFF.md` 2 章「マーケ強化セッション第1弾」を参照)
 
 1. **SEO/AIO 強化一式**: FAQ を JS 組み立て → Astro 静的レンダリング + FAQPage
    JSON-LD に変更(日英、見た目・開閉挙動は不変。一次ソースは各 LP frontmatter の
@@ -47,7 +62,8 @@
 - **公開先**: GitHub Pages User Site `hello-amedev/hello-amedev.github.io`。
   User Site なのでルート配信 = `base` 調整不要
 - **設置場所**: `~/Documents/claude-private/ame-dev-site/`
-  (**worktree 運用外**。実質 main 側で作業する)
+  (worktree 運用に移行済み。セッションは `claude/<name>` ブランチで作業し、
+  終了時に main へ ff-merge)
 
 ## 2. 現在の状態(2026-07-27)
 
@@ -61,6 +77,12 @@
 コンセプトは**「白の紙面に、パステルの光とガラスの道具」**。
 一次ソースは `src/pages/index.astro` + `src/styles/hub.css`、
 作品データは `src/data/apps.ts`。
+
+- **ブランドロゴ**: ヘッダー左上にインライン SVG(gradient id
+  `amedev-brand-g`)。マスターは `public/assets/brand/ame-dev-logo.svg`。
+  favicon(svg / ico)も同ロゴ。プロフィール画像を再生成する時は
+  マスター SVG を 512px でレンダリングする(viewBox を `4 4 40 40` に
+  詰めると円形クロップにちょうど良い)
 
 - **メッシュグラデーション**: 輪郭のある色面を `filter: blur()` でぼかす方式。
   珊瑚(左上)・淡黄(右上)・下辺のスペクトル帯・菫(右下)の非対称構図。
