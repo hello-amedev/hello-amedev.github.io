@@ -8,7 +8,19 @@
 | なぜこの実装なのか / 過去の経緯 | [docs/site-history.md](docs/site-history.md) |
 | 製品本体 Drive DAM の最新 | `~/Documents/claude-private/drive-dam/HANDOFF.md` |
 
-## 0. 次の Claude へ(2026-08-02 第 2 セッション終了時)
+## 0. 次の Claude へ(2026-08-11 繁体字版サイト公開セッション終了時)
+
+### 繁体字版サイト公開セッション(2026-08-11)
+
+worktree `claude/drive-dam-traditional-chinese-update-ba9708` で作業。
+
+1. **日英LPを更新**: `func-files` のスクショを差し替え(RAW/PDF のサムネイルが実際に表示された画面に。旧 3 章 1 番の「RAW/PDF の機能カード追加」は、独立カードではなくこの差し替えで表現する方針に変更し解消)。新機能カード「記録の紐づけ直し」(EN: Relink records)を「チームでの運用」グループに追加。更新履歴に v1.3.0 を追加(文面は drive-dam 側の `docs/store-listing.md` で確定済みのものを転記)
+2. **繁体字版 LP(`/zh/drivedam/` `/zh/drivedam/releases/` `/zh/privacy/`)を新規公開**。日英版と完全に同じ構成・内容で新設(新機能カード込み)。台湾ストアの実データ(価格 **679 TWD**)は Store API で実測確認済み。**og:image も日英版と同じ構図で新規作成**(`hero-main-zh.png` を使い、ブラウザの Canvas API で手組みして PNG 出力。日英版の生成元テンプレートはリポジトリ内に見当たらず、構図を目視で再現した)
+3. **言語まわりを 2 言語 → 3 言語対応に拡張**: `DrivedamLayout` / `Base` / `SiteHeader` / `SiteFooter` / `LangRedirect` を改修。`altHref`(単一文字列)だった props を **`alt`(`{ja?, en?, zh?}` のマップ)に置き換え**(呼び出し元 9 ファイルすべて追随)。自動判定・切替リンク・hreflang もすべて 3 方向化
+4. **繁体字フォント(Noto Sans TC)を追加**(`@fontsource/noto-sans-tc`)。`:lang(zh)` セレクタで palt(和文詰め組み)を切り、フォントを差し替え(`drivedam.css` ・ `global.css` の両方)
+5. **翻訳体制**: Sonnet サブエージェント 3 体並列で翻訳(LP 本文 / 更新履歴 / プライバシーポリシー、それぞれ drive-dam 側の確定済み用語集・Store 掲載文を参照させて用語を統一)→ **Fable サブエージェントが検品役**(1 回目は用語統一・整合性、2 回目はあめさん指示で自然さ・魅力度の観点)。**前回の体制はSonnetが翻訳者・Fableが監督/検品だったとあめさんから訂正が入り、その体制で実施**(過去ログに「Fable監督+Sonnet実装」という逆の記述が残っていたため要注意)
+6. `releases.ts` に **`zh: string[]` フィールドを新設**。全 8 バージョン分(v1.0.0〜v1.3.0)の繁体字訳を用意(v1.3.0 は Store 掲載文を転記、それ以前は新規翻訳)
+7. 新機能カードの日本語原文は今回書き起こし。あめさんの一次レビューで「ほかのメンバーにリネーム・移動されると/元の名前に取り残される」→「**アプリ外で直接**リネーム・移動されると/**元のフォルダ**に取り残される」に訂正(トリガー条件と残留場所の誤りを修正、日英中 3 言語とも追随)
 
 ### 第 2 セッション(ブランドロゴ導入)
 
@@ -81,12 +93,17 @@ worktree `claude/drive-dam-1-2-0-site-update-9e23c2` で作業。
   終了時に main へ ff-merge)。dev サーバーはブラウザペインから起動する場合、
   `.claude/launch.json`(port 4321)を使う
 
-## 2. 現在の状態(2026-08-02)
+## 2. 現在の状態(2026-08-11)
 
-### ページ構成(7 ページ・すべて公開済み)
+### ページ構成(10 ページ・すべて公開済み)
 
 `/` `/drivedam/` `/drivedam/releases/` `/privacy/` +
-`/en/drivedam/` `/en/drivedam/releases/` `/en/privacy/`
+`/en/drivedam/` `/en/drivedam/releases/` `/en/privacy/` +
+`/zh/drivedam/` `/zh/drivedam/releases/` `/zh/privacy/`
+
+繁体字版は日英版と同じ構成(総合 TOP `/` のみ繁体字化はスコープ外。TOP 自体まだ英語版もない)。
+3 言語の切替は `alt` prop(`{ja?, en?, zh?}` のマップ)で配線。新しい多言語ページを足す時は
+`LangRedirect` への `current`/`alt` の受け渡しと、hreflang の 3 方向出力を確認すること。
 
 ### 総合 TOP(`/`)
 
@@ -120,7 +137,7 @@ worktree `claude/drive-dam-1-2-0-site-update-9e23c2` で作業。
 配列の**先頭に 1 ブロック足すだけ**で、更新履歴ページ・ヒーロー下ノート・
 価格メタ・JSON-LD の日英すべてが追随する。
 
-現在の最新は **v1.2.0(2026-08-02)**。
+現在の最新は **v1.3.0(2026-08-07)**。
 
 ### デプロイ
 
@@ -128,17 +145,15 @@ worktree `claude/drive-dam-1-2-0-site-update-9e23c2` で作業。
 
 ## 3. 次回着手するなら
 
-1. **RAW / PDF の機能カードを LP に追加**(v1.2.0 の目玉だが未掲載)。
-   必要なスクショは「RAW サムネイルが並んだ一覧」「PDF を内蔵ビューアで開いた画面」の
-   日英 2 枚ずつ。撮影はあめさん待ち。現状は「すべてのファイルを可視化」カードの
-   本文で 1 文触れているだけ
-2. **TOP のコピー再点検**。一言紹介・リード文は実装しながら書いたもので、
+1. **TOP のコピー再点検**。一言紹介・リード文は実装しながら書いたもので、
    あめさんの目でまだ通していない
-3. **スクリーンショットの追加**。Works のカードは全作品アイコンのみ。
+2. **スクリーンショットの追加**。Works のカードは全作品アイコンのみ。
    主力カード(Drive DAM)だけが実画面を使っている
-4. **TOP の英語版**。現在 `/` は日本語のみ。Drive DAM と同じ
-   「同一構造の別ファイル」方式で追加できる
-5. `func-download.png` は現在未使用(継続保留)
+3. **TOP の英語版・繁体字版**。現在 `/` は日本語のみ。Drive DAM と同じ
+   「同一構造の別ファイル」方式で追加できる(繁体字は英語版より後でよい)
+4. `func-download.png` は現在未使用(継続保留)
+5. 保留中の SEO/AIO(Search Console の様子見・LangRedirect のバナー化検討・
+   検索意図記事)は 2026-08-02 セッションから引き続き未着手
 
 ## 4. 既知の落とし穴
 
@@ -179,10 +194,17 @@ worktree `claude/drive-dam-1-2-0-site-update-9e23c2` で作業。
 
 ### 多言語
 
-- **多言語ページを新設する時**は Layout の `altHref` に対応言語 URL を渡す
-  (`<LangRedirect />` が自動で判定・転送する)。加えて、そのページ内の
-  言語切替リンクには必ず `?lang=ja` / `?lang=en` を付けること。
+- **多言語ページを新設する時**は Layout(`DrivedamLayout`/`Base`)の `alt` prop に
+  「自分以外の言語 → URL」のマップを渡す(例: ja ページなら
+  `alt={{ en: "/en/...", zh: "/zh/..." }}`)。`<LangRedirect current alt />` が
+  自動判定・転送・hreflang をこのマップから組み立てる。加えて、そのページ内の
+  言語切替リンクには必ず `?lang=ja` / `?lang=en` / `?lang=zh` を付けること。
   付けないと自動判定に上書きされる
+- **既存言語ページをコピーして新しい言語ディレクトリを作る時、相対 import パスの深さがズレる**。
+  例: `src/pages/drivedam/index.astro`(`pages/<page>` = 2 階層)をコピーして
+  `src/pages/zh/drivedam/index.astro`(`pages/zh/<page>` = 3 階層)を作ると、
+  `../../layouts/...` のままでは 1 階層足りずビルドが `UNRESOLVED_IMPORT` で落ちる。
+  コピー元と同じ深さの既存言語(この場合は `en/`)の import 行を基準にすること
 
 ### 環境
 
