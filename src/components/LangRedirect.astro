@@ -1,16 +1,25 @@
 ---
-// ブラウザ言語で JA/EN ページ間を初回のみ自動転送する共通スクリプト。
+// ブラウザ言語で JA/EN/繁體中文 ページ間を初回のみ自動転送する共通スクリプト。
 // - 初回訪問時のみ判定し、sessionStorage に選択を記録
 // - 以降は内部リンク遷移で言語が保たれる(再判定しない)
-// - `?lang=ja` / `?lang=en` 付きで来たら判定スキップ + 記録更新 + URL からパラメータ除去
+// - `?lang=ja` / `?lang=en` / `?lang=zh` 付きで来たら判定スキップ + 記録更新 + URL からパラメータ除去
+interface Props {
+	/** このページの言語 */
+	current: "ja" | "en" | "zh";
+	/** 他言語版の URL(存在するものだけ渡す。自分の言語は含めない) */
+	alt: Partial<Record<"ja" | "en" | "zh", string>>;
+}
+const { current, alt } = Astro.props;
 ---
-<script is:inline>
+<script is:inline define:vars={{ current, alt }}>
 	(function () {
 		try {
-			var pageLang = document.documentElement.lang === "en" ? "en" : "ja";
+			var pageLang = current;
+			var hrefs = alt;
+			hrefs[pageLang] = location.pathname;
 			var params = new URLSearchParams(location.search);
 			var explicit = params.get("lang");
-			if (explicit === "ja" || explicit === "en") {
+			if (explicit === "ja" || explicit === "en" || explicit === "zh") {
 				sessionStorage.setItem("lang-choice", explicit);
 				params.delete("lang");
 				var q = params.toString();
@@ -19,22 +28,19 @@
 				return;
 			}
 			var chosen = sessionStorage.getItem("lang-choice");
-			if (chosen === "ja" || chosen === "en") return;
+			if (chosen === "ja" || chosen === "en" || chosen === "zh") return;
 			var langs = navigator.languages && navigator.languages.length
 				? navigator.languages
 				: [navigator.language || ""];
 			if (!langs[0]) return;
+			var prefersZh = langs.some(function (l) { return /^zh-(hant|tw|hk|mo)\b/i.test(l); });
 			var prefersJa = langs.some(function (l) { return /^ja\b/i.test(l); });
-			var want = prefersJa ? "ja" : "en";
+			var want = prefersZh ? "zh" : prefersJa ? "ja" : "en";
 			sessionStorage.setItem("lang-choice", want);
 			if (want === pageLang) return;
-			var next;
-			if (want === "en") {
-				next = "/en" + location.pathname + location.search + location.hash;
-			} else {
-				next = location.pathname.replace(/^\/en/, "") + location.search + location.hash;
-			}
-			location.replace(next);
+			var target = hrefs[want];
+			if (!target) return;
+			location.replace(target + location.search + location.hash);
 		} catch (e) {
 			// 例外時は判定せず通常表示に fallback
 		}

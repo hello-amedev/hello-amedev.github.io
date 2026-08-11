@@ -9,33 +9,39 @@ import "@fontsource/noto-sans-jp/400.css";
 import "@fontsource/noto-sans-jp/500.css";
 import "@fontsource/noto-sans-jp/600.css";
 import "@fontsource/noto-sans-jp/700.css";
+import "@fontsource/noto-sans-tc/400.css";
+import "@fontsource/noto-sans-tc/500.css";
+import "@fontsource/noto-sans-tc/600.css";
+import "@fontsource/noto-sans-tc/700.css";
 import "../styles/drivedam.css";
 import LangRedirect from "../components/LangRedirect.astro";
 
 interface Props {
 	title: string;
 	description?: string;
-	lang?: "ja" | "en";
-	altHref?: string;
+	lang?: "ja" | "en" | "zh";
+	/** 他言語版の URL(存在するものだけ渡す。自分の言語は含めない) */
+	alt?: Partial<Record<"ja" | "en" | "zh", string>>;
 	store?: { url: string; price: string; currency: string; version: string };
 }
 
 const {
 	title,
 	lang = "ja",
-	altHref,
+	alt,
 	store,
 	description = lang === "en"
 		? "Digital asset management for small teams that works in place on your shared folders — Google Drive, Dropbox, Box, office file servers, or local folders. Manage tens of thousands of images together, safely and fast."
-		: "Google Drive・Dropbox・Box・社内ファイルサーバーの共有フォルダで、そのまま使える中小チーム向けのデジタルアセット管理アプリ Drive DAM。数万枚の画像を、複数人で、安全かつ高速に管理できます。",
+		: lang === "zh"
+			? "從數萬張圖片中，快速找到需要的那一張。圖片留在原本的位置——連 Google Drive、Dropbox、Box、公司檔案伺服器或本機資料夾的共用資料夾也能直接管理的中小團隊數位資產管理應用程式 Drive DAM。可安全、快速地與團隊共同管理數萬張圖片。"
+			: "Google Drive・Dropbox・Box・社内ファイルサーバーの共有フォルダで、そのまま使える中小チーム向けのデジタルアセット管理アプリ Drive DAM。数万枚の画像を、複数人で、安全かつ高速に管理できます。",
 } = Astro.props;
 
 const canonical = new URL(Astro.url.pathname, Astro.site);
-const ogImage = new URL(
-	lang === "en" ? "/drivedam/og-image-en.png" : "/drivedam/og-image.png",
-	Astro.site,
-);
-const ogLocale = lang === "en" ? "en_US" : "ja_JP";
+const ogImagePath =
+	lang === "en" ? "/drivedam/og-image-en.png" : lang === "zh" ? "/drivedam/og-image-zh.png" : "/drivedam/og-image.png";
+const ogImage = new URL(ogImagePath, Astro.site);
+const ogLocale = lang === "en" ? "en_US" : lang === "zh" ? "zh_TW" : "ja_JP";
 const featureList =
 	lang === "en"
 		? [
@@ -45,13 +51,21 @@ const featureList =
 				"Resize and crop exports with social media size presets",
 				"View HEIC, camera RAW (NEF, CR2, ARW, DNG, and more), and PDF files",
 			]
-		: [
-				"数万枚でも快適なサムネイル一覧と高速検索",
-				"タグ・色ラベル・お気に入り・使用可否・メモで画像を整理",
-				"タグとサムネイルを共有フォルダ経由でチームに共有",
-				"リサイズ・トリミング書き出し(SNS サイズ等のプリセット対応)",
-				"HEIC・カメラ RAW(NEF・CR2・ARW・DNG など)・PDF の表示",
-			];
+		: lang === "zh"
+			? [
+					"數萬張圖片也能流暢瀏覽縮圖與快速搜尋",
+					"以標籤、顏色標籤、最愛、使用限制、備註整理圖片",
+					"經由共用資料夾與團隊共用標籤和縮圖",
+					"調整大小與裁切匯出(內建社群媒體尺寸等預設集)",
+					"檢視 HEIC、相機 RAW(NEF、CR2、ARW、DNG 等)與 PDF 檔案",
+				]
+			: [
+					"数万枚でも快適なサムネイル一覧と高速検索",
+					"タグ・色ラベル・お気に入り・使用可否・メモで画像を整理",
+					"タグとサムネイルを共有フォルダ経由でチームに共有",
+					"リサイズ・トリミング書き出し(SNS サイズ等のプリセット対応)",
+					"HEIC・カメラ RAW(NEF・CR2・ARW・DNG など)・PDF の表示",
+				];
 const jsonLd = store
 	? {
 			"@context": "https://schema.org",
@@ -68,36 +82,44 @@ const jsonLd = store
 			inLanguage: lang,
 			offers: { "@type": "Offer", price: store.price, priceCurrency: store.currency },
 			screenshot: new URL(
-				lang === "en" ? "/drivedam/assets/hero-main-en.png" : "/drivedam/assets/hero-main.png",
+				lang === "en"
+					? "/drivedam/assets/hero-main-en.png"
+					: lang === "zh"
+						? "/drivedam/assets/hero-main-zh.png"
+						: "/drivedam/assets/hero-main.png",
 				Astro.site,
 			).href,
 			featureList,
 			sameAs: [store.url],
 		}
 	: undefined;
-const jaHref = lang === "ja" ? Astro.url.pathname : altHref;
-const enHref = lang === "en" ? Astro.url.pathname : altHref;
-const jaUrl = altHref ? new URL(jaHref!, Astro.site) : undefined;
-const enUrl = altHref ? new URL(enHref!, Astro.site) : undefined;
+const langUrls: Partial<Record<"ja" | "en" | "zh", URL>> = {};
+if (alt) {
+	langUrls[lang] = canonical;
+	for (const [code, href] of Object.entries(alt) as ["ja" | "en" | "zh", string][]) {
+		langUrls[code] = new URL(href, Astro.site);
+	}
+}
 ---
 
 <!doctype html>
-<html lang={lang}>
+<html lang={lang === "zh" ? "zh-Hant" : lang}>
 	<head>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		{altHref && <LangRedirect />}
+		{alt && <LangRedirect current={lang} alt={alt} />}
 		<meta name="theme-color" content="#F6F8FA" />
 		<link rel="icon" type="image/png" sizes="32x32" href="/drivedam/favicon-32.png" />
 		<link rel="apple-touch-icon" href="/drivedam/apple-touch-icon.png" />
 		<title>{title}</title>
 		<meta name="description" content={description} />
 		<link rel="canonical" href={canonical} />
-		{altHref && (
+		{langUrls.ja && (
 			<>
-				<link rel="alternate" hreflang="ja" href={jaUrl} />
-				<link rel="alternate" hreflang="en" href={enUrl} />
-				<link rel="alternate" hreflang="x-default" href={jaUrl} />
+				{langUrls.ja && <link rel="alternate" hreflang="ja" href={langUrls.ja} />}
+				{langUrls.en && <link rel="alternate" hreflang="en" href={langUrls.en} />}
+				{langUrls.zh && <link rel="alternate" hreflang="zh-Hant" href={langUrls.zh} />}
+				<link rel="alternate" hreflang="x-default" href={langUrls.ja} />
 			</>
 		)}
 		<meta property="og:type" content="website" />

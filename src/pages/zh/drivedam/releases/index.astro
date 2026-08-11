@@ -1,0 +1,142 @@
+---
+import DrivedamLayout from "../../../../layouts/DrivedamLayout.astro";
+import { releases } from "../../../../data/releases";
+const storeUrl = "https://apps.microsoft.com/detail/9P4L43W1XP7P?hl=zh-tw&gl=TW";
+---
+
+<DrivedamLayout
+  title="更新紀錄 — Drive DAM"
+  description="Drive DAM 的更新紀錄。彙整了在 Microsoft Store 上發布的各版本變更內容。"
+  lang="zh"
+  alt={{ ja: "/drivedam/releases/", en: "/en/drivedam/releases/" }}
+>
+
+<header class="site-head is-solid" id="siteHead">
+  <div class="head-in">
+    <a class="brand" href="/zh/drivedam/"><img src="/drivedam/assets/app-icon.png" alt="">Drive DAM</a>
+    <nav class="head-nav" aria-label="產品頁面選單">
+      <a href="/zh/drivedam/#about">關於 Drive DAM</a>
+      <a href="/zh/drivedam/#traits">特色</a>
+      <a href="/zh/drivedam/#funcs">功能</a>
+      <a href="/zh/drivedam/#price">下載</a>
+      <a href="/zh/drivedam/#faq">FAQ</a>
+    </nav>
+    <a class="head-link" href={storeUrl} target="_blank" rel="noopener noreferrer">在 Microsoft Store 取得</a>
+    <a class="head-lang" href="/drivedam/releases/?lang=ja">日本語</a>
+    <a class="head-lang" href="/en/drivedam/releases/?lang=en">English</a>
+    <button class="head-burger" id="headBurger" aria-label="開啟選單" aria-expanded="false" aria-controls="headOverlay">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<div class="head-overlay" id="headOverlay" aria-hidden="true">
+  <nav class="head-overlay-nav" aria-label="產品頁面選單(行動版)">
+    <a href="/zh/drivedam/#about">關於 Drive DAM</a>
+    <a href="/zh/drivedam/#traits">特色</a>
+    <a href="/zh/drivedam/#funcs">功能</a>
+    <a href="/zh/drivedam/#price">下載</a>
+    <a href="/zh/drivedam/#faq">FAQ</a>
+    <a href="/drivedam/releases/?lang=ja">日本語</a>
+    <a href="/en/drivedam/releases/?lang=en">English</a>
+  </nav>
+  <p class="head-overlay-foot"><a href={storeUrl} target="_blank" rel="noopener noreferrer">已在 Microsoft Store 上架</a></p>
+</div>
+
+<!-- 在無法執行 JS 的環境下，reveal 不會觸發、內容會消失不見，因此這種情況下改為全部顯示 -->
+<noscript>
+  <style>.cap,.rel-item,.rel-back{opacity:1;transform:none}</style>
+</noscript>
+
+<main class="rel-page">
+  <div class="wrap">
+    <div class="cap" data-cap>更新紀錄</div>
+    <h1 class="rel-h">Drive DAM 的更新紀錄</h1>
+    <p class="rel-lead">
+      這是在 Microsoft Store 上發布的各版本變更內容。<br>
+      更新會透過 Microsoft Store 自動推送。
+    </p>
+
+    <ol class="rel-list">
+      {releases.map((r) => (
+        <li class="rel-item" data-reveal>
+          <div class="rel-meta">
+            <span class="rel-ver">v{r.version}</span>
+            <time class="rel-date" datetime={r.date}>{r.date}</time>
+          </div>
+          <ul class="rel-body">
+            {r.zh.map((line) => <li>{line}</li>)}
+          </ul>
+        </li>
+      ))}
+    </ol>
+
+    <p class="rel-back" data-reveal><a href="/zh/drivedam/">返回 Drive DAM 產品頁面</a></p>
+  </div>
+</main>
+
+<footer class="site-foot">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <span class="brand"><img src="/drivedam/assets/app-icon.png" alt="">Drive DAM</span>
+        <p>無論是本機資料夾，還是線上儲存服務等，都能直接使用的數位資產管理。透過共用資料夾，讓團隊的圖片管理與運用更有效率。</p>
+      </div>
+      <div class="foot-col">
+        <p class="foot-t">支援的儲存服務</p>
+        <p class="foot-desc">支援可在檔案總管中使用的線上儲存服務（如 Google Drive）、公司檔案伺服器，以及本機資料夾</p>
+      </div>
+      <div class="foot-col">
+        <p class="foot-t">關於 Drive DAM</p>
+        <ul>
+          <li><a href="/zh/drivedam/">產品頁面</a></li>
+          <li><a href="/zh/drivedam/releases/">更新紀錄</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot-base">
+      <a href="/">© ame_dev</a>
+      <a href="/zh/privacy/">隱私權政策</a>
+    </div>
+  </div>
+</footer>
+
+<script is:inline>
+(function(){
+"use strict";
+
+/* ---------- ハンバーガーメニュー(モバイル。LP と同じ挙動) ---------- */
+var burger = document.getElementById("headBurger");
+var overlay = document.getElementById("headOverlay");
+if(burger && overlay){
+  function setMenu(open){
+    overlay.classList.toggle("open", open);
+    burger.setAttribute("aria-expanded", open ? "true" : "false");
+    overlay.setAttribute("aria-hidden", open ? "false" : "true");
+    burger.setAttribute("aria-label", open ? "關閉選單" : "開啟選單");
+    document.body.style.overflow = open ? "hidden" : "";
+  }
+  burger.addEventListener("click", function(){
+    setMenu(!overlay.classList.contains("open"));
+  });
+  overlay.querySelectorAll("a").forEach(function(a){
+    a.addEventListener("click", function(){ setMenu(false); });
+  });
+  document.addEventListener("keydown", function(e){
+    if(e.key === "Escape" && overlay.classList.contains("open")) setMenu(false);
+  });
+}
+
+/* ---------- Reveal(LP の IO 共用エンジンの縮小版) ---------- */
+var io = new IntersectionObserver(function(entries){
+  entries.forEach(function(en){
+    if(!en.isIntersecting) return;
+    en.target.classList.add("is-in");
+    io.unobserve(en.target);
+  });
+},{threshold:.2, rootMargin:"0px 0px -6% 0px"});
+document.querySelectorAll("[data-reveal],[data-cap]").forEach(function(el){ io.observe(el); });
+})();
+</script>
+
+</DrivedamLayout>

@@ -1,7 +1,10 @@
 ---
 // サイト共通フッター。問い合わせ・他製品（将来ハブ）・プライバシーポリシー。
-const { lang = "ja" } = Astro.props as { lang?: "ja" | "en" };
+const { lang = "ja" } = Astro.props as { lang?: "ja" | "en" | "zh" };
 const isEn = lang === "en";
+const isZh = lang === "zh";
+const drivedamHref = isEn ? "/en/drivedam/" : isZh ? "/zh/drivedam/" : "/drivedam/";
+const privacyHref = isEn ? "/en/privacy/" : isZh ? "/zh/privacy/" : "/privacy/";
 const year = new Date().getFullYear();
 ---
 
@@ -13,21 +16,23 @@ const year = new Date().getFullYear();
 				<p class="footer-brand__desc">
 					{isEn
 						? "Building small tools that make a small team's work a little lighter."
-						: "小さなチームの仕事を、すこし軽くする道具をつくっています。"}
+						: isZh
+							? "為小型團隊打造，讓工作更輕鬆一些的工具。"
+							: "小さなチームの仕事を、すこし軽くする道具をつくっています。"}
 				</p>
 			</div>
 			<div class="footer-col">
-				<h4>{isEn ? "Products" : "製品"}</h4>
+				<h4>{isEn ? "Products" : isZh ? "產品" : "製品"}</h4>
 				<ul>
-					<li><a href={isEn ? "/en/drivedam/" : "/drivedam/"}>Drive DAM</a></li>
-					<li><span class="footer-muted">{isEn ? "More to come" : "ほか順次公開"}</span></li>
+					<li><a href={drivedamHref}>Drive DAM</a></li>
+					<li><span class="footer-muted">{isEn ? "More to come" : isZh ? "其他產品陸續推出" : "ほか順次公開"}</span></li>
 				</ul>
 			</div>
 			<div class="footer-col">
-				<h4>{isEn ? "Support" : "サポート"}</h4>
+				<h4>{isEn ? "Support" : isZh ? "支援" : "サポート"}</h4>
 				<ul>
-					<li><a href="mailto:amemitai@gmail.com">{isEn ? "Contact" : "お問い合わせ"}</a></li>
-					<li><a href={isEn ? "/en/privacy/" : "/privacy/"}>{isEn ? "Privacy Policy" : "プライバシーポリシー"}</a></li>
+					<li><a href="mailto:amemitai@gmail.com">{isEn ? "Contact" : isZh ? "聯絡我們" : "お問い合わせ"}</a></li>
+					<li><a href={privacyHref}>{isEn ? "Privacy Policy" : isZh ? "隱私權政策" : "プライバシーポリシー"}</a></li>
 				</ul>
 			</div>
 		</div>

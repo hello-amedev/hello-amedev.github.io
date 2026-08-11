@@ -1,0 +1,112 @@
+---
+import Base from "../../../layouts/Base.astro";
+const updated = "2026年7月20日";
+---
+
+<Base
+	title="隱私權政策 — ame_dev"
+	description="說明 ame_dev 網站與應用程式對個人資料與使用者資料的處理方式。"
+	lang="zh"
+	alt={{ ja: "/privacy/", en: "/en/privacy/" }}
+>
+	<article class="legal">
+		<div class="container container--narrow">
+			<span class="eyebrow">隱私權政策</span>
+			<h1 class="legal__title">隱私權政策</h1>
+			<p class="legal__updated">最後更新日期：{updated}</p>
+
+			<p>
+				ame_dev（以下稱「我方」）謹就我方提供之網站及應用程式（以下稱「本服務」）中，
+				個人資料及使用者資料之處理方式，訂定如下規範。
+			</p>
+
+			<h2>1. 關於本網站</h2>
+			<p>
+				本網站由靜態頁面構成，未使用可識別使用者身分的 Cookie 或流量分析工具。
+				若您透過電子郵件與我方聯繫洽詢，其郵件內容及聯絡資訊，
+				僅用於回覆與處理該次洽詢。
+			</p>
+
+			<h2>2. 關於 Drive DAM 應用程式</h2>
+			<p>
+				Drive DAM 是一款於使用者電腦上執行的應用程式。我方不會透過 Drive DAM
+				蒐集使用者的圖片、檔案、標籤、備註等資料，亦不會將其傳送至外部伺服器。
+			</p>
+			<ul class="legal__list">
+				<li>圖片檔案會直接保留在使用者指定的共用資料夾中，不會傳送至我方。</li>
+				<li>標籤、顏色、最愛、備註等資訊，會儲存於與圖片相同資料夾內的 <code>_dam/</code>，僅在使用者的團隊內共用。</li>
+				<li>與 Google Drive、Dropbox、Box 等儲存服務之間的同步，係由使用者自行安裝的各項服務所執行，並適用各該服務自身的隱私權政策。</li>
+			</ul>
+			<p>
+				此外，Drive DAM 會進行以下內部處理。
+			</p>
+			<ul class="legal__list">
+				<li>為識別編輯記錄，會使用依裝置自動產生的內部識別碼。此識別碼不會傳送至我方，僅用於識別共用資料夾內的編輯記錄（由誰於何時進行變更）。</li>
+				<li>若透過 Microsoft Store 取得本應用程式，為確認試用期限及處理購買手續，會使用 Microsoft Store 的授權 API。透過此 API 存取的資訊，由 Microsoft 的帳戶系統管理，不會傳送至我方。</li>
+				<li>設定資訊與縮圖快取，會儲存於您使用的電腦內（<code>%APPDATA%</code> 及 <code>%LOCALAPPDATA%</code>）。</li>
+			</ul>
+
+			<h2>3. 第三方提供</h2>
+			<p>
+				除法令另有規定外，我方不會將使用者之個人資料提供予第三方。
+			</p>
+
+			<h2>4. 本政策之變更</h2>
+			<p>
+				本政策之內容，得因應需要而變更。如有變更，自公告於本頁面之時起
+				發生效力。
+			</p>
+
+			<h2>5. 聯絡方式</h2>
+			<p>
+				如對本服務或本政策有任何疑問，請透過
+				<a href="mailto:amemitai@gmail.com">amemitai@gmail.com</a> 與我方聯繫。
+			</p>
+
+			<p class="legal__back"><a href="/zh/drivedam/">← 返回 Drive DAM</a></p>
+		</div>
+	</article>
+</Base>
+
+<style>
+	.legal {
+		padding-block: 72px 88px;
+	}
+	.container--narrow {
+		max-width: var(--maxw-narrow);
+	}
+	.legal__title {
+		font-size: clamp(1.7rem, 1.2rem + 1.6vw, 2.2rem);
+		margin-bottom: 10px;
+	}
+	.legal__updated {
+		color: var(--ink-faint);
+		font-size: 0.88rem;
+		margin-bottom: 36px;
+	}
+	.legal p {
+		color: var(--ink-muted);
+		margin-bottom: 18px;
+		line-height: 1.95;
+	}
+	.legal h2 {
+		font-size: 1.2rem;
+		margin-top: 38px;
+		margin-bottom: 14px;
+		padding-top: 8px;
+	}
+	.legal__list {
+		color: var(--ink-muted);
+		line-height: 1.9;
+		padding-left: 1.3em;
+		margin-bottom: 18px;
+	}
+	.legal__list li {
+		margin-bottom: 10px;
+	}
+	.legal__back {
+		margin-top: 48px;
+		padding-top: 24px;
+		border-top: 1px solid var(--border);
+	}
+</style>

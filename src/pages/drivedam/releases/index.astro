@@ -7,7 +7,7 @@ const storeUrl = "https://apps.microsoft.com/detail/9P4L43W1XP7P?hl=ja-jp&gl=JP"
 <DrivedamLayout
   title="更新履歴 — Drive DAM"
   description="Drive DAM の更新履歴。Microsoft Store で公開した各バージョンの変更内容をまとめています。"
-  altHref="/en/drivedam/releases/"
+  alt={{ en: "/en/drivedam/releases/", zh: "/zh/drivedam/releases/" }}
 >
 
 <header class="site-head is-solid" id="siteHead">
@@ -22,6 +22,7 @@ const storeUrl = "https://apps.microsoft.com/detail/9P4L43W1XP7P?hl=ja-jp&gl=JP"
     </nav>
     <a class="head-link" href={storeUrl} target="_blank" rel="noopener noreferrer">Microsoft Store で入手</a>
     <a class="head-lang" href="/en/drivedam/releases/?lang=en">EN</a>
+    <a class="head-lang" href="/zh/drivedam/releases/?lang=zh">繁體中文</a>
     <button class="head-burger" id="headBurger" aria-label="メニューを開く" aria-expanded="false" aria-controls="headOverlay">
       <span></span><span></span><span></span>
     </button>
@@ -36,6 +37,7 @@ const storeUrl = "https://apps.microsoft.com/detail/9P4L43W1XP7P?hl=ja-jp&gl=JP"
     <a href="/drivedam/#price">ダウンロード</a>
     <a href="/drivedam/#faq">FAQ</a>
     <a href="/en/drivedam/releases/?lang=en">English</a>
+    <a href="/zh/drivedam/releases/?lang=zh">繁體中文</a>
   </nav>
   <p class="head-overlay-foot"><a href={storeUrl} target="_blank" rel="noopener noreferrer">Microsoft Store で公開中</a></p>
 </div>

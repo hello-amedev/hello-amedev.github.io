@@ -12,8 +12,9 @@ interface Props {
 	title: string;
 	description?: string;
 	current?: "hub" | "drivedam";
-	lang?: "ja" | "en";
-	altHref?: string;
+	lang?: "ja" | "en" | "zh";
+	/** 他言語版の URL(存在するものだけ渡す。自分の言語は含めない) */
+	alt?: Partial<Record<"ja" | "en" | "zh", string>>;
 	/** 明度。dark を渡すと <html data-theme="dark"> が付き、暗いページ用の CSS が効く */
 	theme?: "light" | "dark";
 	/** ページ識別子。<html data-page> に出て、ページ専用 CSS のスコープになる */
@@ -31,7 +32,7 @@ const {
 	description = "Google Drive・Dropbox・Box・社内ファイルサーバーの共有フォルダで、そのまま使えるチーム向け画像管理アプリ Drive DAM をはじめ、小さなチームの道具をつくる ame_dev の公式サイトです。",
 	current,
 	lang = "ja",
-	altHref,
+	alt,
 	theme = "light",
 	page,
 	bare = false,
@@ -42,20 +43,23 @@ const {
 
 const canonical = new URL(Astro.url.pathname, Astro.site);
 const ogImage = new URL(ogImagePath, Astro.site);
-const ogLocale = lang === "en" ? "en_US" : "ja_JP";
+const ogLocale = lang === "en" ? "en_US" : lang === "zh" ? "zh_TW" : "ja_JP";
 
-const jaHref = lang === "ja" ? Astro.url.pathname : altHref;
-const enHref = lang === "en" ? Astro.url.pathname : altHref;
-const jaUrl = jaHref ? new URL(jaHref, Astro.site) : undefined;
-const enUrl = enHref ? new URL(enHref, Astro.site) : undefined;
+const langUrls: Partial<Record<"ja" | "en" | "zh", URL>> = {};
+if (alt) {
+	langUrls[lang] = canonical;
+	for (const [code, href] of Object.entries(alt) as ["ja" | "en" | "zh", string][]) {
+		langUrls[code] = new URL(href, Astro.site);
+	}
+}
 ---
 
 <!doctype html>
-<html lang={lang} data-theme={theme} data-page={page}>
+<html lang={lang === "zh" ? "zh-Hant" : lang} data-theme={theme} data-page={page}>
 	<head>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		{altHref && <LangRedirect />}
+		{alt && <LangRedirect current={lang} alt={alt} />}
 		<meta name="theme-color" content={theme === "dark" ? "#080B14" : "#F6F8FA"} />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<link rel="icon" href="/favicon.ico" />
@@ -63,11 +67,12 @@ const enUrl = enHref ? new URL(enHref, Astro.site) : undefined;
 		<title>{title}</title>
 		<meta name="description" content={description} />
 		<link rel="canonical" href={canonical} />
-		{altHref && jaUrl && enUrl && (
+		{langUrls.ja && (
 			<>
-				<link rel="alternate" hreflang="ja" href={jaUrl} />
-				<link rel="alternate" hreflang="en" href={enUrl} />
-				<link rel="alternate" hreflang="x-default" href={jaUrl} />
+				{langUrls.ja && <link rel="alternate" hreflang="ja" href={langUrls.ja} />}
+				{langUrls.en && <link rel="alternate" hreflang="en" href={langUrls.en} />}
+				{langUrls.zh && <link rel="alternate" hreflang="zh-Hant" href={langUrls.zh} />}
+				<link rel="alternate" hreflang="x-default" href={langUrls.ja} />
 			</>
 		)}
 		<meta property="og:type" content="website" />
@@ -85,7 +90,7 @@ const enUrl = enHref ? new URL(enHref, Astro.site) : undefined;
 		<meta name="generator" content={Astro.generator} />
 	</head>
 	<body>
-		{!bare && <SiteHeader current={current} lang={lang} altHref={altHref} />}
+		{!bare && <SiteHeader current={current} lang={lang} alt={alt} />}
 		<main>
 			<slot />
 		</main>

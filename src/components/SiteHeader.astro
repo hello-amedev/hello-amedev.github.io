@@ -1,11 +1,12 @@
 ---
 // サイト共通ヘッダー。home はハブ（/）へ、製品名はサブパスへ。
-const { current, lang = "ja", altHref } = Astro.props as {
+const { current, lang = "ja", alt } = Astro.props as {
 	current?: "hub" | "drivedam";
-	lang?: "ja" | "en";
-	altHref?: string;
+	lang?: "ja" | "en" | "zh";
+	alt?: Partial<Record<"ja" | "en" | "zh", string>>;
 };
-const isEn = lang === "en";
+const langLabel: Record<"ja" | "en" | "zh", string> = { ja: "日本語", en: "EN", zh: "繁體中文" };
+const drivedamHref = lang === "en" ? "/en/drivedam/" : lang === "zh" ? "/zh/drivedam/" : "/drivedam/";
 ---
 
 <header class="site-header">
@@ -15,25 +16,29 @@ const isEn = lang === "en";
 			<span>ame_dev</span>
 		</a>
 		<nav class="site-nav">
-			{isEn ? (
+			{lang === "en" ? (
 				<>
-					<a href="/en/drivedam/" aria-current={current === "drivedam" ? "page" : undefined}>Drive DAM</a>
-					<a href="/en/drivedam/#price">Download</a>
-					<a href="/en/drivedam/#faq">FAQ</a>
+					<a href={drivedamHref} aria-current={current === "drivedam" ? "page" : undefined}>Drive DAM</a>
+					<a href={`${drivedamHref}#price`}>Download</a>
+					<a href={`${drivedamHref}#faq`}>FAQ</a>
+				</>
+			) : lang === "zh" ? (
+				<>
+					<a href={drivedamHref} aria-current={current === "drivedam" ? "page" : undefined}>Drive DAM</a>
+					<a href={`${drivedamHref}#price`}>下載</a>
+					<a href={`${drivedamHref}#faq`}>常見問題</a>
 				</>
 			) : (
 				<>
-					<a href="/drivedam/" aria-current={current === "drivedam" ? "page" : undefined}>Drive DAM</a>
+					<a href={drivedamHref} aria-current={current === "drivedam" ? "page" : undefined}>Drive DAM</a>
 					<a href="/#products">製品</a>
-					<a href="/drivedam/#price">ダウンロード</a>
-					<a href="/drivedam/#faq">FAQ</a>
+					<a href={`${drivedamHref}#price`}>ダウンロード</a>
+					<a href={`${drivedamHref}#faq`}>FAQ</a>
 				</>
 			)}
-			{altHref && (
-				isEn
-					? <a href={`${altHref}?lang=ja`}>日本語</a>
-					: <a href={`${altHref}?lang=en`}>EN</a>
-			)}
+			{alt && Object.entries(alt).map(([code, href]) => (
+				<a href={`${href}?lang=${code}`}>{langLabel[code as "ja" | "en" | "zh"]}</a>
+			))}
 		</nav>
 	</div>
 </header>

@@ -83,6 +83,15 @@ body {
 	text-rendering: optimizeLegibility;
 }
 
+/* 繁体字は palt(和文用の詰め組み)を切り、繁体字向けの書体を優先する */
+:lang(zh) {
+	--font-sans: "Noto Sans TC", "Microsoft JhengHei", "PingFang TC", "Inter", system-ui,
+		-apple-system, "Segoe UI", sans-serif;
+}
+body:lang(zh) {
+	font-feature-settings: normal;
+}
+
 h1, h2, h3, h4 {
 	color: var(--blue-ink);
 	line-height: 1.38;

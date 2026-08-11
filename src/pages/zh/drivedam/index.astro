@@ -1,0 +1,610 @@
+---
+import DrivedamLayout from "../../../layouts/DrivedamLayout.astro";
+import StoreBadge from "../../../components/StoreBadge.astro";
+import { latest } from "../../../data/releases";
+const storeUrl = "https://apps.microsoft.com/detail/9P4L43W1XP7P?hl=zh-tw&gl=TW";
+// 版本標示以 src/data/releases.ts 為主要來源，此處不直接寫死
+const verLabel = `v${latest.version}(${latest.date})`;
+// FAQ(確定文案 3.9・共 6 題)。為靜態渲染與 FAQPage 結構化資料的主要來源。
+// 為了讓不執行 JS 的爬蟲(AI 系)也能看到內容，組裝在此處完成，而非交由 script 處理
+const faq: [string, string][] = [
+["圖片檔案會被更動嗎？","不會。標籤與備註會儲存在圖片所在資料夾內的 <code>_dam/</code> 中，不會更動圖片檔案本身。"],
+["解除安裝 Drive DAM 後，標籤與備註會怎麼樣？","標籤與備註會儲存在本機或共用資料夾內的 <code>_dam</code> 資料夾中，因此即使解除安裝 Drive DAM，也會照樣保留，不會影響團隊成員的使用。重新安裝後只要再次登錄資料夾，就能以相同狀態繼續使用。此外，透過設定的匯出與匯入功能，也能還原資料夾的登錄狀態與書籤。"],
+["沒有共用資料夾存取權限的人，也能看到標籤與備註嗎？","看不到。共用資料夾的存取權限，就是標籤與備註的共用範圍。"],
+["會透過 AI 自動加上標籤嗎？","不會。標籤是以手動方式加上，並由團隊共同累積與共用。不會有自動分類擅自整理的情形。"],
+["支援 Mac 嗎？","Drive DAM 是 Windows 專用應用程式，目前尚未支援 Mac。系統產生的縮圖與設定檔會出現在共用資料夾中，但無法在 Mac 上使用 Drive DAM。未來有可能推出 Mac 版本。"],
+["要如何完全刪除縮圖與標籤資料？","請先確認已沒有任何 Drive DAM 使用者登錄該資料夾，再刪除 <code>_dam</code> 資料夾及 <code>_dam_thumbs</code> 資料夾。若資料夾數量較多，請搜尋同名資料夾並全部刪除。"]
+];
+const stripTags = (s: string) => s.replace(/<[^>]+>/g, "");
+const faqJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: faq.map(([q, a]) => ({
+    "@type": "Question",
+    name: stripTags(q),
+    acceptedAnswer: { "@type": "Answer", text: stripTags(a) },
+  })),
+};
+---
+
+<DrivedamLayout
+  title="Drive DAM — 從數萬張圖片中，找到需要的那一張｜可在共用資料夾使用的圖片管理(DAM)應用程式"
+  lang="zh"
+  alt={{ ja: "/drivedam/", en: "/en/drivedam/" }}
+  store={{ url: storeUrl, price: "679", currency: "TWD", version: latest.version }}
+>
+
+<div class="progress" id="progress" aria-hidden="true"></div>
+
+<header class="site-head" id="siteHead">
+  <div class="head-in">
+    <a class="brand" href="/zh/drivedam/"><img src="/drivedam/assets/app-icon.png" alt="">Drive DAM</a>
+    <nav class="head-nav" aria-label="頁內選單">
+      <a href="#about">關於 Drive DAM</a>
+      <a href="#traits">特色</a>
+      <a href="#funcs">功能</a>
+      <a href="#price">下載</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+    <a class="head-link" href={storeUrl} target="_blank" rel="noopener noreferrer">在 Microsoft Store 取得</a>
+    <a class="head-lang" href="/drivedam/?lang=ja">日本語</a>
+    <a class="head-lang" href="/en/drivedam/?lang=en">English</a>
+    <button class="head-burger" id="headBurger" aria-label="開啟選單" aria-expanded="false" aria-controls="headOverlay">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<div class="head-overlay" id="headOverlay" aria-hidden="true">
+  <nav class="head-overlay-nav" aria-label="頁內選單（行動版）">
+    <a href="#about">關於 Drive DAM</a>
+    <a href="#traits">特色</a>
+    <a href="#funcs">功能</a>
+    <a href="#price">下載</a>
+    <a href="#faq">FAQ</a>
+    <a href="/drivedam/?lang=ja">日本語</a>
+    <a href="/en/drivedam/?lang=en">English</a>
+  </nav>
+  <p class="head-overlay-foot"><a href={storeUrl} target="_blank" rel="noopener noreferrer">已在 Microsoft Store 上架</a></p>
+</div>
+
+<!-- ============ HERO ============ -->
+<section class="hero" id="hero">
+  <div class="hero-light" id="heroLight" aria-hidden="true"><div class="hl-a"></div><div class="hl-b"></div></div>
+  <div class="wrap">
+    <h1 class="hero-title">
+      <span class="hl hl-1"><span class="hl-in">從數萬張圖片中，</span></span>
+      <span class="hl hl-2"><span class="hl-in">找到需要的<em>那一張</em>。</span></span>
+      <span class="hl hl-3"><span class="hl-in">一個人也好，團隊也好。</span></span>
+    </h1>
+    <div class="hero-lead">
+      <div class="hero-lead-in">
+        <p class="hero-sub">無論是本機資料夾，還是線上儲存服務等，都能<strong style="display:inline-block">直接使用</strong>的數位資產管理。<br>透過共用資料夾，讓團隊的圖片管理與運用更有效率。</p>
+        <div class="hero-cta">
+          <StoreBadge href={storeUrl} eyebrow="在 Microsoft Store" label="立即取得" />
+        </div>
+        <p class="hero-note"><a class="ver-link" href="/zh/drivedam/releases/">{verLabel}</a>・支援 Windows 10 以上</p>
+      </div>
+    </div>
+    <figure class="hero-stage" id="heroStage">
+      <div class="frame" id="heroFrame">
+        <img src="/drivedam/assets/hero-main-zh.png" alt="Drive DAM 的實際畫面。左側為資料夾樹狀結構，中央為縮圖列表，右側為選取／編輯面板" width="2556" height="1595">
+        <div class="gloss" aria-hidden="true"></div>
+      </div>
+    </figure>
+  </div>
+</section>
+
+<!-- ============ ABOUT(ツール説明) ============ -->
+<section class="about sec-pad" id="about">
+  <div class="wrap">
+    <div class="cap" data-cap>關於 Drive DAM</div>
+    <div class="grid">
+      <div class="about-copy">
+        <h2 class="about-h" data-reveal>專為公關與行銷打造的，<br>圖片管理工具。</h2>
+        <p class="about-body" data-reveal>Drive DAM 會為每張圖片，在線上儲存空間內建立小型縮圖與設定檔，是一款<strong>讓團隊能聰明地管理與運用圖片</strong>的工具。即使是數萬張圖片，也能由多人安全且快速地管理，同時也支援在本機資料夾中使用。</p>
+      </div>
+      <figure class="about-fig" data-reveal>
+        <svg class="draw" id="figSideBySide" viewBox="0 0 360 240" role="img" aria-label="每一張圖片檔案，都會在旁邊建立縮圖與設定檔（標籤、備註）兩個檔案">
+          <rect x="18" y="48" width="170" height="126" rx="6" style="--len:600"/>
+          <circle cx="66" cy="88" r="14" style="--len:90"/>
+          <polyline points="18,160 84,108 126,140 160,112 188,146" style="--len:230"/>
+          <text x="18" y="202" font-size="12" fill="#8B887F" stroke="none" font-family="Inter,sans-serif" letter-spacing="1">photo.jpg</text>
+          <rect class="blue" x="240" y="24" width="100" height="64" rx="6" style="--len:340"/>
+          <circle class="blue" cx="268" cy="44" r="8" style="--len:52"/>
+          <polyline class="blue" points="240,81 279,54 303,71 323,56 340,74" style="--len:130"/>
+          <text x="240" y="108" font-size="12" fill="#8B887F" stroke="none" font-family="Inter,sans-serif" letter-spacing="1">thumbnail</text>
+          <rect class="blue" x="240" y="124" width="100" height="64" rx="6" style="--len:340"/>
+          <line class="blue" x1="256" y1="142" x2="324" y2="142" style="--len:68"/>
+          <line class="blue" x1="256" y1="156" x2="312" y2="156" style="--len:56"/>
+          <line class="blue" x1="256" y1="170" x2="318" y2="170" style="--len:62"/>
+          <text x="240" y="208" font-size="12" fill="#8B887F" stroke="none" font-family="Inter,sans-serif" letter-spacing="1">tags + notes</text>
+          <line class="soft" x1="196" y1="56" x2="232" y2="56" style="--len:36"/>
+          <line class="soft" x1="196" y1="156" x2="232" y2="156" style="--len:36"/>
+        </svg>
+        <figcaption class="fig-cap">為每張圖片建立十幾 KB 左右的縮圖與設定檔。啟動時讀取這些檔案，即可實現快速且有效率的管理與運用。不會更動圖片檔案本身，安全可靠。</figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<!-- ============ TRAITS(特徴 3) ============ -->
+<section class="traits sec-pad" id="traits">
+  <div class="wrap">
+    <div class="cap" data-cap>3 大特色</div>
+    <div class="trait-grid">
+
+      <div class="trait" data-reveal>
+        <div class="ill" data-ill>
+          <svg class="draw" viewBox="0 0 360 279" role="img" aria-label="搜尋列與篩選標籤晶片。以 AND 疊加 2 個標籤與排除標籤、顏色條件，從 12,179 個檔案中篩選出 12 個">
+            <rect x="28" y="36" width="304" height="36" rx="9" style="--len:690"/>
+            <circle class="soft" cx="46" cy="54" r="5.2" style="--len:36"/>
+            <line class="soft" x1="50" y1="58" x2="55" y2="63" style="--len:8"/>
+            <text x="62" y="58" font-size="11.5" fill="#8B887F" stroke="none">以檔案名稱、標籤、備註搜尋</text>
+            <rect class="blue" x="28" y="96" width="94" height="26" rx="13" style="--len:245"/>
+            <circle cx="44" cy="109" r="3.2" style="fill:#7A9BE8;stroke:none"/>
+            <text x="53" y="113" font-size="11" font-weight="600" fill="#4A7CE2" stroke="none">網站刊登</text>
+            <path class="blue" d="M105 105.5l7 7M112 105.5l-7 7" style="--len:22;stroke-width:1.1"/>
+            <rect class="blue" x="132" y="96" width="94" height="26" rx="13" style="--len:245"/>
+            <circle cx="148" cy="109" r="3.2" style="fill:#7A9BE8;stroke:none"/>
+            <text x="157" y="113" font-size="11" font-weight="600" fill="#4A7CE2" stroke="none">社群貼文</text>
+            <path class="blue" d="M209 105.5l7 7M216 105.5l-7 7" style="--len:22;stroke-width:1.1"/>
+            <rect class="soft" x="238" y="96" width="84" height="26" rx="13" style="--len:225"/>
+            <line class="soft" x1="280" y1="100" x2="280" y2="118" style="--len:20"/>
+            <text x="259" y="113" font-size="10" font-weight="600" fill="#45433D" stroke="none" text-anchor="middle">AND</text>
+            <text x="301" y="113" font-size="10" font-weight="600" fill="#B5B2A9" stroke="none" text-anchor="middle">OR</text>
+            <rect class="red" x="28" y="134" width="104" height="26" rx="13" style="--len:265"/>
+            <line class="red" x1="40" y1="147" x2="48" y2="147" style="--len:10"/>
+            <text x="54" y="151" font-size="11" font-weight="600" fill="#B5544A" stroke="none">限時</text>
+            <path class="red" d="M112 143.5l7 7M119 143.5l-7 7" style="--len:22;stroke-width:1.1"/>
+            <rect class="soft" x="144" y="134" width="56" height="26" rx="13" style="--len:170"/>
+            <circle cx="159" cy="147" r="4.5" style="fill:#C96F5F;stroke:none"/>
+            <text x="168" y="151" font-size="11" font-weight="600" fill="#45433D" stroke="none">紅</text>
+            <path class="soft" d="M182 143.5l7 7M189 143.5l-7 7" style="--len:22;stroke-width:1.1"/>
+            <line class="soft" x1="28" y1="184" x2="332" y2="184" style="--len:310;stroke-width:.8"/>
+            <text x="28" y="218" font-size="26" font-weight="700" fill="#1B1A17" stroke="none" style="font-variant-numeric:tabular-nums">12</text>
+            <text x="64" y="218" font-size="13" fill="#8B887F" stroke="none">／ 12,179 個</text>
+            <text x="28" y="240" font-size="10.5" fill="#8B887F" stroke="none" letter-spacing="1">符合的檔案</text>
+          </svg>
+        </div>
+        <h3 class="trait-h">從數萬張圖片中，快速搜尋。</h3>
+        <p class="trait-b">組合標籤、顏色、拍攝日期、使用限制、關鍵字等條件，即可在數萬張圖片中瞬間找到符合的檔案。除了圖片，PDF、影片、Office、ZIP 也能一併列出瀏覽。</p>
+      </div>
+
+      <div class="trait" data-reveal>
+        <div class="ill" data-ill>
+          <svg class="draw" viewBox="0 0 360 279" aria-hidden="true">
+            <line class="soft" x1="151" y1="117" x2="86" y2="84" style="--len:80"/>
+            <line class="soft" x1="151" y1="145" x2="86" y2="178" style="--len:80"/>
+            <line class="soft" x1="204" y1="109" x2="277" y2="61" style="--len:95"/>
+            <line class="soft" x1="212" y1="131" x2="270" y2="131" style="--len:65"/>
+            <line class="soft" x1="204" y1="153" x2="277" y2="201" style="--len:95"/>
+          </svg>
+          <div class="node center" data-t="1" style="left:50%;top:47%">
+            <img src="/drivedam/assets/app-icon.png" alt="Drive DAM">
+          </div>
+          <div class="node bare" data-t="2" style="left:16%;top:25%">
+            <svg width="40" height="40" viewBox="0 0 40 40" aria-hidden="true"><path d="M5.1 11.3a4 4 0 0 1 4-4h7.9l4 4.7h10.1a4 4 0 0 1 4 4v13.1a4 4 0 0 1-4 4H9.1a4 4 0 0 1-4-4z" fill="none" stroke="#45433D" stroke-width="1.6" stroke-linejoin="round"/><path d="M5.1 12h15.9" fill="none" stroke="#45433D" stroke-width="1.2"/></svg>
+            <span class="nlabel">本機資料夾</span>
+          </div>
+          <div class="node bare" data-t="2" style="left:16%;top:69%">
+            <svg width="40" height="40" viewBox="0 0 40 40" aria-hidden="true"><rect x="6" y="8" width="28" height="10" rx="2.8" fill="none" stroke="#45433D" stroke-width="1.6"/><rect x="6" y="22" width="28" height="10" rx="2.8" fill="none" stroke="#45433D" stroke-width="1.6"/><circle cx="12" cy="13" r="1.7" fill="#45433D"/><circle cx="12" cy="27" r="1.7" fill="#45433D"/><path d="M22 13h7M22 27h7" fill="none" stroke="#45433D" stroke-width="1.4" stroke-linecap="round"/></svg>
+            <span class="nlabel">檔案伺服器</span>
+          </div>
+          <div class="node bare" data-t="3" style="left:84%;top:15%">
+            <svg width="40" height="40" viewBox="0 0 40 40" aria-hidden="true"><path d="M16.7 7a3.9 3.9 0 0 1 6.6 0l12.3 21.3a3.9 3.9 0 0 1-3.3 5.8H7.7a3.9 3.9 0 0 1-3.3-5.8z" fill="none" stroke="#45433D" stroke-width="1.6" stroke-linejoin="round"/><path d="M11.3 32.8 23 11.2M28.7 32.8 17 11.2M9 26h22" fill="none" stroke="#45433D" stroke-width="1.4" stroke-linecap="round"/></svg>
+            <span class="nlabel">Google Drive</span>
+          </div>
+          <div class="node bare" data-t="4" style="left:84%;top:47%">
+            <svg width="40" height="40" viewBox="0 0 40 40" aria-hidden="true"><path d="M8 12.9 20 6l12 6.9v14.1L20 34 8 27z" fill="none" stroke="#45433D" stroke-width="1.6" stroke-linejoin="round"/><path d="M8 12.9 20 19.9l12-7M20 19.9v14.1" fill="none" stroke="#45433D" stroke-width="1.4" stroke-linejoin="round"/></svg>
+            <span class="nlabel">Box</span>
+          </div>
+          <div class="node bare" data-t="5" style="left:84%;top:79%">
+            <svg width="40" height="40" viewBox="0 0 40 40" aria-hidden="true"><path d="M12 5 20 10.1 12 15.2 4 10.1ZM28 5 36 10.1 28 15.2 20 10.1ZM12 15.2 20 20.3 12 25.4 4 20.3ZM28 15.2 36 20.3 28 25.4 20 20.3Z" fill="none" stroke="#45433D" stroke-width="1.5" stroke-linejoin="round"/><path d="M12 28.4 20 33.5 28 28.4" fill="none" stroke="#45433D" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"/></svg>
+            <span class="nlabel">Dropbox</span>
+          </div>
+        </div>
+        <h3 class="trait-h">本機也好，線上儲存也好。</h3>
+        <p class="trait-b">在 Google Drive / Dropbox / Box / 公司檔案伺服器的共用資料夾中，都能直接運作。不會變更資料夾結構或圖片檔案，也不需要另外上傳檔案或匯入圖庫。</p>
+      </div>
+
+      <div class="trait" data-reveal>
+        <div class="ill" data-ill>
+          <svg class="draw" viewBox="0 0 360 279" role="img" aria-label="使用者 A、B、C 開啟同一個共用資料夾。3 人的畫面會顯示相同的標籤、顏色、最愛">
+            <path d="M40 113a6 6 0 0 1 6-6h15l8 9h21a6 6 0 0 1 6 6v27a6 6 0 0 1-6 6H46a6 6 0 0 1-6-6z" style="--len:240"/>
+            <text x="68" y="175" font-size="11" fill="#8B887F" stroke="none" text-anchor="middle">共用資料夾</text>
+            <line class="soft" x1="96" y1="131" x2="122" y2="131" style="--len:28"/>
+            <line class="soft" x1="122" y1="63" x2="122" y2="199" style="--len:140"/>
+            <line class="soft" x1="122" y1="63" x2="144" y2="63" style="--len:24"/>
+            <line class="soft" x1="122" y1="131" x2="144" y2="131" style="--len:24"/>
+            <line class="soft" x1="122" y1="199" x2="144" y2="199" style="--len:24"/>
+            <circle cx="162" cy="63" r="13" style="--len:85"/>
+            <circle cx="162" cy="58.8" r="3.1" style="--len:21;stroke-width:1.2"/>
+            <path d="M156.4 70.6a5.6 5.6 0 0 1 11.2 0" style="--len:19;stroke-width:1.2"/>
+            <text x="162" y="90" font-size="9.5" fill="#8B887F" stroke="none" text-anchor="middle" letter-spacing="1">A</text>
+            <rect class="blue" x="186" y="50" width="86" height="26" rx="13" style="--len:230"/>
+            <circle cx="202" cy="63" r="3.2" style="fill:#7A9BE8;stroke:none"/>
+            <text x="210" y="67" font-size="11" font-weight="600" fill="#4A7CE2" stroke="none">網站刊登</text>
+            <circle class="soft" cx="288" cy="63" r="8" style="--len:52"/>
+            <circle cx="288" cy="63" r="4.5" style="fill:#E2954A;stroke:none"/>
+            <path class="soft" transform="translate(316 63)" d="M0 -7 L1.7 -2.35 L6.66 -2.16 L2.76 0.9 L4.11 5.66 L0 2.9 L-4.11 5.66 L-2.76 0.9 L-6.66 -2.16 L-1.7 -2.35 Z" style="--len:65"/>
+            <circle cx="162" cy="131" r="13" style="--len:85"/>
+            <circle cx="162" cy="126.8" r="3.1" style="--len:21;stroke-width:1.2"/>
+            <path d="M156.4 138.6a5.6 5.6 0 0 1 11.2 0" style="--len:19;stroke-width:1.2"/>
+            <text x="162" y="158" font-size="9.5" fill="#8B887F" stroke="none" text-anchor="middle" letter-spacing="1">B</text>
+            <rect class="blue" x="186" y="118" width="86" height="26" rx="13" style="--len:230"/>
+            <circle cx="202" cy="131" r="3.2" style="fill:#7A9BE8;stroke:none"/>
+            <text x="210" y="135" font-size="11" font-weight="600" fill="#4A7CE2" stroke="none">網站刊登</text>
+            <circle class="soft" cx="288" cy="131" r="8" style="--len:52"/>
+            <circle cx="288" cy="131" r="4.5" style="fill:#E2954A;stroke:none"/>
+            <path class="soft" transform="translate(316 131)" d="M0 -7 L1.7 -2.35 L6.66 -2.16 L2.76 0.9 L4.11 5.66 L0 2.9 L-4.11 5.66 L-2.76 0.9 L-6.66 -2.16 L-1.7 -2.35 Z" style="--len:65"/>
+            <circle cx="162" cy="199" r="13" style="--len:85"/>
+            <circle cx="162" cy="194.8" r="3.1" style="--len:21;stroke-width:1.2"/>
+            <path d="M156.4 206.6a5.6 5.6 0 0 1 11.2 0" style="--len:19;stroke-width:1.2"/>
+            <text x="162" y="226" font-size="9.5" fill="#8B887F" stroke="none" text-anchor="middle" letter-spacing="1">C</text>
+            <rect class="blue" x="186" y="186" width="86" height="26" rx="13" style="--len:230"/>
+            <circle cx="202" cy="199" r="3.2" style="fill:#7A9BE8;stroke:none"/>
+            <text x="210" y="203" font-size="11" font-weight="600" fill="#4A7CE2" stroke="none">網站刊登</text>
+            <circle class="soft" cx="288" cy="199" r="8" style="--len:52"/>
+            <circle cx="288" cy="199" r="4.5" style="fill:#E2954A;stroke:none"/>
+            <path class="soft" transform="translate(316 199)" d="M0 -7 L1.7 -2.35 L6.66 -2.16 L2.76 0.9 L4.11 5.66 L0 2.9 L-4.11 5.66 L-2.76 0.9 L-6.66 -2.16 L-1.7 -2.35 Z" style="--len:65"/>
+          </svg>
+        </div>
+        <h3 class="trait-h">標籤和使用條件，與團隊共享。</h3>
+        <p class="trait-b">標籤、顏色、最愛、使用限制、備註，會同步給擁有共用資料夾存取權的所有成員。無論誰查看，都能以相同條件篩選，不必再詢問「這張可以用嗎」。</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============ FUNCS(主要機能 3・スクロール表示) ============ -->
+<section class="funcs sec-pad" id="funcs">
+  <div class="wrap">
+    <div class="cap" data-cap>功能</div>
+    <h2 class="funcs-h2" data-reveal>對外發布所需的操作，一應俱全。</h2>
+    <div class="funcs-cols">
+      <nav class="funcs-nav" aria-label="功能一覽">
+        <ol>
+          <li><a href="#fn-thumbs" class="active"><span class="n">01</span>快速顯示縮圖</a></li>
+          <li><a href="#fn-search"><span class="n">02</span>篩選與搜尋</a></li>
+          <li><a href="#fn-share"><span class="n">03</span>標籤、顏色、使用限制的共享</a></li>
+        </ol>
+      </nav>
+      <div class="funcs-body">
+        <article class="func" id="fn-thumbs">
+          <h3 class="func-h">快速顯示縮圖</h3>
+          <p class="func-b">即使是存放數萬張圖片的資料夾，開啟後也能立即瀏覽清單。首次登錄資料夾時會建立縮圖並複製到本機，藉此加快顯示速度。團隊成員可以共用相同的縮圖，有效率地搜尋與運用圖片。</p>
+          <div class="shot" data-shot><img class="shot-pic" src="/drivedam/assets/func-thumbs-zh.png" alt="Drive DAM 的縮圖列表畫面。左側為資料夾樹狀結構，中央為大量縮圖，右側為快速鍵一覽" loading="lazy" width="2556" height="1595"></div>
+        </article>
+        <article class="func" id="fn-search">
+          <h3 class="func-h">篩選與搜尋</h3>
+          <p class="func-b">可依關鍵字、標籤、顏色、拍攝日期、使用限制、最愛等多種條件，搜尋與篩選圖片。也支援以檔案路徑搜尋，因此就算只記得資料夾名稱，也能找到圖片。<br><span class="func-note">※不支援圖片內文字辨識等功能</span></p>
+          <div class="shot" data-shot><img class="shot-pic" src="/drivedam/assets/func-search-zh.png" alt="展開篩選面板，從整個圖庫的 9,974 個項目中，篩選出僅最愛的 282 個" loading="lazy" width="1872" height="1345"></div>
+        </article>
+        <article class="func" id="fn-share">
+          <h3 class="func-h">標籤、顏色、使用限制與團隊共享</h3>
+          <p class="func-b">標籤、備註等資訊，會透過共用資料夾提供給所有成員使用。使用條件（需授權、不可使用等）也能共享，避免圖片使用上的疏失。此外，也可以建立不會分享給其他成員、僅供自己使用的書籤。</p>
+          <div class="shot" data-shot>
+            <div class="shot-panel">
+              <img src="/drivedam/assets/func-share1-zh.png" alt="附有使用限制徽章的 3 張縮圖。可一眼看出需授權、不可使用等狀態" loading="lazy" width="890" height="360" style="left:6%;top:28%;width:57%">
+              <img src="/drivedam/assets/func-share2-zh.png" alt="詳細面板。標籤、顏色、最愛、備註、使用限制，以及編輯者、編輯日期" loading="lazy" width="547" height="1121" style="right:6%;top:9%;width:25.6%">
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+
+    <div class="fmore">
+      <div class="cap" data-cap>其他功能</div>
+
+      <div class="fgroup">
+        <h4 class="fgroup-h">搜尋與顯示</h4>
+        <div class="fgrid">
+          <div class="fcard w6" data-reveal>
+            <div class="fcard-vis nat"><img src="/drivedam/assets/func-files-zh.png" alt="PDF 會以實際頁面顯示縮圖，DOCX、XLSX、ZIP 則以類型圖示列出的資料夾畫面" loading="lazy" width="2556" height="1595"></div>
+            <h4 class="fcard-h">所有檔案一目了然</h4>
+            <p class="fcard-b">雖然主要功能是圖片管理，但圖片以外的檔案也會標示類型，並可加上標籤與備註來管理。相機的 RAW 檔案與 PDF 也支援縮圖顯示。<br><span class="func-note">※影片、Office、ZIP 等檔案尚不支援縮圖顯示。</span></p>
+          </div>
+          <div class="fcard w6" data-reveal>
+            <div class="fcard-vis nat"><img src="/drivedam/assets/func-zoom-zh.png" alt="預覽畫面。以大尺寸顯示原始圖片，下方有在檔案總管中顯示、以預設應用程式開啟、下載、實際大小等按鈕" loading="lazy" width="2556" height="1595"></div>
+            <h4 class="fcard-h">預覽與實際大小顯示</h4>
+            <p class="fcard-b">可放大預覽原始圖片，並以實際大小確認細節。使用方向鍵即可切換上一張／下一張圖片。</p>
+          </div>
+          <div class="fcard w6" data-reveal>
+            <div class="fcard-vis nat"><img src="/drivedam/assets/func-folder-zh.png" alt="開啟「同時顯示子資料夾內的檔案」後，將子資料夾內容彙整為一份清單的畫面" loading="lazy" width="1998" height="1479"></div>
+            <h4 class="fcard-h">彙整顯示子資料夾內容</h4>
+            <p class="fcard-b">子資料夾內的檔案，也能整合成一份清單顯示。不必在資料夾之間來回切換，就能綜覽全部內容。</p>
+          </div>
+          <div class="fcard w6" data-reveal>
+            <div class="fcard-vis modal" style="aspect-ratio:1999/1479"><img src="/drivedam/assets/func-searchsave-zh.png" alt="叫出已儲存的搜尋條件「網站刊登2026精選」，以標籤、最愛、拍攝日期 3 項條件篩選出 6 個項目的畫面" loading="lazy" width="1998" height="781"></div>
+            <h4 class="fcard-h">儲存搜尋條件</h4>
+            <p class="fcard-b">常用的篩選條件可以命名並儲存。已儲存的條件，隨時都能從側邊欄叫出。</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="fgroup">
+        <h4 class="fgroup-h">匯出與下載</h4>
+        <div class="fgrid">
+          <div class="fcard" data-reveal>
+            <div class="fcard-vis modal"><div class="pshot" style="--src:url('/drivedam/assets/func-zoom-zh.png');right:-2%;bottom:5%;width:88%;aspect-ratio:1080/1215;--zoom:250%;--pos:1% 100%" role="img" aria-label="預覽畫面下方，並排著在檔案總管中顯示、以預設應用程式開啟、下載、實際大小等按鈕"></div></div>
+            <h4 class="fcard-h">從預覽畫面立即下載</h4>
+            <p class="fcard-b">在預覽畫面確認的圖片，可以直接下載。「在檔案總管中顯示」、「以預設應用程式開啟」等操作，也能從這裡執行。</p>
+          </div>
+          <div class="fcard" data-reveal>
+            <div class="fcard-vis modal"><img src="/drivedam/assets/func-export1-zh.png" alt="整個匯出對話框。選擇維持原始尺寸／調整大小後，一次匯出 12 個項目" loading="lazy" width="945" height="843"></div>
+            <h4 class="fcard-h">匯出（調整大小、批次）</h4>
+            <p class="fcard-b">選取要使用的圖片後即可匯出。也能一次選取多張，在調整大小的同時批次匯出。原始圖片會保持不變。</p>
+          </div>
+          <div class="fcard" data-reveal>
+            <div class="fcard-vis modal"><img src="/drivedam/assets/func-export2-zh.png" alt="整個裁切並匯出對話框。可選擇比例預設集或自訂比例進行裁切" loading="lazy" width="1261" height="1437"></div>
+            <h4 class="fcard-h">匯出（裁切）</h4>
+            <p class="fcard-b">可使用正方形、社群媒體尺寸等預設集，或自訂任意比例，在裁切的同時調整大小並匯出。也能一次處理多張圖片。</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="fgroup">
+        <h4 class="fgroup-h">整理與檔案操作</h4>
+        <p class="fgroup-lead">標籤、顏色、備註是以檔案名稱建立關聯來管理的。只要在 Drive DAM 中進行重新命名或移動，就能在保留關聯的狀態下整理檔案（若直接在檔案總管中變更，標籤等記錄將會失去連結）。</p>
+        <div class="fgrid">
+          <div class="fcard" data-reveal>
+            <div class="fcard-vis modal"><div class="pshot" style="--src:url('/drivedam/assets/func-bulc-zh.png');left:15%;top:4%;width:70%;aspect-ratio:553/1114;--zoom:100%;--pos:50% 0" role="img" aria-label="已選取 10 個項目的批次編輯面板。有顯示、開啟、複製、匯出、批次重新命名等按鈕，以及標籤編輯下拉選單"></div></div>
+            <h4 class="fcard-h">多選批次編輯</h4>
+            <p class="fcard-b">選取多個檔案後，可一次設定標籤、顏色、使用限制。也能從這裡一併匯出。</p>
+          </div>
+          <div class="fcard" data-reveal>
+            <div class="fcard-vis modal"><img src="/drivedam/assets/func-rename-zh.png" alt="批次重新命名對話框。有連續編號、尋找取代、前後加上文字等分頁，以及變更後檔案名稱的預覽清單" loading="lazy" width="978" height="897"></div>
+            <h4 class="fcard-h">批次重新命名</h4>
+            <p class="fcard-b">以連續編號、尋找取代、前後加上文字 3 種方式，一次重新命名多個檔案。執行前可先以清單確認變更後的名稱。</p>
+          </div>
+          <div class="fcard" data-reveal>
+            <div class="fcard-vis modal"><img src="/drivedam/assets/func-move-zh.png" alt="選擇移動位置的對話框。從資料夾樹狀結構中選擇移動位置。移動結果也會同步給其他成員" loading="lazy" width="803" height="963"></div>
+            <h4 class="fcard-h">移動檔案</h4>
+            <p class="fcard-b">從資料夾樹狀結構選擇移動位置，即可一次移動多個檔案。移動的結果，其他成員也會同步看到。</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="fgroup">
+        <h4 class="fgroup-h">團隊運用</h4>
+        <div class="fgrid">
+          <div class="fcard" data-reveal>
+            <div class="fcard-vis modal r43"><img src="/drivedam/assets/func-tagmanager-zh.png" alt="標籤管理畫面。標籤依用途、拍攝主題、狀態等標籤群組整理" loading="lazy" width="1575" height="1120"></div>
+            <h4 class="fcard-h">標籤與標籤群組管理</h4>
+            <p class="fcard-b">統一管理標籤與標籤群組。名稱變更或整理，也會透過共用資料夾同步給所有成員。</p>
+          </div>
+          <div class="fcard" data-reveal>
+            <div class="fcard-vis modal r43"><img src="/drivedam/assets/func-compe-zh.png" alt="解決編輯衝突的對話框。並排顯示自己與對方的變更，選擇要保留的一方" loading="lazy" width="945" height="503"></div>
+            <h4 class="fcard-h">偵測並解決編輯衝突</h4>
+            <p class="fcard-b">當您與其他成員同時編輯相同項目時，系統會提示發生衝突，並讓您選擇要保留的版本。不衝突的變更則會自動合併，不必擔心被意外覆寫。</p>
+          </div>
+          <div class="fcard" data-reveal>
+            <div class="fcard-vis compose r43">
+              <img src="/drivedam/assets/func-safe2-zh.png" alt="已隱藏圖片以淡化方式顯示的清單。可在顯示選單中切換「已隱藏的圖片」" loading="lazy" width="1524" height="705" style="left:6%;top:10%;width:88%">
+              <img src="/drivedam/assets/func-safe1-zh.png" alt="「隱藏」按鈕。檔案本體與標籤都會保留，隨時可以復原" loading="lazy" width="537" height="236" style="left:10%;top:58%;width:52%">
+            </div>
+            <h4 class="fcard-h">不更動原始資料夾與檔案的安心設計</h4>
+            <p class="fcard-b">原始圖片資料夾中的檔案，設計上無法被刪除。即使多人共用同一個資料夾，也能放心使用。<br><span class="func-note">※不需要的檔案，可以在自己的清單中將其隱藏。</span></p>
+          </div>
+          <div class="fcard" data-reveal>
+            <div class="fcard-vis modal"><img src="/drivedam/assets/func-rebind-zh.png" alt="重新連結記錄對話框。已移動或重新命名的檔案候選項目，會附上符合程度並列表顯示" loading="lazy" width="1190" height="1360"></div>
+            <h4 class="fcard-h">重新連結記錄</h4>
+            <p class="fcard-b">當圖片在 Drive DAM 之外被直接重新命名或移動時，標籤等記錄有時會殘留在原本的資料夾中。系統會自動偵測這些殘留的記錄並通知您，讓您將它們重新連結到移動後的檔案。</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="fgroup">
+        <h4 class="fgroup-h">外觀</h4>
+        <div class="fband" data-reveal>
+          <div class="fband-copy">
+            <h4 class="fcard-h">支援深色模式</h4>
+            <p class="fcard-b">配色可以一鍵切換淺色／深色。能配合較暗的環境，或是需要確認圖片色彩的作業來選擇。</p>
+          </div>
+          <div class="fband-vis">
+            <div class="fcard-vis nat"><img src="/drivedam/assets/func-dark-zh.png" alt="深色模式下的 Drive DAM 全畫面。縮圖清單以深色配色顯示" loading="lazy" width="2556" height="1595"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PRICE(コンバージョンエリア) ============ -->
+<section class="price price-pad" id="price">
+  <div class="wrap">
+    <img class="price-icon" src="/drivedam/assets/app-icon.png" alt="Drive DAM" width="92" height="92" data-reveal>
+    <h2 class="price-h" data-reveal>30 天免費試用。</h2>
+    <p class="price-lead" data-reveal><strong>不需訂閱，買斷即可永久使用。</strong><br>30 天內所有功能皆可免費使用。</p>
+    <div data-reveal>
+      <StoreBadge href={storeUrl} eyebrow="在 Microsoft Store" label="立即取得" night />
+    </div>
+    <p class="price-meta" data-reveal>
+      <span><a class="ver-link" href="/zh/drivedam/releases/">{verLabel}</a></span><span>支援 Windows 10 以上</span>
+    </p>
+  </div>
+</section>
+
+<!-- ============ FAQ ============ -->
+<section class="faq sec-pad" id="faq">
+  <div class="wrap">
+    <div class="cap" data-cap>FAQ</div>
+    <h2 class="faq-h" data-reveal>常見問題</h2>
+    <ul class="faq-list" id="faqList">
+      {faq.map(([q, a]) => (
+        <li class="faq-item">
+          <button class="faq-q" aria-expanded="false"><span set:html={q} /><span class="faq-x" aria-hidden="true"></span></button>
+          <div class="faq-a"><div class="faq-a-in"><p set:html={a} /></div></div>
+        </li>
+      ))}
+    </ul>
+    <script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)} />
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer class="site-foot">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <span class="brand"><img src="/drivedam/assets/app-icon.png" alt="">Drive DAM</span>
+        <p>無論是本機資料夾，還是線上儲存服務等，都能直接使用的數位資產管理。透過共用資料夾，讓團隊的圖片管理與運用更有效率。</p>
+      </div>
+      <div class="foot-col">
+        <p class="foot-t">支援的儲存服務</p>
+        <p class="foot-desc">支援可在檔案總管中使用的線上儲存服務（如 Google Drive）、公司檔案伺服器，以及本機資料夾</p>
+      </div>
+      <div class="foot-col">
+        <p class="foot-t">關於 Drive DAM</p>
+        <ul>
+          <li><a href="/zh/drivedam/">產品頁面</a></li>
+          <li><a href="/zh/drivedam/releases/">更新紀錄</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot-base">
+      <a href="/">© ame_dev</a>
+      <a href="/zh/privacy/">隱私權政策</a>
+    </div>
+  </div>
+</footer>
+
+<script is:inline>
+(function(){
+"use strict";
+var REDUCE = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+/* ---------- ハンバーガーメニュー(モバイル) ---------- */
+var burger = document.getElementById("headBurger");
+var overlay = document.getElementById("headOverlay");
+if(burger && overlay){
+  function setMenu(open){
+    overlay.classList.toggle("open", open);
+    burger.setAttribute("aria-expanded", open ? "true" : "false");
+    overlay.setAttribute("aria-hidden", open ? "false" : "true");
+    burger.setAttribute("aria-label", open ? "關閉選單" : "開啟選單");
+    document.body.style.overflow = open ? "hidden" : "";
+  }
+  burger.addEventListener("click", function(){
+    setMenu(!overlay.classList.contains("open"));
+  });
+  overlay.querySelectorAll("a").forEach(function(a){
+    a.addEventListener("click", function(){ setMenu(false); });
+  });
+  document.addEventListener("keydown", function(e){
+    if(e.key === "Escape" && overlay.classList.contains("open")) setMenu(false);
+  });
+}
+
+/* ---------- FAQ(本文は Astro 側で静的レンダリング。ここは開閉の付与のみ) ---------- */
+document.querySelectorAll("#faqList .faq-item").forEach(function(li){
+  li.querySelector(".faq-q").addEventListener("click",function(){
+    var open = li.classList.toggle("open");
+    this.setAttribute("aria-expanded", open ? "true" : "false");
+  });
+});
+
+/* ---------- Reveal エンジン(IO 共用) ---------- */
+function ease(t){return 1-Math.pow(1-t,3)}
+var io = new IntersectionObserver(function(entries){
+  entries.forEach(function(en){
+    if(!en.isIntersecting) return;
+    var el = en.target;
+    el.classList.add("is-in");
+    var d = el.querySelector && el.querySelector(".draw"); if(d) d.classList.add("is-in");
+    io.unobserve(el);
+  });
+},{threshold:.3, rootMargin:"0px 0px -8% 0px"});
+document.querySelectorAll("[data-reveal],[data-cap],[data-shot],[data-steps],.stage-cap")
+  .forEach(function(el){ io.observe(el); });
+
+/* ---------- funcs ナビ(スクロールスパイ) ---------- */
+var navLinks = document.querySelectorAll(".funcs-nav a");
+if(navLinks.length){
+  var byId = {};
+  navLinks.forEach(function(a){ byId[a.getAttribute("href").slice(1)] = a; });
+  var spy = new IntersectionObserver(function(entries){
+    entries.forEach(function(en){
+      if(!en.isIntersecting) return;
+      navLinks.forEach(function(a){ a.classList.remove("active"); });
+      var a = byId[en.target.id]; if(a) a.classList.add("active");
+    });
+  },{rootMargin:"-35% 0px -55% 0px"});
+  document.querySelectorAll(".func").forEach(function(f){ spy.observe(f); });
+}
+
+/* ---------- 3 特徴の図解の登場 ---------- */
+var illIO = new IntersectionObserver(function(entries){
+  entries.forEach(function(en){
+    if(!en.isIntersecting) return;
+    en.target.classList.add("is-in");
+    illIO.unobserve(en.target);
+  });
+},{threshold:.45});
+document.querySelectorAll("[data-ill]").forEach(function(el){ illIO.observe(el); });
+
+/* ---------- ヒーローの光+統合 rAF ---------- */
+var hero = document.getElementById("hero");
+var light = document.getElementById("heroLight");
+var frame = document.getElementById("heroFrame");
+var head = document.getElementById("siteHead");
+var progress = document.getElementById("progress");
+var lx=0, ly=0, ltx=0, lty=0;
+var gx=.5, gy=.5, gtx=.5, gty=.5;
+var running = false;
+
+function tick(){
+  if(!running) return;
+  var sy = window.scrollY;
+  var max = document.documentElement.scrollHeight - window.innerHeight;
+  progress.style.transform = "scaleX("+(max>0? sy/max : 0)+")";
+  if(sy>24) head.classList.add("scrolled"); else head.classList.remove("scrolled");
+
+  gx += (gtx-gx)*.1; gy += (gty-gy)*.1;
+  if(frame){ frame.style.setProperty("--gx",(gx*100)+"%"); frame.style.setProperty("--gy",(gy*100)+"%"); }
+
+  if(light){
+    lx += (ltx-lx)*.06; ly += (lty-ly)*.06;
+    var heroH = hero.offsetHeight || 1;
+    var p = Math.min(sy/(heroH*.85), 1);
+    light.style.opacity = String(1 - p*.82);
+    var a = light.firstElementChild;
+    if(a){
+      a.style.setProperty("--lx", lx.toFixed(1)+"px");
+      a.style.setProperty("--ly", (ly - p*60).toFixed(1)+"px");
+    }
+  }
+  requestAnimationFrame(tick);
+}
+function start(){ if(!running){ running = true; requestAnimationFrame(tick); } }
+function stop(){ running = false; }
+
+if(REDUCE){
+  window.addEventListener("scroll",function(){
+    var sy = window.scrollY;
+    var max = document.documentElement.scrollHeight - window.innerHeight;
+    progress.style.transform = "scaleX("+(max>0? sy/max : 0)+")";
+    if(sy>24) head.classList.add("scrolled"); else head.classList.remove("scrolled");
+  },{passive:true});
+}else{
+  start();
+  window.addEventListener("pointermove",function(e){
+    var w = window.innerWidth, h = window.innerHeight;
+    ltx = (e.clientX/w - .5) * 70;
+    lty = (e.clientY/h - .5) * 44;
+    if(frame){
+      var fr = frame.getBoundingClientRect();
+      gtx = Math.min(Math.max((e.clientX-fr.left)/fr.width,0),1);
+      gty = Math.min(Math.max((e.clientY-fr.top)/fr.height,0),1);
+    }
+  },{passive:true});
+  document.addEventListener("visibilitychange",function(){
+    if(document.hidden) stop(); else start();
+  });
+}
+})();
+</script>
+
+</DrivedamLayout>

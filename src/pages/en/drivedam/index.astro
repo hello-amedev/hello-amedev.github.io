@@ -31,7 +31,7 @@ const faqJsonLd = {
   title="Drive DAM — From tens of thousands of images to the one you need | DAM app for Windows"
   description="Digital asset management for small teams that works in place on your shared folders — Google Drive, Dropbox, Box, office file servers, or local folders. Manage tens of thousands of images together, safely and fast."
   lang="en"
-  altHref="/drivedam/"
+  alt={{ ja: "/drivedam/", zh: "/zh/drivedam/" }}
   store={{ url: storeUrl, price: "19.99", currency: "USD", version: latest.version }}
 >
 
@@ -49,6 +49,7 @@ const faqJsonLd = {
     </nav>
     <a class="head-link" href={storeUrl} target="_blank" rel="noopener noreferrer">Get on Microsoft Store</a>
     <a class="head-lang" href="/drivedam/?lang=ja">日本語</a>
+    <a class="head-lang" href="/zh/drivedam/?lang=zh">繁體中文</a>
     <button class="head-burger" id="headBurger" aria-label="Open menu" aria-expanded="false" aria-controls="headOverlay">
       <span></span><span></span><span></span>
     </button>
@@ -63,6 +64,7 @@ const faqJsonLd = {
     <a href="#price">Download</a>
     <a href="#faq">FAQ</a>
     <a href="/drivedam/?lang=ja">日本語</a>
+    <a href="/zh/drivedam/?lang=zh">繁體中文</a>
   </nav>
   <p class="head-overlay-foot"><a href={storeUrl} target="_blank" rel="noopener noreferrer">Now on the Microsoft Store</a></p>
 </div>
@@ -301,7 +303,7 @@ const faqJsonLd = {
         <h4 class="fgroup-h">Search & viewing</h4>
         <div class="fgrid">
           <div class="fcard w6" data-reveal>
-            <div class="fcard-vis nat"><img src="/drivedam/assets/func-files-en.png" alt="A folder where MP4, PDF, and XLSX files are listed alongside images" loading="lazy" width="2556" height="1595"></div>
+            <div class="fcard-vis nat"><img src="/drivedam/assets/func-files-en.png" alt="A folder where PDFs show their actual first page as a thumbnail, while DOCX, XLSX, and ZIP files show a type icon" loading="lazy" width="2556" height="1595"></div>
             <h4 class="fcard-h">Every file, visible</h4>
             <p class="fcard-b">Images are the main focus, but other files show up with their type, and you can tag and annotate them too. Camera RAW files and PDFs get thumbnails as well.<br><span class="func-note">Note: thumbnails are not generated for videos, Office files, ZIPs, and similar formats.</span></p>
           </div>
@@ -386,6 +388,11 @@ const faqJsonLd = {
             </div>
             <h4 class="fcard-h">Your original files are never touched</h4>
             <p class="fcard-b">Files in the original image folders cannot be deleted from Drive DAM — reassuring when many people work in the same shared folder.<br><span class="func-note">Note: files you do not need can be hidden from your own view instead.</span></p>
+          </div>
+          <div class="fcard" data-reveal>
+            <div class="fcard-vis modal"><img src="/drivedam/assets/func-rebind-en.png" alt="Relink records dialog listing candidate files for a moved or renamed file, each with a match confidence label" loading="lazy" width="1190" height="1373"></div>
+            <h4 class="fcard-h">Relink records</h4>
+            <p class="fcard-b">If an image is renamed or moved directly outside Drive DAM, its tags and other records can get left behind in the original folder. Drive DAM detects this automatically, lets you know, and relinks the record to the file's new location.</p>
           </div>
         </div>
       </div>

@@ -15,6 +15,7 @@
     "@astrojs/sitemap": "^3.7.3",
     "@fontsource/inter": "^5.3.0",
     "@fontsource/noto-sans-jp": "^5.3.0",
+    "@fontsource/noto-sans-tc": "^5.3.0",
     "astro": "^7.0.3"
   }
 }

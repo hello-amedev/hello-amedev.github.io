@@ -29,7 +29,7 @@ const faqJsonLd = {
 
 <DrivedamLayout
   title="Drive DAM — 数万枚の画像から、目的の 1 枚へ | 共有フォルダで使える画像管理(DAM)アプリ"
-  altHref="/en/drivedam/"
+  alt={{ en: "/en/drivedam/", zh: "/zh/drivedam/" }}
   store={{ url: storeUrl, price: "2500", currency: "JPY", version: latest.version }}
 >
 
@@ -47,6 +47,7 @@ const faqJsonLd = {
     </nav>
     <a class="head-link" href={storeUrl} target="_blank" rel="noopener noreferrer">Microsoft Store で入手</a>
     <a class="head-lang" href="/en/drivedam/?lang=en">EN</a>
+    <a class="head-lang" href="/zh/drivedam/?lang=zh">繁體中文</a>
     <button class="head-burger" id="headBurger" aria-label="メニューを開く" aria-expanded="false" aria-controls="headOverlay">
       <span></span><span></span><span></span>
     </button>
@@ -61,6 +62,7 @@ const faqJsonLd = {
     <a href="#price">ダウンロード</a>
     <a href="#faq">FAQ</a>
     <a href="/en/drivedam/?lang=en">English</a>
+    <a href="/zh/drivedam/?lang=zh">繁體中文</a>
   </nav>
   <p class="head-overlay-foot"><a href={storeUrl} target="_blank" rel="noopener noreferrer">Microsoft Store で公開中</a></p>
 </div>
@@ -299,7 +301,7 @@ const faqJsonLd = {
         <h4 class="fgroup-h">検索・表示</h4>
         <div class="fgrid">
           <div class="fcard w6" data-reveal>
-            <div class="fcard-vis nat"><img src="/drivedam/assets/func-files.png" alt="MP4・PDF・XLSX が画像と混在して一覧表示されているフォルダ" loading="lazy" width="2556" height="1595"></div>
+            <div class="fcard-vis nat"><img src="/drivedam/assets/func-files.png" alt="PDF は実際のページがサムネイルに表示され、DOCX・XLSX・ZIP は種別アイコンで一覧表示されているフォルダ" loading="lazy" width="2556" height="1595"></div>
             <h4 class="fcard-h">すべてのファイルを可視化</h4>
             <p class="fcard-b">画像管理が主機能ですが、それ以外のファイルも種別を表示し、タグやメモを付けて管理できます。カメラの RAW ファイルと PDF はサムネイルも表示されます。<br><span class="func-note">※動画・Office・ZIP などのサムネイル表示には未対応です。</span></p>
           </div>
@@ -384,6 +386,11 @@ const faqJsonLd = {
             </div>
             <h4 class="fcard-h">元のフォルダ・ファイルを編集しない安心設計</h4>
             <p class="fcard-b">元の画像フォルダのファイルは削除できないようになっています。複数人で共有フォルダを扱う時にも安心な設計です。<br><span class="func-note">※不要なファイルについては、自分の一覧上で非表示にする機能があります。</span></p>
+          </div>
+          <div class="fcard" data-reveal>
+            <div class="fcard-vis modal"><img src="/drivedam/assets/func-rebind.png" alt="記録の紐づけ直しダイアログ。移動・リネームされたファイルの候補が一致度つきで一覧表示されている" loading="lazy" width="1189" height="1373"></div>
+            <h4 class="fcard-h">記録の紐づけ直し</h4>
+            <p class="fcard-b">画像がアプリ外で直接リネーム・移動されると、タグなどの記録が元のフォルダに取り残されることがあります。取り残された記録を自動で検知してお知らせし、移動先のファイルへ紐づけ直せます。</p>
           </div>
         </div>
       </div>
