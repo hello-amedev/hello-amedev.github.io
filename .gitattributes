@@ -1,0 +1,7 @@
+# Windows と Mac を行き来するため、リポジトリ内の改行は LF に統一する。
+# これを入れないと、同じ内容のファイルが「全行変更」として差分に出る。
+* text=auto eol=lf
+
+# バッチファイルは Windows 上で確実に動くよう CRLF で取り出す
+*.bat text eol=crlf
+*.cmd text eol=crlf
