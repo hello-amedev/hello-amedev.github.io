@@ -12,6 +12,11 @@
  * items の文面は Microsoft Store の「このバージョンの最新情報」と揃える。
  * 原典は drive-dam 側の docs/store-listing.md。
  *
+ * v1.3.1 から文体が変わっている(あめさん指定): 語り口調の説明文をやめ、
+ * 体言止めの機能羅列にした。1 項目 1 文・句点なし。各項目は「何を変えたか」
+ * ではなく「ユーザーにとって何が良くなったか」を書く。v1.3.0 以前の項目は
+ * 当時の文体のまま残してあるので、混在して見えるのは意図どおり。
+ *
  * 収録範囲は **Store で一般に入手できたバージョンのみ**(v1.0.0 以降)。
  * それ以前の v0.9.x〜v0.13.x は社内試用配布のみなので載せない。
  */
@@ -30,6 +35,37 @@ export interface Release {
 }
 
 export const releases: Release[] = [
+	{
+		version: "1.3.1",
+		date: "2026-08-15",
+		ja: [
+			"書き出しに WebP 形式を追加",
+			"拡大プレビューの上部に色・★・♡ を表示(その場で切り替え可能)",
+			"アプリの外で移動・名前変更されたファイルの取り残された記録を、フォルダを開いた時に通知",
+			"記録の紐づけ直しに一括選択を追加。移動先にすでに記録がある場合も統合して紐づけ直しが可能に",
+			"タグの整理やユーザー名の変更など、時間のかかる操作に進捗表示を追加",
+			"一覧のサムネイルが操作していないのに読み込み直され、完了通知が出る現象を解消",
+			"英語・繁體中文の画面に日本語が残っていた箇所を修正",
+		],
+		en: [
+			"Added WebP as an export format",
+			"Color label, ★ and ♡ now shown in the full-screen preview's top bar, switchable right there",
+			"Records left behind by files moved or renamed outside Drive DAM are now flagged when you open a folder",
+			"Relinking those records now supports bulk selection, and can merge into a destination that already has records of its own",
+			"Progress display added to slow operations such as reorganizing tags or changing your display name",
+			"No more thumbnails reloading in the grid, with a completion notice, when you haven't changed anything",
+			"Fixed Japanese text still showing in the English and Traditional Chinese interface",
+		],
+		zh: [
+			"匯出格式新增 WebP",
+			"放大檢視的上方列顯示顏色、★、♡(可直接切換)",
+			"檔案在 Drive DAM 之外被移動或重新命名後留下的記錄，會在開啟資料夾時提示",
+			"重新連結記錄時可批次選取；即使目的地已有記錄，也能合併後重新連結",
+			"整理標籤、變更使用者名稱等耗時操作新增進度顯示",
+			"修正未進行任何操作時，列表縮圖仍會重新載入並顯示完成通知的問題",
+			"修正英文與繁體中文介面中殘留日文的部分",
+		],
+	},
 	{
 		version: "1.3.0",
 		date: "2026-08-07",
