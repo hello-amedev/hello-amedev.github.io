@@ -36,6 +36,22 @@ export interface Release {
 
 export const releases: Release[] = [
 	{
+		version: "1.3.2",
+		date: "2026-08-22",
+		ja: [
+			"記録の紐づけ直しで、候補が見つからなかった記録をまとめて削除できるように",
+			"取り残された記録を削除したあとも、通知やフォルダの印が残り続ける現象を解消",
+		],
+		en: [
+			"Relinking: records with no candidates found can now be deleted all at once",
+			"Fixed the notice and folder marks for leftover records staying on after those records were deleted",
+		],
+		zh: [
+			"重新連結記錄時，可一次刪除找不到候選的記錄",
+			"修正刪除遺留記錄後，提示與資料夾標記仍持續顯示的問題",
+		],
+	},
+	{
 		version: "1.3.1",
 		date: "2026-08-15",
 		ja: [
