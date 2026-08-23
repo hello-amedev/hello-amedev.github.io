@@ -36,6 +36,29 @@ export interface Release {
 
 export const releases: Release[] = [
 	{
+		version: "1.3.4",
+		date: "2026-08-23",
+		ja: [
+			"他のメンバーがタググループを変更したあと、自分の保存が毎回「先に変更されました」で弾かれる現象を解消",
+			"フォルダ登録時に、上位のフォルダにすでに Drive DAM の設定がある場合は、上位フォルダの登録をおすすめする案内を表示",
+		],
+		en: [
+			"Fixed tag group changes being rejected every time as \"already changed by someone else\" after another member had edited them",
+			"When adding a folder whose parent folder already has Drive DAM settings, a prompt now suggests adding the parent folder instead",
+		],
+		zh: [
+			"修正其他成員變更標籤群組後，自己的儲存每次都被「已有人先行變更」拒絕的問題",
+			"新增資料夾時，若上層資料夾已有 Drive DAM 的設定，會提示建議改為新增上層資料夾",
+		],
+	},
+	{
+		version: "1.3.3",
+		date: "2026-08-23",
+		ja: ["初回起動時の名前入力画面のテキストをわかりやすく見直しました"],
+		en: ["Reworded the name-entry screen shown on first launch to make it easier to understand"],
+		zh: ["首次啟動時的名稱輸入畫面文字已調整得更容易理解"],
+	},
+	{
 		version: "1.3.2",
 		date: "2026-08-22",
 		ja: [
