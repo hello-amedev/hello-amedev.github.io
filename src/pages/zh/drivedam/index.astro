@@ -3,6 +3,9 @@ import DrivedamLayout from "../../../layouts/DrivedamLayout.astro";
 import StoreBadge from "../../../components/StoreBadge.astro";
 import { latest } from "../../../data/releases";
 const storeUrl = "https://apps.microsoft.com/detail/9P4L43W1XP7P?hl=zh-tw&gl=TW";
+// 價格為 Store 實際售價。內文與 JSON-LD 皆讀取此處，不直接寫死
+const storePrice = 679;
+const priceLabel = `NT$${storePrice.toLocaleString("zh-TW")}`;
 // 版本標示以 src/data/releases.ts 為主要來源，此處不直接寫死
 const verLabel = `v${latest.version}(${latest.date})`;
 // FAQ(確定文案 3.9・共 6 題)。為靜態渲染與 FAQPage 結構化資料的主要來源。
@@ -31,7 +34,7 @@ const faqJsonLd = {
   title="Drive DAM — 從數萬張圖片中，找到需要的那一張｜可在共用資料夾使用的圖片管理(DAM)應用程式"
   lang="zh"
   alt={{ ja: "/drivedam/", en: "/en/drivedam/" }}
-  store={{ url: storeUrl, price: "679", currency: "TWD", version: latest.version }}
+  store={{ url: storeUrl, price: String(storePrice), currency: "TWD", version: latest.version }}
 >
 
 <div class="progress" id="progress" aria-hidden="true"></div>
@@ -417,7 +420,7 @@ const faqJsonLd = {
   <div class="wrap">
     <img class="price-icon" src="/drivedam/assets/app-icon.png" alt="Drive DAM" width="92" height="92" data-reveal>
     <h2 class="price-h" data-reveal>30 天免費試用。</h2>
-    <p class="price-lead" data-reveal><strong>不需訂閱，買斷即可永久使用。</strong><br>30 天內所有功能皆可免費使用。</p>
+    <p class="price-lead" data-reveal><strong>不需訂閱，買斷({priceLabel})即可永久使用。</strong><br>30 天內所有功能皆可免費使用。</p>
     <div data-reveal>
       <StoreBadge href={storeUrl} eyebrow="在 Microsoft Store" label="立即取得" night />
     </div>

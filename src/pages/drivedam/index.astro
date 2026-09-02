@@ -3,6 +3,9 @@ import DrivedamLayout from "../../layouts/DrivedamLayout.astro";
 import StoreBadge from "../../components/StoreBadge.astro";
 import { latest } from "../../data/releases";
 const storeUrl = "https://apps.microsoft.com/detail/9P4L43W1XP7P?hl=ja-jp&gl=JP";
+// 価格は Store の実売価格。本文と JSON-LD の両方がここを見る(直書きしない)
+const storePrice = 2500;
+const priceLabel = `${storePrice.toLocaleString("ja-JP")} 円`;
 // バージョン表記は src/data/releases.ts が一次ソース。ここでは直書きしない
 const verLabel = `v${latest.version}(${latest.date})`;
 // FAQ(確定コピー 3.9・6 問)。静的レンダリングと FAQPage 構造化データの一次ソース。
@@ -30,7 +33,7 @@ const faqJsonLd = {
 <DrivedamLayout
   title="Drive DAM — 数万枚の画像から、目的の 1 枚へ | 共有フォルダで使える画像管理(DAM)アプリ"
   alt={{ en: "/en/drivedam/", zh: "/zh/drivedam/" }}
-  store={{ url: storeUrl, price: "2500", currency: "JPY", version: latest.version }}
+  store={{ url: storeUrl, price: String(storePrice), currency: "JPY", version: latest.version }}
 >
 
 <div class="progress" id="progress" aria-hidden="true"></div>
@@ -416,7 +419,7 @@ const faqJsonLd = {
   <div class="wrap">
     <img class="price-icon" src="/drivedam/assets/app-icon.png" alt="Drive DAM" width="92" height="92" data-reveal>
     <h2 class="price-h" data-reveal>30 日間、無料で試せます。</h2>
-    <p class="price-lead" data-reveal><strong>サブスク不要、買い切りでずっと使えます。</strong><br>30 日間すべての機能を無料でお使いいただけます。</p>
+    <p class="price-lead" data-reveal><strong>サブスク不要、買い切り({priceLabel})でずっと使えます。</strong><br>30 日間すべての機能を無料でお使いいただけます。</p>
     <div data-reveal>
       <StoreBadge href={storeUrl} eyebrow="Microsoft Store で" label="入手する" night />
     </div>

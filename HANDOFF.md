@@ -253,6 +253,13 @@ worktree `claude/drive-dam-1-2-0-site-update-9e23c2` で作業。
 - **CTA の光だまり(`.btn-store::before`)は `.btn-store` の `z-index:0` とセット**。
   外すと疑似要素がセクション背景の裏に回って光が消える
 - **ストア URL は各ページのフロントマター `storeUrl` 定数に集約**(JA/EN で別 URL)
+- **価格は各ページの `storePrice` 定数が一次ソース**(JP 2500 / US 19.99 / TW 679)。
+  価格セクションの本文と JSON-LD の両方がここを見るので、直書きしないこと。
+  **Microsoft Store がセールを行うと LP の金額が実態とずれる**ため、
+  値下げ・値上げの際はこの定数を直す。実売価格はカタログ API で裏取りできる:
+  `https://displaycatalog.mp.microsoft.com/v7.0/products/9P4L43W1XP7P?market=JP&languages=ja-jp&fieldsTemplate=Details`
+  の `DisplaySkuAvailabilities[].Availabilities[].OrderManagementData.Price`
+  (`market` を US / TW に変えれば各国価格。0.0 の SKU は無料体験版)
 - **更新履歴ページの本文は reveal で隠れている**。`<noscript>` で強制表示する
   `<style>` を入れてあるので、reveal のクラス名を変えたら noscript 側も直す
 

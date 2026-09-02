@@ -3,6 +3,9 @@ import DrivedamLayout from "../../../layouts/DrivedamLayout.astro";
 import StoreBadge from "../../../components/StoreBadge.astro";
 import { latest } from "../../../data/releases";
 const storeUrl = "https://apps.microsoft.com/detail/9P4L43W1XP7P?hl=en-us&gl=US";
+// Store list price. Both the body copy and the JSON-LD read this — never hard-code it
+const storePrice = 19.99;
+const priceLabel = `$${storePrice.toFixed(2)}`;
 // Version strings come from src/data/releases.ts — never hard-code them here
 const verLabel = `v${latest.version} (${latest.date})`;
 // FAQ (final copy 3.9, 6 items). Single source for the static list and FAQPage JSON-LD.
@@ -32,7 +35,7 @@ const faqJsonLd = {
   description="Digital asset management for small teams that works in place on your shared folders — Google Drive, Dropbox, Box, office file servers, or local folders. Manage tens of thousands of images together, safely and fast."
   lang="en"
   alt={{ ja: "/drivedam/", zh: "/zh/drivedam/" }}
-  store={{ url: storeUrl, price: "19.99", currency: "USD", version: latest.version }}
+  store={{ url: storeUrl, price: String(storePrice), currency: "USD", version: latest.version }}
 >
 
 <div class="progress" id="progress" aria-hidden="true"></div>
@@ -418,7 +421,7 @@ const faqJsonLd = {
   <div class="wrap">
     <img class="price-icon" src="/drivedam/assets/app-icon.png" alt="Drive DAM" width="92" height="92" data-reveal>
     <h2 class="price-h" data-reveal>Try it free for 30 days.</h2>
-    <p class="price-lead" data-reveal><strong>No subscription — buy once, use it for good.</strong><br>Every feature is free to use for the first 30 days.</p>
+    <p class="price-lead" data-reveal><strong>No subscription — buy once ({priceLabel}), use it for good.</strong><br>Every feature is free to use for the first 30 days.</p>
     <div data-reveal>
       <StoreBadge href={storeUrl} eyebrow="Get it on" label="Microsoft Store" night />
     </div>
