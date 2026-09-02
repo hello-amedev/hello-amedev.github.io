@@ -14,7 +14,7 @@ import "@fontsource/noto-sans-tc/500.css";
 import "@fontsource/noto-sans-tc/600.css";
 import "@fontsource/noto-sans-tc/700.css";
 import "../styles/drivedam.css";
-import LangRedirect from "../components/LangRedirect.astro";
+import LangBanner from "../components/LangBanner.astro";
 
 interface Props {
 	title: string;
@@ -107,7 +107,6 @@ if (alt) {
 	<head>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		{alt && <LangRedirect current={lang} alt={alt} />}
 		<meta name="theme-color" content="#F6F8FA" />
 		<link rel="icon" type="image/png" sizes="32x32" href="/drivedam/favicon-32.png" />
 		<link rel="apple-touch-icon" href="/drivedam/apple-touch-icon.png" />
@@ -138,6 +137,7 @@ if (alt) {
 		{jsonLd && <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />}
 	</head>
 	<body>
+		{alt && <LangBanner current={lang} alt={alt} />}
 		<slot />
 	</body>
 </html>

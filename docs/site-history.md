@@ -142,6 +142,8 @@ CSS トランジション・スムーススクロールがすべて凍る**。�
     初回訪問時のみ判定 → `location.replace` → sessionStorage に記録。
     `?lang=ja` / `?lang=en` 付きなら判定スキップ + `history.replaceState` で除去。
     判定不能時はリダイレクトせず x-default=ja に倒す
+    → **2026-09-02 に廃止**。Googlebot にも転送が効き、日本語・繁体字ページが
+    インデックス対象外になるリスクがあったため、`LangBanner.astro`(帯方式)に置き換えた
 
 **第8コミット(Drive DAM ページに独自 favicon)**
 

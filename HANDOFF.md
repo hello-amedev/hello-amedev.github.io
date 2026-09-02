@@ -8,7 +8,35 @@
 | なぜこの実装なのか / 過去の経緯 | [docs/site-history.md](docs/site-history.md) |
 | 製品本体 Drive DAM の最新 | `~/Documents/claude-private/drive-dam/HANDOFF.md` |
 
-## 0. 次の Claude へ(2026-08-23 v1.3.3 / v1.3.4 反映セッション終了時)
+## 0. 次の Claude へ(2026-09-02 SEO 調査・言語自動転送の廃止セッション終了時)
+
+### SEO 調査・言語自動転送の廃止(2026-09-02)
+
+きっかけは「『Drive DAM 画像管理』で検索すると Store は 1 位に出るのに LP が出てこない」。
+調査した結果、**LP はそもそもインデックスされていなかった**(URL 検査で
+「URL が Google に認識されていません」= Google がまだ URL の存在を知らない状態)。
+
+1. **調査で確定した事実**
+   - サーバー側は健全。`robots.txt` / `sitemap-index.xml` / `sitemap-0.xml` は
+     Googlebot の UA でも 200、`noindex` なし、TOP から LP への内部リンクも
+     生 HTML に 3 本(nofollow なし)
+   - **`/sitemap.xml` は 404**(Astro が出すのは `sitemap-index.xml`)。GSC の
+     「取得できませんでした」が 1 か月続いていた原因はこれ。**10 URL が 1 本も
+     Google に渡っていなかった**。あめさんが `sitemap-index.xml` で再送信済み
+   - TOP(`/`)はインデックス済み = ドメインは遮断もペナルティも受けていない。
+     2 階層目にクロール予算が回っていないだけ
+   - Store の登録サイト URL は LP を指している(カタログ API の
+     `PublisherWebsiteUri` で実測)が、JS 描画 + nofollow 相当で発見経路にならない
+2. **言語自動転送(`LangRedirect.astro`)を廃止し、帯方式(`LangBanner.astro`)に置き換えた**。
+   詳細は下記「4. 既知の落とし穴」の多言語の項。**これは③の前にやる必要があった** =
+   手動インデックス登録で初めて Google を呼び込む前に直さないと、初回クロールで
+   日本語 LP が「英語版へのリダイレクト」として記録されてしまうため
+3. **残りの手順(あめさん側)**: ③ URL 検査から `/`・`/drivedam/`・
+   `/drivedam/releases/`・`/en/drivedam/` の 4 本をインデックス登録リクエスト
+   → ④ X プロフィール・BOOTH・note から LP への外部リンクを作る。
+   **③は本コミットのデプロイ完了後に行うこと**
+4. 独自ドメイン(例 `amedev.jp`)の取得は保留。github.io サブドメインより
+   指名検索に効くが、移行でインデックスが一度リセットされるため、やるなら早い方がよい
 
 ### v1.3.3 / v1.3.4 反映セッション(2026-08-23、drive-dam 側セッションの終了処理として main 直で実施)
 
@@ -75,13 +103,9 @@ ff-merge する運用)。
 1. **Search Console / Bing Webmaster とも登録完了(2026-08-02)**。所有権確認
    ファイルは `public/google0edd9d5dd7f2424f.html` と `public/BingSiteAuth.xml`
    (**両方とも削除禁止** = 消すと所有権失効)。プロパティはどちらもサイトルート。
-   sitemap は両方に送信済みだが、**GSC 側は「取得できませんでした」表示のまま**
-   (新規プロパティの既知の表示。初回クロール後に「成功」へ変わるのが典型)。
-   数日後に確認し、変わらなければ調査する
-2. **LangRedirect(言語自動転送)の扱いは保留**: Googlebot(英語環境で JS 実行)
-   にも転送が効き、日本語 LP がリダイレクト扱いになるリスクを発見済み。
-   Search Console で `/drivedam/` のインデックス実態を見てから、
-   自動転送をやめて「View in English?」バナー方式に変えるかを判断する
+   **sitemap の送信パスは `sitemap-index.xml`**(`sitemap.xml` は 404。
+   2026-09-02 に是正済み)
+2. **言語自動転送は 2026-09-02 に廃止済み**(帯方式へ)。この項目は解消
 3. 検索意図に応える記事セクション(英語の比較・How-to 記事、日本語記事)と
    TOP 英語版は未着手(従来からの「3. 次回着手するなら」も生きている)
 
@@ -216,10 +240,21 @@ worktree `claude/drive-dam-1-2-0-site-update-9e23c2` で作業。
 
 - **多言語ページを新設する時**は Layout(`DrivedamLayout`/`Base`)の `alt` prop に
   「自分以外の言語 → URL」のマップを渡す(例: ja ページなら
-  `alt={{ en: "/en/...", zh: "/zh/..." }}`)。`<LangRedirect current alt />` が
-  自動判定・転送・hreflang をこのマップから組み立てる。加えて、そのページ内の
+  `alt={{ en: "/en/...", zh: "/zh/..." }}`)。`<LangBanner current alt />` が
+  帯と hreflang をこのマップから組み立てる。加えて、そのページ内の
   言語切替リンクには必ず `?lang=ja` / `?lang=en` / `?lang=zh` を付けること。
-  付けないと自動判定に上書きされる
+  付けないと「その言語を選んだ」ことが記録されず、帯が出続ける
+- **言語による自動転送(`location.replace`)を復活させない**。Googlebot は
+  en-US 環境で JS を実行するので、日本語・繁体字ページが「リダイレクトされた
+  ページ」としてインデックス対象外になる。案内は必ず帯(`LangBanner.astro`)で行い、
+  **9 ページすべてが実在するページとして残る**状態を保つこと
+- **帯の高さは `--langbar-h`(CSS 既定 44px → JS が実測で上書き)で配られる**。
+  `.site-head`(fixed)・`.progress`(fixed)・`.site-header`(sticky)の `top` と
+  `body` の `padding-top` がこれを見ている。**固定・追従ヘッダーを新設したら
+  `LangBanner.astro` の `is:global` ブロックにセレクタを足すこと**。
+  なお実測は web フォント読み込み前だと桁違いの値(実測 390px)を拾うため、
+  rAF・`document.fonts.ready`・`load`・ResizeObserver の 4 点で測り直し、
+  200px 以上の異常値は捨てている
 - **既存言語ページをコピーして新しい言語ディレクトリを作る時、相対 import パスの深さがズレる**。
   例: `src/pages/drivedam/index.astro`(`pages/<page>` = 2 階層)をコピーして
   `src/pages/zh/drivedam/index.astro`(`pages/zh/<page>` = 3 階層)を作ると、

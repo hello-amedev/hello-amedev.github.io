@@ -1,0 +1,233 @@
+---
+// ブラウザの言語がページの言語と違う時だけ、最上部に他言語版への細い帯を出す。
+//
+// 2026-09-02 に自動転送(location.replace)から帯方式へ変更した。
+// 旧方式は Googlebot(en-US 環境で JS を実行する)にも転送が効いてしまい、
+// 日本語・繁体字ページが「リダイレクトされたページ」としてインデックス対象外に
+// なるリスクがあった。SEO 上、3 言語すべてが実在するページとして残る必要がある。
+//
+// - `?lang=ja|en|zh` 付きで来たら判定せず、選択を記録して URL からパラメータを除去
+// - 一度閉じたら以降は出さない(localStorage)
+// - 帯は常に HTML に出力し hidden で隠す。クローラーからは他言語版への
+//   ただのリンクに見えるだけで、ページ本体は転送されず残る
+interface Props {
+	/** このページの言語 */
+	current: "ja" | "en" | "zh";
+	/** 他言語版の URL(存在するものだけ渡す。自分の言語は含めない) */
+	alt: Partial<Record<"ja" | "en" | "zh", string>>;
+}
+const { current, alt } = Astro.props;
+
+// 帯の文面は「案内する先の言語」で書く(英語話者に日本語で語りかけない)
+const COPY = {
+	ja: { msg: "このページは日本語でもご覧いただけます。", cta: "日本語で見る", close: "閉じる", tag: "ja" },
+	en: { msg: "This page is available in English.", cta: "View in English", close: "Dismiss", tag: "en" },
+	zh: { msg: "本頁面也提供繁體中文版本。", cta: "以繁體中文瀏覽", close: "關閉", tag: "zh-Hant" },
+} as const;
+
+const rows = (Object.entries(alt) as ["ja" | "en" | "zh", string][])
+	.filter(([code]) => code !== current)
+	.map(([code, href]) => ({ code, href, ...COPY[code] }));
+---
+
+<div class="langbar" id="langbar" hidden>
+	{
+		rows.map((r) => (
+			<div class="lb-row" data-lang={r.code} lang={r.tag} hidden>
+				<span class="lb-msg">{r.msg}</span>
+				<a class="lb-cta" href={`${r.href}?lang=${r.code}`} hreflang={r.tag}>
+					{r.cta}
+				</a>
+				<button class="lb-close" type="button" data-lb-close aria-label={r.close}>
+					<svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true" focusable="false">
+						<path d="M4 4l8 8M12 4l-8 8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+					</svg>
+				</button>
+			</div>
+		))
+	}
+</div>
+
+<script is:inline define:vars={{ current, alt }}>
+	(function () {
+		var KEY = "lang-choice";
+		var OFF = "lang-bar-off";
+		var read = function (k) {
+			try {
+				return localStorage.getItem(k);
+			} catch (e) {
+				return null;
+			}
+		};
+		var write = function (k, v) {
+			try {
+				localStorage.setItem(k, v);
+			} catch (e) {
+				/* プライベートモード等では記録できないだけ。表示は続行する */
+			}
+		};
+		try {
+			var pageLang = current;
+			var hrefs = alt;
+
+			// 1. 明示指定(?lang=xx)で来たら判定しない。選択を覚えて URL は綺麗にする
+			var params = new URLSearchParams(location.search);
+			var explicit = params.get("lang");
+			if (explicit === "ja" || explicit === "en" || explicit === "zh") {
+				write(KEY, explicit);
+				params.delete("lang");
+				var q = params.toString();
+				history.replaceState(null, "", location.pathname + (q ? "?" + q : "") + location.hash);
+				return;
+			}
+
+			// 2. 一度閉じていれば二度と出さない
+			if (read(OFF)) return;
+
+			// 3. 記録済みの選択を優先し、無ければブラウザの言語から推定する
+			var pref = read(KEY);
+			if (pref !== "ja" && pref !== "en" && pref !== "zh") {
+				var langs =
+					navigator.languages && navigator.languages.length ? navigator.languages : [navigator.language || ""];
+				if (!langs[0]) return;
+				var prefersZh = langs.some(function (l) {
+					return /^zh-(hant|tw|hk|mo)\b/i.test(l);
+				});
+				var prefersJa = langs.some(function (l) {
+					return /^ja\b/i.test(l);
+				});
+				pref = prefersZh ? "zh" : prefersJa ? "ja" : "en";
+			}
+			if (pref === pageLang || !hrefs[pref]) return;
+
+			var bar = document.getElementById("langbar");
+			var row = bar && bar.querySelector('.lb-row[data-lang="' + pref + '"]');
+			if (!bar || !row) return;
+
+			// 4. 表示。高さの既定値は CSS 側が持っているので、ここでは class を付けるだけで
+			//    初回描画は正しく決まる。実測は文言が折り返した時のための微調整
+			var root = document.documentElement;
+			var sync = function () {
+				var h = Math.round(bar.getBoundingClientRect().height);
+				// スタイル適用前に測ると桁違いの値を拾うことがある。異常値は捨てて既定値に任せる
+				if (h > 0 && h < 200) root.style.setProperty("--langbar-h", h + "px");
+			};
+			row.hidden = false;
+			bar.hidden = false;
+			root.classList.add("has-langbar");
+			// レイアウトが確定してから測る。1 回では web フォント読み込み前の値を掴むことが
+			// あるため、確定していく節目ごとに測り直す(フォント適用後・全読み込み後)
+			requestAnimationFrame(sync);
+			if (document.fonts && document.fonts.ready) document.fonts.ready.then(sync);
+			addEventListener("load", sync);
+			if (typeof ResizeObserver === "function") new ResizeObserver(sync).observe(bar);
+			else addEventListener("resize", sync);
+
+			row.querySelector("[data-lb-close]").addEventListener("click", function () {
+				write(OFF, "1");
+				bar.hidden = true;
+				root.classList.remove("has-langbar");
+				root.style.removeProperty("--langbar-h");
+			});
+		} catch (e) {
+			// 判定に失敗しても帯を出さないだけ。ページ本体には影響させない
+		}
+	})();
+</script>
+
+<style is:global>
+	:root {
+		--langbar-h: 0px;
+	}
+	/* 帯 1 行ぶんの高さ(13px × 1.5 + 上下 padding 18px、閉じるボタン 26px が下限)。
+	   JS はこの既定値を実測で微調整するだけなので、初回描画からずれない */
+	html.has-langbar {
+		--langbar-h: 44px;
+	}
+
+	.langbar {
+		position: fixed;
+		top: 0;
+		left: 0;
+		right: 0;
+		z-index: 200;
+		background: rgba(255, 255, 255, 0.94);
+		backdrop-filter: saturate(180%) blur(10px);
+		border-bottom: 1px solid rgba(27, 26, 23, 0.12);
+		font-size: 13px;
+		line-height: 1.5;
+		color: #45433d;
+	}
+	.langbar[hidden] {
+		display: none;
+	}
+	.lb-row {
+		display: flex;
+		align-items: center;
+		gap: 12px;
+		max-width: 1360px;
+		margin: 0 auto;
+		padding: 9px clamp(16px, 5vw, 72px);
+	}
+	.lb-row[hidden] {
+		display: none;
+	}
+	.lb-msg {
+		flex: 1 1 auto;
+		min-width: 0;
+	}
+	.lb-cta {
+		flex: 0 0 auto;
+		color: #2f55d4;
+		font-weight: 600;
+		text-decoration: none;
+		border-bottom: 1px solid rgba(47, 85, 212, 0.3);
+		transition: border-color 0.2s ease;
+	}
+	.lb-cta:hover {
+		border-bottom-color: #2f55d4;
+	}
+	.lb-close {
+		flex: 0 0 auto;
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		width: 26px;
+		height: 26px;
+		margin-right: -6px;
+		padding: 0;
+		border: 0;
+		border-radius: 50%;
+		background: transparent;
+		color: #8b887f;
+		cursor: pointer;
+		transition:
+			background 0.2s ease,
+			color 0.2s ease;
+	}
+	.lb-close:hover {
+		background: rgba(27, 26, 23, 0.06);
+		color: #1b1a17;
+	}
+
+	/* 帯が出ている間だけ、ページ本体と固定・追従ヘッダーを帯の高さぶん下げる */
+	html.has-langbar body {
+		padding-top: var(--langbar-h);
+	}
+	html.has-langbar .site-head,
+	html.has-langbar .progress,
+	html.has-langbar .site-header {
+		top: var(--langbar-h);
+	}
+	/* Drive DAM LP の機能セクションはアンカー着地位置を固定値で持っている */
+	html.has-langbar .func {
+		scroll-margin-top: calc(110px + var(--langbar-h));
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.lb-cta,
+		.lb-close {
+			transition: none;
+		}
+	}
+</style>

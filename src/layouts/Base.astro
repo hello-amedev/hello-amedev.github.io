@@ -6,7 +6,7 @@ import "@fontsource/inter/700.css";
 import "../styles/global.css";
 import SiteHeader from "../components/SiteHeader.astro";
 import SiteFooter from "../components/SiteFooter.astro";
-import LangRedirect from "../components/LangRedirect.astro";
+import LangBanner from "../components/LangBanner.astro";
 
 interface Props {
 	title: string;
@@ -59,7 +59,6 @@ if (alt) {
 	<head>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		{alt && <LangRedirect current={lang} alt={alt} />}
 		<meta name="theme-color" content={theme === "dark" ? "#080B14" : "#F6F8FA"} />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<link rel="icon" href="/favicon.ico" />
@@ -90,6 +89,7 @@ if (alt) {
 		<meta name="generator" content={Astro.generator} />
 	</head>
 	<body>
+		{alt && <LangBanner current={lang} alt={alt} />}
 		{!bare && <SiteHeader current={current} lang={lang} alt={alt} />}
 		<main>
 			<slot />
