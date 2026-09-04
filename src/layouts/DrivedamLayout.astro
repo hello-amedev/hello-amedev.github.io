@@ -78,7 +78,8 @@ const jsonLd = store
 			url: canonical.href,
 			installUrl: store.url,
 			softwareVersion: store.version,
-			author: { "@type": "Organization", name: "ame_dev" },
+			// トップの Organization と同じ url を持たせ、同一の発行者だと解釈させる
+			author: { "@type": "Organization", name: "ame_dev", url: new URL("/", Astro.site).href },
 			inLanguage: lang,
 			offers: { "@type": "Offer", price: store.price, priceCurrency: store.currency },
 			screenshot: new URL(
@@ -122,6 +123,7 @@ if (alt) {
 			</>
 		)}
 		<meta property="og:type" content="website" />
+		<meta property="og:site_name" content="ame_dev" />
 		<meta property="og:title" content={title} />
 		<meta property="og:description" content={description} />
 		<meta property="og:url" content={canonical} />

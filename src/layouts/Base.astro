@@ -21,6 +21,8 @@ interface Props {
 	page?: string;
 	/** true にすると共通ヘッダー・フッターを出さない(ページ側が自前で用意する時) */
 	bare?: boolean;
+	/** このページに出す構造化データ(JSON-LD)。トップの WebSite / Organization 等 */
+	jsonLd?: unknown;
 	/** og:image を差し替える(未指定は ame_dev 共通の 1200×630) */
 	ogImagePath?: string;
 	ogImageWidth?: number;
@@ -36,6 +38,7 @@ const {
 	theme = "light",
 	page,
 	bare = false,
+	jsonLd,
 	ogImagePath = "/assets/og-image.jpg",
 	ogImageWidth = 1200,
 	ogImageHeight = 630,
@@ -75,6 +78,7 @@ if (alt) {
 			</>
 		)}
 		<meta property="og:type" content="website" />
+		<meta property="og:site_name" content="ame_dev" />
 		<meta property="og:title" content={title} />
 		<meta property="og:description" content={description} />
 		<meta property="og:url" content={canonical} />
@@ -87,6 +91,7 @@ if (alt) {
 		<meta name="twitter:description" content={description} />
 		<meta name="twitter:image" content={ogImage} />
 		<meta name="generator" content={Astro.generator} />
+		{jsonLd && <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />}
 	</head>
 	<body>
 		{alt && <LangBanner current={lang} alt={alt} />}

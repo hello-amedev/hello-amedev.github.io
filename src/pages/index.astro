@@ -33,12 +33,28 @@ const layout: Record<
 const featured = apps.find((a) => a.featured);
 const rest = apps.filter((a) => !a.featured);
 
+// Google のサイト名・ロゴ判定はトップページの WebSite / Organization を見る。
+// ブランド情報は apps.ts の author が一次ソースなので、ここでは組み立てるだけ
+const siteUrl = new URL("/", Astro.site).href;
+const siteJsonLd = [
+	{ "@context": "https://schema.org", "@type": "WebSite", name: author.name, url: siteUrl },
+	{
+		"@context": "https://schema.org",
+		"@type": "Organization",
+		name: author.name,
+		url: siteUrl,
+		logo: new URL("/assets/brand/ame-dev-logo.svg", Astro.site).href,
+		description: author.bio,
+		sameAs: author.links.filter((l) => !l.href.startsWith("mailto:")).map((l) => l.href),
+	},
+];
+
 const title = "ame_dev — 自分や、自分のような誰かのためのアプリを作る";
 const description =
 	"ame_dev がひとりでつくった Windows アプリ・Chrome 拡張・Web アプリの一覧です。Drive DAM / Tsumist / Mitamama / FrameFit / SnapSide / Steep / StockBoard を公開中。デジタルアートの AI for ART プロジェクトも。";
 ---
 
-<Base title={title} description={description} current="hub" page="hub" bare>
+<Base title={title} description={description} current="hub" page="hub" bare jsonLd={siteJsonLd}>
 	<!-- ヘッダー：スクロールすると背景が立ち上がる -->
 	<header class="hb-header" id="hb-header">
 		<div class="hb-wrap hb-header-inner">
