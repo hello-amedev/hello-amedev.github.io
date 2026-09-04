@@ -3,8 +3,9 @@ import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 
 // https://astro.build/config
-// hello-amedev.github.io は User Site のためルート（/）配信。base 調整は不要。
+// ame-dev.com は User Site の独自ドメインでルート（/）配信。base 調整は不要。
+// 旧 hello-amedev.github.io は GitHub が自動で 301 転送する（2026-09-04 移行）。
 export default defineConfig({
-	site: 'https://hello-amedev.github.io',
+	site: 'https://ame-dev.com',
 	integrations: [sitemap()],
 });

@@ -1,7 +1,7 @@
 # ame_dev
 
 ame_dev is an independent Windows app developer based in Japan.
-Official site: https://hello-amedev.github.io/
+Official site: https://ame-dev.com/
 Contact: amemitai@gmail.com
 
 ## Drive DAM
@@ -24,8 +24,8 @@ Key facts:
 
 Links:
 
-- Product page (English): https://hello-amedev.github.io/en/drivedam/
-- Product page (Japanese): https://hello-amedev.github.io/drivedam/
-- Release notes: https://hello-amedev.github.io/en/drivedam/releases/
+- Product page (English): https://ame-dev.com/en/drivedam/
+- Product page (Japanese): https://ame-dev.com/drivedam/
+- Release notes: https://ame-dev.com/en/drivedam/releases/
 - Microsoft Store: https://apps.microsoft.com/detail/9P4L43W1XP7P
-- Privacy policy: https://hello-amedev.github.io/en/privacy/
+- Privacy policy: https://ame-dev.com/en/privacy/

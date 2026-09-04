@@ -8,7 +8,31 @@
 | なぜこの実装なのか / 過去の経緯 | [docs/site-history.md](docs/site-history.md) |
 | 製品本体 Drive DAM の最新 | `~/Documents/claude-private/drive-dam/HANDOFF.md` |
 
-## 0. 次の Claude へ(2026-09-02 SEO 調査・言語自動転送の廃止セッション終了時)
+## 0. 次の Claude へ(2026-09-04 独自ドメイン移行セッション終了時)
+
+### 独自ドメイン `ame-dev.com` へ移行(2026-09-04)
+
+前回の施策が効き、`/drivedam/` は**インデックス登録され「Drive DAM 画像管理」で
+Microsoft Store より上位に表示**されるようになった。ただし検索結果のサイト名が
+「GitHub」、favicon も GitHub のものになる問題が判明。これは github.io の
+サブドメインである以上避けられないため、独自ドメインへ移行した。
+
+1. **サイト名の信号を追加**(`8d53575`)。`og:site_name` を全 10 ページに、
+   トップに `WebSite` / `Organization` の JSON-LD を新設(Google のサイト名・ロゴ判定は
+   トップページを見る)。`sameAs` は `apps.ts` の `author.links` から生成
+2. **`ame-dev.com` を取得**(ムームードメイン)。**サブドメイン構成は採らずサブディレクトリのまま**。
+   理由は Google がサブドメインを実質別サイトとして扱うため、評価が分散すること。
+   また `.jp` などの ccTLD は地域ターゲティングが日本に固定され Search Console で
+   変更できないため、日英中 3 言語のこのサイトには不利
+3. **DNS**(ムームー DNS カスタム設定): apex に A 4 本 + AAAA 4 本、`www` に CNAME 1 本
+4. **移行完了**。証明書は `ame-dev.com` / `www.ame-dev.com` の両方で `approved`。
+   旧ドメインからパス保持の 301 を実測確認済み
+5. **残りの手順(あめさん側)**: Search Console に `https://ame-dev.com/` を
+   新規プロパティとして追加 → 所有権確認(確認ファイルは新ドメインでも配信されるので同じ手が使える)
+   → サイトマップ送信 → **アドレス変更ツール**で旧プロパティから移行を申告。
+   加えて **Microsoft Store の登録サイト URL** を新ドメインへ差し替える
+
+## 0-1. 前セッション(2026-09-02 SEO 調査・言語自動転送の廃止)
 
 ### SEO 調査・言語自動転送の廃止(2026-09-02)
 
@@ -151,7 +175,8 @@ worktree `claude/drive-dam-1-2-0-site-update-9e23c2` で作業。
 - **何**: ame_dev ブランドの公式サイト。総合 TOP(`/`)+ Drive DAM LP(`/drivedam/`)
 - **スタック**: Astro 7(minimal / TypeScript strict)。外部フォント・解析・Cookie なし
 - **公開先**: GitHub Pages User Site `hello-amedev/hello-amedev.github.io`。
-  User Site なのでルート配信 = `base` 調整不要
+  **独自ドメイン `ame-dev.com` で配信(2026-09-04 移行)**。旧 `hello-amedev.github.io` は
+  GitHub が自動でパス保持の 301 転送を行う。User Site なのでルート配信 = `base` 調整不要
 - **設置場所**: `~/Documents/claude-private/ame-dev-site/`
   (worktree 運用に移行済み。セッションは `claude/<name>` ブランチで作業し、
   終了時に main へ ff-merge)。dev サーバーはブラウザペインから起動する場合、
@@ -291,6 +316,15 @@ worktree `claude/drive-dam-1-2-0-site-update-9e23c2` で作業。
 ### 環境
 
 - **User Site なので `base` は付けない**
+- **独自ドメインは Settings → Pages で設定する。`public/CNAME` だけでは効かない**。
+  GitHub Actions でデプロイしている場合、成果物の `CNAME` ファイルは custom domain の
+  設定にならない(ブランチ配信なら自動で入る)。2026-09-04 の移行時に実際にハマった。
+  `CNAME` ファイル自体は将来ブランチ配信へ戻した時のために残してある
+- **ドメインを変えたら書き換えるのは 4 ファイルだけ**: `astro.config.mjs` の `site`、
+  `public/robots.txt`、`public/llms.txt`、`src/data/apps.ts`。
+  canonical・hreflang・og:url・JSON-LD・サイトマップはすべて `Astro.site` から生成される
+- **`/ART/` は別リポジトリの Project Pages**。User Site に独自ドメインを設定すると
+  同じアカウントの Project Pages も新ドメイン配下に移る(`ame-dev.com/ART/` で 200 を実測)
 - **dev はデーモン常駐**。停止: `npx astro dev stop`
 - **Astro 7 + Node 24 で Vite 8 系を直接呼ぶと `#module-sync-enabled` エラー**に
   なることがある。Astro 経由で起動する分には問題ない
@@ -312,4 +346,4 @@ npm run preview    # build 後のローカル確認
 git push origin main   # GitHub Actions が自動デプロイ
 ```
 
-公開 URL: <https://hello-amedev.github.io/>
+公開 URL: <https://ame-dev.com/>(旧 <https://hello-amedev.github.io/> は 301 転送)

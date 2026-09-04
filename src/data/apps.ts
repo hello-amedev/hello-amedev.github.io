@@ -167,7 +167,7 @@ export const apps: AppEntry[] = [
 export const artProject = {
 	name: "AI for ART",
 	/** プロジェクトの入口ページ */
-	href: "https://hello-amedev.github.io/ART/",
+	href: "https://ame-dev.com/ART/",
 	statement:
 		"競争や効率化のためではなく、AI をパートナーとしてデジタルアートを共創する、個人的なプロジェクト。",
 	work: {
@@ -175,7 +175,7 @@ export const artProject = {
 		titleEn: "A Night of Life",
 		sub: "遺伝的アルゴリズムで変化し続ける光のアート",
 		body: "生命とは、絶えることなく「夜」を渡っていくプロジェクトである。その軌跡を、デジタルアートとして表出させることを試みた。",
-		href: "https://hello-amedev.github.io/ART/night-of-life/",
+		href: "https://ame-dev.com/ART/night-of-life/",
 		shot: "/assets/art/night-of-life.jpg",
 		shotW: 1400,
 		shotH: 718,
