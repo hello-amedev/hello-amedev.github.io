@@ -61,6 +61,13 @@ export const releases: Release[] = [
 		],
 	},
 	{
+		version: "1.3.5",
+		date: "2026-08-25",
+		ja: ["タグ選択パネルを刷新しました"],
+		en: ["Redesigned the tag selection panel"],
+		zh: ["重新設計了標籤選擇面板"],
+	},
+	{
 		version: "1.3.4",
 		date: "2026-08-23",
 		ja: [
