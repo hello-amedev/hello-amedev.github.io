@@ -36,6 +36,31 @@ export interface Release {
 
 export const releases: Release[] = [
 	{
+		version: "1.3.6",
+		date: "2026-09-05",
+		ja: [
+			"書き出しとトリミングの画面から、クリップボードに直接書き出せるようになりました",
+			"名前の大文字・小文字だけを変えるとタグやメモが消える現象を解消しました（全角の英字を含む名前も変更できます）",
+			"共有フォルダを一時的に読み取れないときに、タグが消えたように見える現象を解消しました",
+			"タグなどの記録が入ったフォルダに「DO-NOT-DELETE.txt」を置くようになりました（記録を守るための目印です。削除しないでください）",
+			"次のバージョンで、ルートフォルダ直下にある設定ファイルを専用フォルダにまとめます。今回の更新はその準備なので、チームの皆さんで更新をお願いします",
+		],
+		en: [
+			"You can now export straight to the clipboard from the export and crop screens",
+			"Fixed tags and notes disappearing when only the capitalization of a name was changed (names containing full-width letters can now be renamed too)",
+			"Fixed tags appearing to vanish when a shared folder could not be read for a moment",
+			"A \"DO-NOT-DELETE.txt\" file is now placed in the folder holding tags and other records (it marks the folder as in use — please leave it there)",
+			"A future version will move the settings file sitting directly in your root folder into a folder of its own. This update prepares for that, so please make sure everyone on your team updates",
+		],
+		zh: [
+			"現在可以從匯出與裁切畫面直接匯出到剪貼簿",
+			"修正了僅變更名稱大小寫時標籤與備註會消失的問題（包含全形英文字母的名稱也能變更）",
+			"修正了共用資料夾暫時無法讀取時標籤看似消失的問題",
+			"存放標籤等記錄的資料夾中會放置「DO-NOT-DELETE.txt」（這是保護記錄的標記，請勿刪除）",
+			"未來版本會將位於根資料夾下的設定檔集中到專用資料夾。本次更新是為此做準備，請團隊成員一併更新",
+		],
+	},
+	{
 		version: "1.3.4",
 		date: "2026-08-23",
 		ja: [
