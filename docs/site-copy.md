@@ -170,3 +170,21 @@ HTML 実装を一次ソースとする。以下 3 件だけここに記録:
   フッターの「Drive DAM について」列。
   **ヘッダーのページ内メニューには入れない**(他の 5 項目がページ内アンカーのため)
 - **JSON-LD は出さない**(SoftwareApplication を製品ページと二重に主張しないため)
+
+## Hanella の使い方(`/hanella/guide/`)
+
+- **URL**: 日 `/hanella/guide/` / 英 `/en/hanella/guide/`(繁体字なし)。Hanella アプリの
+  メニュー「Hanella の使い方」(Mac はヘルプメニュー、Windows は「≡」)がこの URL を開く。
+  **URL を変える時は Hanella 側の `src/lib/help.ts` も直す**
+- **`/hanella/`・`/en/hanella/`**: 製品ページ(LP)ができるまで使い方へ移すだけ
+  (meta refresh + canonical + noindex。サイトマップからは `astro.config.mjs` の `filter` で外している)。
+  LP を作る時は `src/pages/hanella/index.astro` を LP に置き換え、`REDIRECT_ONLY` から外す。
+  更新情報は `/hanella/releases/`(Drive DAM と同じ並び)
+- **レイアウト**: `src/layouts/HanellaLayout.astro` + `src/styles/hanella.css`(`drivedam.css` の上に差し色だけ重ねる)。
+  ヘッダーはアプリアイコン + ページ内メニュー。本文は読み物なので reveal を付けない
+- **構成**: 保存のしかた(プロジェクトとファイルのどちらでも使える。最初に伝える)→
+  はじめての 3 ステップ → 進行モードの言葉(押し・巻き・定刻/予備と吸収/再開時刻を守る休憩/実測/ワークタイマー)→ よくある操作(表)
+- **画面の呼び名は Hanella の辞書(`src/lib/i18n/{ja,en}/*.ts`)が正**。ボタン・メニューの名前を変えたら、このページも直す。
+  英語は辞書の英語(プログラム = segment、進行モード = live mode、ボタン = Start session)に合わせる
+- **一次ソース**: 日本語・英語とも各ページの HTML(`src/pages/hanella/guide/`・`src/pages/en/hanella/guide/`)
+- ショートカットは Mac の表記で書き、Windows の読み替え(⌘ → Ctrl、やり直すは Ctrl+Y)を「よくある操作」の冒頭に 1 か所

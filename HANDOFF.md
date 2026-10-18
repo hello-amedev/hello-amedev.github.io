@@ -8,6 +8,17 @@
 | なぜこの実装なのか / 過去の経緯 | [docs/site-history.md](docs/site-history.md) |
 | 製品本体 Drive DAM の最新 | `~/Documents/claude-private/drive-dam/HANDOFF.md` |
 
+## 0-0. Hanella の使い方ページを追加(2026-10-18。ブランチ `hanella-guide`)
+
+- Hanella(アプリ)の「使い方」を `/hanella/guide/`(英 `/en/hanella/guide/`)に置いた。アプリのメニューからここを開く
+  (URL の正は Hanella 側の `src/lib/help.ts`)。`/hanella/` は LP ができるまで使い方へ移すだけ
+  (`src/pages/hanella/index.astro`。サイトマップから外す設定は `astro.config.mjs`)
+- 見た目は Drive DAM の更新履歴ページと同じ言葉(`HanellaLayout.astro` + `hanella.css`)。Drive DAM の既存ページ・CSS は触っていない
+- 文案・構成・画面の呼び名の決まりは [docs/site-copy.md](docs/site-copy.md)「Hanella の使い方」。
+  **アプリのボタン・メニューの名前が変わったら、このページも直す**
+- **公開前に `main` へ入れる**(`hanella-guide` はまだ push していない)。入れる前に、アプリ側の別担当の機能
+  (ホームの初回の形・行のコピー&貼り付け・すべて書き出し・復旧用の写し)の文言と、このページの記述が合っているか確かめる
+
 ## 0. 次の Claude へ(2026-09-04 独自ドメイン移行セッション終了時)
 
 ### 独自ドメイン `ame-dev.com` へ移行(2026-09-04)

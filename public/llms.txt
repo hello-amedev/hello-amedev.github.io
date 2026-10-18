@@ -29,3 +29,16 @@ Links:
 - Release notes: https://ame-dev.com/en/drivedam/releases/
 - Microsoft Store: https://apps.microsoft.com/detail/9P4L43W1XP7P
 - Privacy policy: https://ame-dev.com/en/privacy/
+
+## Hanella
+
+Hanella is a design tool for workshops, training sessions and events. The program is built
+as a table, and the same project is used to run the day (live mode with behind/ahead tracking,
+activity timers, slides and a review of planned vs. actual times). Work can be saved either as
+a project inside the app or as a file (.hanella) in any folder, such as one shared on Google Drive.
+Not yet released.
+
+Links:
+
+- Usage guide (English): https://ame-dev.com/en/hanella/guide/
+- Usage guide (Japanese): https://ame-dev.com/hanella/guide/

@@ -1,0 +1,189 @@
+---
+// Hanella の使い方ページ用のレイアウト。
+// 見た目の言葉は Drive DAM の更新履歴ページと同じ(紙白+墨、`drivedam.css` を土台にする)。
+// 製品ページ(LP)が無い間の「入口」になるので、ヘッダー・フッターはこのレイアウトが持つ。
+// 将来 /hanella/ に LP を作る時は、このレイアウトを土台にヘッダーのメニューを LP の節へ差し替える。
+import "@fontsource/inter/400.css";
+import "@fontsource/inter/500.css";
+import "@fontsource/inter/600.css";
+import "@fontsource/inter/700.css";
+import "@fontsource/noto-sans-jp/400.css";
+import "@fontsource/noto-sans-jp/500.css";
+import "@fontsource/noto-sans-jp/600.css";
+import "@fontsource/noto-sans-jp/700.css";
+import "../styles/drivedam.css";
+import "../styles/hanella.css";
+import LangBanner from "../components/LangBanner.astro";
+
+interface Props {
+	title: string;
+	description: string;
+	lang: "ja" | "en";
+	/** 他言語版の URL(存在するものだけ。自分の言語は含めない) */
+	alt: Partial<Record<"ja" | "en" | "zh", string>>;
+	/** ヘッダーのページ内メニュー(目次と同じ節) */
+	nav: { href: string; label: string }[];
+}
+
+const { title, description, lang, alt, nav } = Astro.props;
+
+const isEn = lang === "en";
+const home = isEn ? "/en/hanella/guide/" : "/hanella/guide/";
+const privacy = isEn ? "/en/privacy/" : "/privacy/";
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const ogImage = new URL("/assets/og-image.jpg", Astro.site);
+const ogLocale = isEn ? "en_US" : "ja_JP";
+
+const langUrls: Partial<Record<"ja" | "en" | "zh", URL>> = { [lang]: canonical };
+for (const [code, href] of Object.entries(alt) as ["ja" | "en" | "zh", string][]) {
+	langUrls[code] = new URL(href, Astro.site);
+}
+
+// 他言語へのリンク(ヘッダーの右端とモバイルのメニュー)
+const otherLang = isEn ? { code: "ja", label: "日本語", href: alt.ja! } : { code: "en", label: "English", href: alt.en! };
+
+const ui = isEn
+	? {
+			menuAria: "In-page menu",
+			menuAriaMobile: "In-page menu (mobile)",
+			open: "Open menu",
+			close: "Close menu",
+			top: "ame_dev",
+			footDesc:
+				"Hanella is a design tool for workshops, training sessions and events. Build the program as a table, then run the day from the same screen.",
+			footPage: "On this page",
+			footSupport: "Support",
+			contact: "Contact",
+			privacy: "Privacy Policy",
+		}
+	: {
+			menuAria: "ページ内メニュー",
+			menuAriaMobile: "ページ内メニュー(モバイル)",
+			open: "メニューを開く",
+			close: "メニューを閉じる",
+			top: "ame_dev",
+			footDesc:
+				"ワークショップ・研修・イベントのプログラムを表で組み立て、当日はそのまま進行に使える設計支援アプリです。",
+			footPage: "このページ",
+			footSupport: "サポート",
+			contact: "お問い合わせ",
+			privacy: "プライバシーポリシー",
+		};
+---
+
+<!doctype html>
+<html lang={lang} data-page="hanella-guide">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="theme-color" content="#F6F8FA" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="icon" href="/favicon.ico" />
+		<link rel="apple-touch-icon" href="/favicon.svg" />
+		<title>{title}</title>
+		<meta name="description" content={description} />
+		<link rel="canonical" href={canonical} />
+		<link rel="alternate" hreflang="ja" href={langUrls.ja} />
+		<link rel="alternate" hreflang="en" href={langUrls.en} />
+		<link rel="alternate" hreflang="x-default" href={langUrls.ja} />
+		<meta property="og:type" content="website" />
+		<meta property="og:site_name" content="ame_dev" />
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content={description} />
+		<meta property="og:url" content={canonical} />
+		<meta property="og:locale" content={ogLocale} />
+		<meta property="og:image" content={ogImage} />
+		<meta property="og:image:width" content="1200" />
+		<meta property="og:image:height" content="630" />
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:title" content={title} />
+		<meta name="twitter:description" content={description} />
+		<meta name="twitter:image" content={ogImage} />
+		<meta name="generator" content={Astro.generator} />
+	</head>
+	<body>
+		<LangBanner current={lang} alt={alt} />
+
+		<header class="site-head is-solid" id="siteHead">
+			<div class="head-in">
+				<a class="brand" href={home}><img src="/assets/apps/facilita.png" alt="" />Hanella</a>
+				<nav class="head-nav" aria-label={ui.menuAria}>
+					{nav.map((n) => <a href={n.href}>{n.label}</a>)}
+				</nav>
+				<a class="head-link" href="/">{ui.top}</a>
+				<a class="head-lang" href={`${otherLang.href}?lang=${otherLang.code}`}>{otherLang.label}</a>
+				<button class="head-burger" id="headBurger" aria-label={ui.open} aria-expanded="false" aria-controls="headOverlay" data-open={ui.open} data-close={ui.close}>
+					<span></span><span></span><span></span>
+				</button>
+			</div>
+		</header>
+
+		<div class="head-overlay" id="headOverlay" aria-hidden="true">
+			<nav class="head-overlay-nav" aria-label={ui.menuAriaMobile}>
+				{nav.map((n) => <a href={n.href}>{n.label}</a>)}
+				<a href={`${otherLang.href}?lang=${otherLang.code}`}>{otherLang.label}</a>
+			</nav>
+			<p class="head-overlay-foot"><a href="/">{ui.top}</a></p>
+		</div>
+
+		<main class="guide">
+			<slot />
+		</main>
+
+		<footer class="site-foot">
+			<div class="wrap">
+				<div class="foot-grid">
+					<div class="foot-brand">
+						<span class="brand"><img src="/assets/apps/facilita.png" alt="" />Hanella</span>
+						<p>{ui.footDesc}</p>
+					</div>
+					<div class="foot-col">
+						<p class="foot-t">{ui.footPage}</p>
+						<ul>
+							{nav.map((n) => <li><a href={n.href}>{n.label}</a></li>)}
+						</ul>
+					</div>
+					<div class="foot-col">
+						<p class="foot-t">{ui.footSupport}</p>
+						<ul>
+							<li><a href="mailto:amemitai@gmail.com">{ui.contact}</a></li>
+							<li><a href={privacy}>{ui.privacy}</a></li>
+						</ul>
+					</div>
+				</div>
+				<div class="foot-base">
+					<a href="/">© ame_dev</a>
+					<a href={privacy}>{ui.privacy}</a>
+				</div>
+			</div>
+		</footer>
+
+		<script is:inline>
+			(function () {
+				"use strict";
+				/* ハンバーガーメニュー(モバイル。Drive DAM のページと同じ動き) */
+				var burger = document.getElementById("headBurger");
+				var overlay = document.getElementById("headOverlay");
+				if (!burger || !overlay) return;
+				function setMenu(open) {
+					overlay.classList.toggle("open", open);
+					burger.setAttribute("aria-expanded", open ? "true" : "false");
+					overlay.setAttribute("aria-hidden", open ? "false" : "true");
+					burger.setAttribute("aria-label", open ? burger.dataset.close : burger.dataset.open);
+					document.body.style.overflow = open ? "hidden" : "";
+				}
+				burger.addEventListener("click", function () {
+					setMenu(!overlay.classList.contains("open"));
+				});
+				overlay.querySelectorAll("a").forEach(function (a) {
+					a.addEventListener("click", function () {
+						setMenu(false);
+					});
+				});
+				document.addEventListener("keydown", function (e) {
+					if (e.key === "Escape" && overlay.classList.contains("open")) setMenu(false);
+				});
+			})();
+		</script>
+	</body>
+</html>

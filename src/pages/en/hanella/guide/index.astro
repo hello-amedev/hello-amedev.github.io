@@ -1,0 +1,314 @@
+---
+import HanellaLayout from "../../../../layouts/HanellaLayout.astro";
+
+// In-page menu. Used by the header, the table of contents and the footer
+const nav = [
+	{ href: "#storage", label: "Where it's saved" },
+	{ href: "#start", label: "Your first three steps" },
+	{ href: "#terms", label: "Live mode terms" },
+	{ href: "#ops", label: "Common tasks" },
+];
+---
+
+<HanellaLayout
+	title="How to use Hanella — ame_dev"
+	description="How to use Hanella. Save as a project or as a file, your first three steps, the terms used in live mode (behind, ahead, on time, buffer, actual), and common tasks."
+	lang="en"
+	alt={{ ja: "/hanella/guide/" }}
+	nav={nav}
+>
+	<div class="wrap">
+		<header class="guide-head">
+			<div class="cap is-in">Guide</div>
+			<h1 class="guide-h">How to use Hanella</h1>
+			<p class="guide-lead">
+				Hanella is an app for building the program of a workshop, training session or event as a table, then running the day from the same screen while keeping an eye on the clock.
+				This page is written so that reading from the top takes you through your first project.
+			</p>
+		</header>
+
+		<div class="guide-grid">
+			<nav class="guide-toc" aria-label="Contents">
+				<b>Contents</b>
+				{nav.map((n) => <a href={n.href}>{n.label}</a>)}
+			</nav>
+
+			<div class="guide-body">
+				<section class="g-sec" id="storage" aria-labelledby="storage-h">
+					<h2 class="g-h" id="storage-h">Where it's saved</h2>
+					<p class="g-lead">
+						You can save your work as a <strong>project</strong> or as a <strong>file</strong>. Start with either one.
+						The home screen puts both entrances side by side.
+					</p>
+					<div class="g-pair">
+						<div class="g-card">
+							<div class="g-card-h">Project</div>
+							<div class="g-card-tag">Saved inside Hanella</div>
+							<ul>
+								<li>Saved inside Hanella. Open it anytime from the list on the left.</li>
+								<li>A good fit when you work alone, or when you are just trying things out.</li>
+								<li>To move to another computer or hand it to someone, export it with <span class="ui">“Save Project File (.hanella)…”</span>.</li>
+							</ul>
+						</div>
+						<div class="g-card is-file">
+							<div class="g-card-h">File</div>
+							<div class="g-card-tag">Saved wherever you like</div>
+							<ul>
+								<li>Saved as a <code>.hanella</code> file in any folder. Your edits are saved automatically.</li>
+								<li>Put the file on Google Drive or similar, and other people can work from the same file.</li>
+								<li>When someone else updates the file, Hanella reads it again. If you both edited at the same time, your version is kept as a separate file.</li>
+							</ul>
+						</div>
+					</div>
+					<p class="g-note">
+						You can switch later. Turn a project into a file with <span class="ui">“Convert to File…”</span>, or turn an open file into a project with <span class="ui">“Import to Library”</span>.
+					</p>
+				</section>
+
+				<section class="g-sec" id="start" aria-labelledby="start-h">
+					<h2 class="g-h" id="start-h">Your first three steps</h2>
+					<p class="g-lead">
+						Open one sample and go through live mode and the review. That shows you how Hanella fits together.
+						Opening a sample makes a copy, so feel free to change it.
+					</p>
+					<ol class="g-steps">
+						<li class="g-step">
+							<span class="g-num" aria-hidden="true">1</span>
+							<div>
+								<h3 class="g-step-h">Open a sample</h3>
+								<ul class="g-list">
+									<li>Pick one of the samples on the home screen and open it. The same list opens from <span class="ui">“Open samples”</span> on the home screen, or from <span class="ui">“Open Sample Project…”</span> in the menu.</li>
+									<li>There are three samples: a workshop, a training session and an event. To go through all three steps, choose the training session, <b>“Your First 1-on-1s: Training for New Team Leads”</b>. It includes a past run, so you can see the review in step 3 right away.</li>
+									<li>The editor has an overview at the top (challenge, objective, time and so on) and the program table below it. Each row is one segment, in four columns: Time, Segment, Content and Notes. Times are worked out automatically from the lengths.</li>
+									<li>To start your own plan, choose <span class="ui">“New project”</span> (<kbd>⌘</kbd> <kbd>N</kbd>) or <span class="ui">“New file”</span> (<kbd>⇧</kbd> <kbd>⌘</kbd> <kbd>N</kbd>).</li>
+								</ul>
+							</div>
+						</li>
+						<li class="g-step">
+							<span class="g-num" aria-hidden="true">2</span>
+							<div>
+								<h3 class="g-step-h">Try live mode</h3>
+								<ul class="g-list">
+									<li>Press <span class="ui">“Start session”</span> in the editor to switch to the screen for the day (the menu item <span class="ui">“Project ＞ Start Session”</span> does the same). The clock is not running yet.</li>
+									<li>Press <span class="ui">“Start”</span> and the clock runs from the first segment. To move on, press <span class="ui">“Next segment”</span> or the <kbd>→</kbd> key. In a project with slides, <kbd>→</kbd> turns the slide page instead, and segments follow the pages of your slides.</li>
+									<li>The figures at the top, such as “7 min behind”, “3 min ahead” and “On time”, show how you compare with the plan. See <a class="g-link" href="#terms">Live mode terms</a> for what they mean.</li>
+									<li>On the last segment, <span class="ui">“Next segment”</span> becomes <span class="ui">“Finish”</span>. Press it to reach the “All segments are finished” screen. To leave earlier, use <span class="ui">“Back to editing”</span> or <kbd>Esc</kbd>, and confirm.</li>
+								</ul>
+							</div>
+						</li>
+						<li class="g-step">
+							<span class="g-num" aria-hidden="true">3</span>
+							<div>
+								<h3 class="g-step-h">Open the review</h3>
+								<ul class="g-list">
+									<li>When you run a session, the time each segment actually took (the actual time) is recorded automatically. Open it with <span class="ui">“Open review”</span> on the finish screen, or <span class="ui">“Review”</span> in the editor.</li>
+									<li>Planned and actual times sit side by side, so you can see where you ran behind and where you finished early. You can add notes for each segment and for the whole session.</li>
+									<li>Use <span class="ui">“Print”</span> and <span class="ui">“Copy with formatting”</span> to put the record in a report.</li>
+								</ul>
+							</div>
+						</li>
+					</ol>
+				</section>
+
+				<section class="g-sec" id="terms" aria-labelledby="terms-h">
+					<h2 class="g-h" id="terms-h">Live mode terms</h2>
+					<p class="g-lead">
+						Live mode uses short words to show how you compare with the plan. Hover over a figure on screen and a tooltip gives the same meaning.
+					</p>
+					<div class="g-terms">
+						<div class="g-term">
+							<div class="g-fig">
+								<span class="g-pill behind">7 min behind</span>
+								<span class="g-pill ahead">3 min ahead</span>
+								<span class="g-pill plain">On time</span>
+								<span class="g-fig-cap">The figure at the top of the live screen</span>
+							</div>
+							<div>
+								<h3 class="g-term-h">Behind, ahead, on time</h3>
+								<p><b>Behind</b> means that, at this pace, you will finish later than planned. <b>Ahead</b> means you will finish earlier than planned. While the difference is under one minute, it shows <b>On time</b>.</p>
+								<p>The figure is the difference, in minutes, between the projected finish (if the remaining segments run for their planned lengths) and the planned finish.</p>
+								<div class="g-example">Example: if a segment planned for 13:20 starts at 13:27, the finish moves 7 minutes later even if the rest runs as planned, so it shows “7 min behind”.</div>
+							</div>
+						</div>
+						<div class="g-term">
+							<div class="g-fig">
+								<div class="g-bar" aria-hidden="true">
+									<span style="flex:20;background:var(--hn-cat-a)"></span>
+									<span style="flex:60;background:var(--hn-cat-b)"></span>
+									<span style="flex:25;background:var(--hn-cat-c)"></span>
+									<span class="buf" style="flex:10"></span>
+								</div>
+								<span class="g-fig-cap">The stripes at the right end are the buffer</span>
+							</div>
+							<div>
+								<h3 class="g-term-h">Buffer and absorbing delays</h3>
+								<p>The <b>buffer</b> is the spare time between the total of your segments and the end time. It is worked out automatically once you enter the <span class="ui">“End time”</span> in the overview, and appears at the bottom of the table as <span class="ui">“Buffer”</span>. The live screen shows <span class="ui">“Buffer: ○ min left”</span>.</p>
+								<p>On the day, time you run over is <b>absorbed</b> by the buffer first. While the delay fits in the buffer, the planned end does not change. Once the buffer is used up, a “→ projected” time appears next to the planned end.</p>
+							</div>
+						</div>
+						<div class="g-term">
+							<div class="g-fig">
+								<span class="g-pill chip">Resume at 14:35</span>
+								<span class="g-fig-cap">The chip at the right end of a break row</span>
+							</div>
+							<div>
+								<h3 class="g-term-h">Breaks that keep their resume time</h3>
+								<p>Turn on <span class="ui">“Keep resume time”</span> on the chip at the right end of a break row, and that break is set by the <b>time you resume</b>, not by its length. Delays from the earlier segment are absorbed by this break. Nothing after the break moves.</p>
+								<p>What happens when the break would get shorter than its <span class="ui">“Minimum length”</span> is set under <span class="ui">“If it can't be met”</span>: Decide on the day, Shift the resume time, or Shorten a later segment.</p>
+								<div class="g-example">Example: if you run 5 minutes over before a 15-minute break that resumes at 14:35, the break becomes 10 minutes and still resumes at 14:35.</div>
+							</div>
+						</div>
+						<div class="g-term">
+							<div class="g-fig">
+								<span class="g-pill plain">Planned 10 min → actual 12 min</span>
+								<span class="g-fig-cap">One line of the review</span>
+							</div>
+							<div>
+								<h3 class="g-term-h">Actual</h3>
+								<p><b>Actual</b> is the time something really took in live mode. It is called that to tell it apart from the time you wrote in the plan (<b>planned</b>).</p>
+								<p>It is recorded for each segment automatically, and the review lists “planned → actual”. In the live screen's timetable (<kbd>T</kbd>), the planned times sit next to the shift from the actual and projected times.</p>
+							</div>
+						</div>
+						<div class="g-term">
+							<div class="g-fig">
+								<span class="g-pill plain">Intro 3 min → Work 10 min</span>
+								<span class="g-fig-cap">Steps of an activity timer</span>
+							</div>
+							<div>
+								<h3 class="g-term-h">Activity timer</h3>
+								<p>A timer with steps that you use inside a segment. Build steps such as “Intro 3 min → Work 10 min”, and add repeats and sounds.</p>
+								<p>It runs as a separate clock from the time of the whole program (the behind and ahead figure).</p>
+							</div>
+						</div>
+					</div>
+				</section>
+
+				<section class="g-sec" id="ops" aria-labelledby="ops-h">
+					<h2 class="g-h" id="ops-h">Common tasks</h2>
+					<p class="g-lead">
+						Keys are shown for Mac. On Windows, read <kbd>⌘</kbd> as <kbd>Ctrl</kbd> (redo is <kbd>Ctrl</kbd> <kbd>Y</kbd>).
+						Open the menu from the menu bar at the top of the screen on Mac, or from the <span class="ui">“≡”</span> at the top of the sidebar on Windows.
+					</p>
+					<div class="g-table-wrap">
+						<table class="g-table">
+							<thead>
+								<tr><th scope="col">To do this</th><th scope="col">Do this</th></tr>
+							</thead>
+							<tbody>
+								<tr class="group"><th colspan="2" scope="colgroup">Saving and sharing</th></tr>
+								<tr>
+									<th scope="row">Make a new one</th>
+									<td><span class="ui">“New project”</span> (<kbd>⌘</kbd> <kbd>N</kbd>) saves inside Hanella. <span class="ui">“New file”</span> (<kbd>⇧</kbd> <kbd>⌘</kbd> <kbd>N</kbd>) asks where to save, and creates a <code>.hanella</code> file there.</td>
+								</tr>
+								<tr>
+									<th scope="row">Open a file</th>
+									<td>Choose a <code>.hanella</code> file with <span class="ui">“Open file”</span> (<kbd>⌘</kbd> <kbd>O</kbd>). Double-clicking or dropping it works too. You edit the file itself, and it is saved automatically.</td>
+								</tr>
+								<tr>
+									<th scope="row">Switch between a project and a file</th>
+									<td><span class="ui">“Convert to File…”</span> turns a project into a file. <span class="ui">“Import to Library”</span> turns the open file into a project inside Hanella.</td>
+								</tr>
+								<tr>
+									<th scope="row">Hand it to someone</th>
+									<td>Export it with <span class="ui">“Save Project File (.hanella)…”</span>. The other person brings it in with <span class="ui">“Import Project…”</span>. You can choose several files at once.</td>
+								</tr>
+								<tr>
+									<th scope="row">Export all projects</th>
+									<td><span class="ui">“Export All Projects…”</span> writes one <code>.hanella</code> file per project into the folder you choose. Settings such as language, theme and the sounds you added are exported too. Use it before replacing or reinstalling a computer. Bring the files back together with <span class="ui">“Import Project…”</span>.</td>
+								</tr>
+								<tr>
+									<th scope="row">Bring back a deleted project</th>
+									<td>Use <span class="ui">“Restore”</span> in <span class="ui">“Recently Deleted”</span> in the sidebar (kept for 30 days).</td>
+								</tr>
+								<tr>
+									<th scope="row">Find content that could not be saved</th>
+									<td>If you quit while a file or project could not be saved, a copy of the content is kept in the <code>recovery</code> folder inside Hanella's data folder. A notice appears the next time you start Hanella, and you can open the copy from there. You can find the data folder under <span class="ui">“Settings”</span> and <span class="ui">“Data”</span>.</td>
+								</tr>
+
+								<tr class="group"><th colspan="2" scope="colgroup">The program table</th></tr>
+								<tr>
+									<th scope="row">Add a row</th>
+									<td>Use <span class="ui">“+ Segment”</span> or <span class="ui">“+ Break”</span> on a category heading, or <span class="ui">“Add segment below”</span> in the <span class="ui">⠿</span> menu at the left of a row (right-click works too).</td>
+								</tr>
+								<tr>
+									<th scope="row">Reorder</th>
+									<td>Drag the <span class="ui">⠿</span> at the left of a row. <span class="ui">“Move up”</span> and <span class="ui">“Move down”</span> in the menu work too. Categories work the same way.</td>
+								</tr>
+								<tr>
+									<th scope="row">Duplicate a row or category</th>
+									<td>Use <span class="ui">“Duplicate this row”</span> or <span class="ui">“Duplicate this category”</span> in the menu. The copy goes right below.</td>
+								</tr>
+								<tr>
+									<th scope="row">Copy and paste rows or categories</th>
+									<td>
+										<p>Click a <span class="ui">⠿</span> while holding <kbd>⌘</kbd> to select it (keep clicking to select several). Copy with <kbd>⌘</kbd> <kbd>C</kbd>, then press <kbd>⌘</kbd> <kbd>V</kbd> where you want them.</p>
+										<p>The <span class="ui">“Copy”</span> and <span class="ui">“Paste below”</span> items in the <span class="ui">⠿</span> menu do the same. You can paste into another project, too.</p>
+									</td>
+								</tr>
+								<tr>
+									<th scope="row">Undo the last change</th>
+									<td><span class="ui">“Undo”</span> in the toolbar (<kbd>⌘</kbd> <kbd>Z</kbd>). Redo is <kbd>⇧</kbd> <kbd>⌘</kbd> <kbd>Z</kbd>.</td>
+								</tr>
+								<tr>
+									<th scope="row">Add a timer</th>
+									<td>Under <span class="ui">“Timer”</span> on a row, use <span class="ui">“Add timer”</span> and choose <span class="ui">“From a preset”</span> or <span class="ui">“Create new”</span>. You can build steps (Intro 3 min → Work 10 min, for example) and repeats.</td>
+								</tr>
+								<tr>
+									<th scope="row">Search the project</th>
+									<td><span class="ui">“Find in Project”</span> (<kbd>⌘</kbd> <kbd>F</kbd>).</td>
+								</tr>
+								<tr>
+									<th scope="row">Use a timer without a project</th>
+									<td>The <span class="ui">“Timer”</span> icon in the sidebar opens a small window at the bottom right (the quick timer). It cannot run at the same time as live mode.</td>
+								</tr>
+
+								<tr class="group"><th colspan="2" scope="colgroup">Slides and export</th></tr>
+								<tr>
+									<th scope="row">Use slides</th>
+									<td>Import a PDF from <span class="ui">“Slides”</span> in the editor, then choose the page where each segment switches. Export PowerPoint slides to PDF first. From a pptx file you can import speaker notes.</td>
+								</tr>
+								<tr>
+									<th scope="row">Export the plan</th>
+									<td>Choose PDF, Markdown, Word or Copy with Formatting from <span class="ui">“Export Plan”</span> in the menu.</td>
+								</tr>
+								<tr>
+									<th scope="row">Share the schedule for the day</th>
+									<td><span class="ui">“Show Timetable”</span> lets you copy it, save it as a PDF or print it.</td>
+								</tr>
+								<tr>
+									<th scope="row">Print</th>
+									<td><span class="ui">“Print…”</span> (<kbd>⌘</kbd> <kbd>P</kbd>). In the print settings you choose whether to include notes, and materials and leads.</td>
+								</tr>
+
+								<tr class="group"><th colspan="2" scope="colgroup">Live mode</th></tr>
+								<tr>
+									<th scope="row">Go to the next or previous segment</th>
+									<td><span class="ui">“Next segment”</span> and <span class="ui">“Previous”</span>, or <kbd>→</kbd> <kbd>←</kbd> (when there are no slides). With slides, <kbd>→</kbd> <kbd>←</kbd> turn the pages.</td>
+								</tr>
+								<tr>
+									<th scope="row">See the timetable</th>
+									<td><kbd>T</kbd> (timetable). <kbd>G</kbd> shows the slide overview.</td>
+								</tr>
+								<tr>
+									<th scope="row">Start automatically at the start time</th>
+									<td>Press <span class="ui">“Auto-start at …”</span> on the screen before you start. You can press it from 3 hours before the start.</td>
+								</tr>
+								<tr>
+									<th scope="row">Change a segment's length on the spot</th>
+									<td>Press the segment in the bar at the top, then choose <span class="ui">−5</span> <span class="ui">−1</span> <span class="ui">+1</span> <span class="ui">+5</span> (minutes).</td>
+								</tr>
+								<tr>
+									<th scope="row">End the session</th>
+									<td>Press <span class="ui">“Finish”</span> on the last segment. To leave earlier, use <span class="ui">“Back to editing”</span> or <kbd>Esc</kbd>.</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<p class="g-foot">
+						If something in this guide is unclear, or you want something fixed, please <a class="g-link" href="mailto:amemitai@gmail.com">contact us</a>.
+					</p>
+				</section>
+			</div>
+		</div>
+	</div>
+</HanellaLayout>
