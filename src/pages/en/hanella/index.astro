@@ -1,0 +1,20 @@
+---
+// /en/hanella/ は、Hanella の製品ページ(LP)ができるまでの間、使い方のページへ移す。
+// 日本語版(src/pages/hanella/index.astro)と同じ。LP を作る時は、このファイルを LP に置き換える。
+const target = new URL("/en/hanella/guide/", Astro.site);
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>Redirecting to the Hanella guide — ame_dev</title>
+		<meta http-equiv="refresh" content="0; url=/en/hanella/guide/" />
+		<meta name="robots" content="noindex" />
+		<link rel="canonical" href={target} />
+	</head>
+	<body>
+		<p><a href="/en/hanella/guide/">Go to the Hanella guide</a></p>
+	</body>
+</html>

@@ -1,0 +1,319 @@
+---
+import HanellaLayout from "../../../layouts/HanellaLayout.astro";
+
+// ページ内メニュー。ヘッダー・目次・フッターで同じものを使う
+const nav = [
+	{ href: "#storage", label: "保存のしかた" },
+	{ href: "#start", label: "はじめての 3 ステップ" },
+	{ href: "#terms", label: "進行モードの言葉" },
+	{ href: "#ops", label: "よくある操作" },
+];
+---
+
+<HanellaLayout
+	title="Hanella の使い方 — ame_dev"
+	description="Hanella の使い方。保存はプロジェクトとファイルのどちらでも使えること、はじめての 3 ステップ、進行モードの言葉(押し・巻き・定刻・予備・実測)、よくある操作をまとめています。"
+	lang="ja"
+	alt={{ en: "/en/hanella/guide/" }}
+	nav={nav}
+>
+	<div class="wrap">
+		<header class="guide-head">
+			<div class="cap is-in">使い方</div>
+			<h1 class="guide-h">Hanella の使い方</h1>
+			<p class="guide-lead">
+				Hanella は、ワークショップ・研修・イベントのプログラムを表で組み立て、当日はそのまま時間を見ながら進行するためのアプリです。
+				このページは、上から順に読むと最初の 1 本を通せる並びで書いています。
+			</p>
+		</header>
+
+		<div class="guide-grid">
+			<nav class="guide-toc" aria-label="目次">
+				<b>目次</b>
+				{nav.map((n) => <a href={n.href}>{n.label}</a>)}
+			</nav>
+
+			<div class="guide-body">
+				<section class="g-sec" id="storage" aria-labelledby="storage-h">
+					<h2 class="g-h" id="storage-h">保存のしかた</h2>
+					<p class="g-lead">
+						Hanella の保存は、<strong>プロジェクト</strong>と<strong>ファイル</strong>のどちらでも使えます。どちらで始めても構いません。
+						ホームには、この 2 つの入口が並んでいます。
+					</p>
+					<div class="g-pair">
+						<div class="g-card">
+							<div class="g-card-h">プロジェクト</div>
+							<div class="g-card-tag">Hanella の中に保存</div>
+							<ul>
+								<li>Hanella の中に保存されます。左の一覧から、いつでも開けます。</li>
+								<li>ひとりで使う時や、まず試す時に向いています。</li>
+								<li>別のパソコンへ移す時や、ほかの人に渡す時は、<span class="ui">「プロジェクト全体を保存（.hanella）…」</span>で書き出します。</li>
+							</ul>
+						</div>
+						<div class="g-card is-file">
+							<div class="g-card-h">ファイル</div>
+							<div class="g-card-tag">好きな場所に保存</div>
+							<ul>
+								<li>好きな場所に <code>.hanella</code> のファイルとして保存されます。編集した内容は自動で保存されます。</li>
+								<li>Google Drive などに置くと、ほかの人と同じファイルを使えます。</li>
+								<li>ほかの人が更新したファイルは読み直します。同時に直してぶつかった時は、手元の内容を別のファイルに残します。</li>
+							</ul>
+						</div>
+					</div>
+					<p class="g-note">
+						あとから行き来できます。プロジェクトは<span class="ui">「ファイルに変更…」</span>でファイルに、ファイルは<span class="ui">「プロジェクトに取り込む」</span>でプロジェクトにできます。
+					</p>
+				</section>
+
+				<section class="g-sec" id="start" aria-labelledby="start-h">
+					<h2 class="g-h" id="start-h">はじめての 3 ステップ</h2>
+					<p class="g-lead">
+						サンプルを 1 本開き、進行モードと振り返りまで通すと、Hanella の流れがひととおり分かります。
+						サンプルを開くとコピーが作られるので、自由に書き換えて構いません。
+					</p>
+					<ol class="g-steps">
+						<li class="g-step">
+							<span class="g-num" aria-hidden="true">1</span>
+							<div>
+								<h3 class="g-step-h">サンプルを開く</h3>
+								<ul class="g-list">
+									<li>初めて起動すると、ホームに<span class="ui">「プロジェクト」</span>と<span class="ui">「ファイル」</span>の 2 枚の入口が並び、その下の<span class="ui">「サンプルから始める」</span>に 3 本のサンプルがあります。1 本を選んで<span class="ui">「開く」</span>を押します。プロジェクトやファイルができた後は、ホームの<span class="ui">「サンプルを開く」</span>か、メニューの<span class="ui">「サンプルプロジェクトを開く…」</span>から同じ一覧を開けます。</li>
+									<li>サンプルは、ワークショップ・研修・イベントの 3 本です。3 ステップを最後まで通すなら、<b>研修の「はじめての1on1 ― 新任リーダー研修」</b>がおすすめです。実施の記録が入っていて、ステップ 3 の振り返りをすぐに見られます。</li>
+									<li>編集画面は、上に概要（課題・目標・時間など）、下にプログラムの表があります。表は 1 行が 1 つのプログラムで、時間・プログラム・内容・備考の 4 列です。時刻は、プログラムの長さから自動で計算されます。</li>
+									<li>自分の企画で始める時は、<span class="ui">「新しいプロジェクト」</span>（<kbd>⌘</kbd> <kbd>N</kbd>）か<span class="ui">「新しいファイル」</span>（<kbd>⇧</kbd> <kbd>⌘</kbd> <kbd>N</kbd>）を選びます。</li>
+								</ul>
+							</div>
+						</li>
+						<li class="g-step">
+							<span class="g-num" aria-hidden="true">2</span>
+							<div>
+								<h3 class="g-step-h">進行モードを試す</h3>
+								<ul class="g-list">
+									<li>編集画面の<span class="ui">「進行モード」</span>を押すと、当日用の画面に切り替わります（メニューの<span class="ui">「プロジェクト ＞ 進行モードを開始」</span>でも同じです）。この時点では、まだ時計は動きません。</li>
+									<li><span class="ui">「進行を開始」</span>を押すと時計が動き、最初のプログラムが始まります。次へ進むには<span class="ui">「次のプログラムへ」</span>か <kbd>→</kbd> キーです。発表資料があるプロジェクトでは、<kbd>→</kbd> はスライドのページ送りになり、プログラムは資料のページに合わせて進みます。</li>
+									<li>進行モードを初めて開いた時は、画面に重ねた印（帯・押し巻きの場所・ワークタイマー・キー）が 1 回だけ出ます。発表資料が無いプロジェクトと、あるプロジェクトで 1 回ずつです。<span class="ui">「閉じる」</span>か画面のどこかを押すと消えます。</li>
+									<li>画面上部の「+7分押し」「−3分巻き」「定刻」が、予定とのずれです。意味は<a class="g-link" href="#terms">進行モードの言葉</a>にあります。</li>
+									<li>最後のプログラムでは、<span class="ui">「次のプログラムへ」</span>が<span class="ui">「終了する」</span>に変わります。押すと、「全プログラムが終了しました」の画面になります。途中で抜ける時は<span class="ui">「編集に戻る」</span>か <kbd>Esc</kbd> で、確認が出ます。</li>
+								</ul>
+							</div>
+						</li>
+						<li class="g-step">
+							<span class="g-num" aria-hidden="true">3</span>
+							<div>
+								<h3 class="g-step-h">振り返りを見る</h3>
+								<ul class="g-list">
+									<li>進行モードで実施すると、プログラムごとにかかった時間（実測）が自動で記録されます。終了の画面の<span class="ui">「振り返りを見る」</span>か、編集画面の<span class="ui">「振り返り」</span>から開きます。</li>
+									<li>予定と実測が並び、どこで押し、どこで巻いたかが分かります。プログラムごとと全体に、メモを書けます。</li>
+									<li>記録は<span class="ui">「印刷」</span>と<span class="ui">「書式つきでコピー」</span>で、報告書などに使えます。</li>
+								</ul>
+							</div>
+						</li>
+					</ol>
+				</section>
+
+				<section class="g-sec" id="terms" aria-labelledby="terms-h">
+					<h2 class="g-h" id="terms-h">進行モードの言葉</h2>
+					<p class="g-lead">
+						進行モードでは、予定とのずれを短い言葉で表します。画面の数字にマウスを乗せると、同じ意味の説明が吹き出しで出ます。
+					</p>
+					<div class="g-terms">
+						<div class="g-term">
+							<div class="g-fig">
+								<span class="g-pill behind">+7分押し</span>
+								<span class="g-pill ahead">−3分巻き</span>
+								<span class="g-pill plain">定刻</span>
+								<span class="g-fig-cap">進行画面の上の数字</span>
+							</div>
+							<div>
+								<h3 class="g-term-h">押し・巻き・定刻</h3>
+								<p><b>押し</b>は、このまま進むと予定より遅く終わる見込みであること、<b>巻き</b>は、予定より早く終わる見込みであることです。ずれが 1 分に満たない間は<b>定刻</b>と出ます。</p>
+								<p>数字は、残りのプログラムを予定どおりの長さで進めた場合の終わりの見込みと、予定の終わりとの差（分）です。</p>
+								<div class="g-example">例：13:20 に始まる予定のプログラムを 13:27 に始めると、残りを予定どおりに進めても終わりが 7 分遅れるので「+7分押し」と出ます。</div>
+							</div>
+						</div>
+						<div class="g-term">
+							<div class="g-fig">
+								<div class="g-bar" aria-hidden="true">
+									<span style="flex:20;background:var(--hn-cat-a)"></span>
+									<span style="flex:60;background:var(--hn-cat-b)"></span>
+									<span style="flex:25;background:var(--hn-cat-c)"></span>
+									<span class="buf" style="flex:10"></span>
+								</div>
+								<span class="g-fig-cap">帯の右端の縞が予備</span>
+							</div>
+							<div>
+								<h3 class="g-term-h">予備と吸収</h3>
+								<p><b>予備</b>は、プログラムの合計と終了時刻の間の余りです。概要の<span class="ui">「終了時刻」</span>を入れると自動で計算され、表の最後に<span class="ui">「予備・調整の時間」</span>として出ます。進行画面には<span class="ui">「予備 残り○分」</span>が出ます。</p>
+								<p>当日に押した分は、まず予備で<b>吸収</b>されます。予備に収まっている間は、終了予定は変わりません。予備を使い切ると、終了予定の横に「→ 予測」として、終わりの見込みの時刻が出ます。</p>
+							</div>
+						</div>
+						<div class="g-term">
+							<div class="g-fig">
+								<span class="g-pill chip">14:35に再開</span>
+								<span class="g-fig-cap">休憩の行の右端</span>
+							</div>
+							<div>
+								<h3 class="g-term-h">再開時刻を守る休憩</h3>
+								<p>休憩の行の右端のチップで<span class="ui">「再開時刻を守る」</span>をオンにすると、その休憩は長さではなく<b>再開の時刻</b>で決まります。前のプログラムが押した分は、この休憩が吸収します。休憩より後ろの時刻は動きません。</p>
+								<p>休憩が<span class="ui">「最低の長さ」</span>より短くなる時の扱いは、<span class="ui">「間に合わない時」</span>で選べます（その場で選ぶ／再開をずらす／後ろを縮める）。</p>
+								<div class="g-example">例：14:35 に再開する 15 分の休憩の前で 5 分押すと、休憩は 10 分になり、14:35 に再開します。</div>
+							</div>
+						</div>
+						<div class="g-term">
+							<div class="g-fig">
+								<span class="g-pill plain">予定 10分 → 実測 12分</span>
+								<span class="g-fig-cap">振り返りの 1 行</span>
+							</div>
+							<div>
+								<h3 class="g-term-h">実測</h3>
+								<p><b>実測</b>は、進行モードで実際にかかった時間です。企画書に書いた時間（<b>予定</b>）と区別するために、こう呼びます。</p>
+								<p>プログラムごとに自動で記録され、振り返りに「予定 → 実測」と並びます。進行画面のタイムテーブル（<kbd>T</kbd>）では、予定の時刻と、実際・見込みとのずれが並びます。</p>
+							</div>
+						</div>
+						<div class="g-term">
+							<div class="g-fig">
+								<span class="g-pill plain">説明3分 → 作業10分</span>
+								<span class="g-fig-cap">ワークタイマーの段階</span>
+							</div>
+							<div>
+								<h3 class="g-term-h">ワークタイマー</h3>
+								<p>プログラムの中で使う、段階つきのタイマーです。「説明 3 分 → 作業 10 分」のように段階を組み、繰り返しや音も付けられます。</p>
+								<p>プログラム全体の時間（押し・巻きの数字）とは別の時計として動きます。</p>
+							</div>
+						</div>
+					</div>
+				</section>
+
+				<section class="g-sec" id="ops" aria-labelledby="ops-h">
+					<h2 class="g-h" id="ops-h">よくある操作</h2>
+					<p class="g-lead">
+						キーは Mac の表記です。Windows では <kbd>⌘</kbd> を <kbd>Ctrl</kbd> に読み替えてください（やり直すだけは <kbd>Ctrl</kbd> <kbd>Y</kbd>）。
+						メニューは、Mac は画面上部のメニューバー、Windows はサイドバー上部の<span class="ui">「≡」</span>から開きます。
+					</p>
+					<div class="g-table-wrap">
+						<table class="g-table">
+							<thead>
+								<tr><th scope="col">したいこと</th><th scope="col">操作</th></tr>
+							</thead>
+							<tbody>
+								<tr class="group"><th colspan="2" scope="colgroup">保存と共有</th></tr>
+								<tr>
+									<th scope="row">新しく作る</th>
+									<td><span class="ui">「新しいプロジェクト」</span>（<kbd>⌘</kbd> <kbd>N</kbd>）は Hanella の中に、<span class="ui">「新しいファイル」</span>（<kbd>⇧</kbd> <kbd>⌘</kbd> <kbd>N</kbd>）は保存先と名前を決めて <code>.hanella</code> を作ります。</td>
+								</tr>
+								<tr>
+									<th scope="row">ファイルを開く</th>
+									<td><span class="ui">「ファイルを開く」</span>（<kbd>⌘</kbd> <kbd>O</kbd>）で <code>.hanella</code> を選びます。ダブルクリックやドロップでも開けます。開いたファイルは、そのまま編集して自動で保存されます。</td>
+								</tr>
+								<tr>
+									<th scope="row">プロジェクトとファイルを行き来する</th>
+									<td><span class="ui">「ファイルに変更…」</span>でプロジェクトをファイルにします。<span class="ui">「プロジェクトに取り込む」</span>で、開いているファイルを Hanella の中のプロジェクトにします。</td>
+								</tr>
+								<tr>
+									<th scope="row">ほかの人に渡す</th>
+									<td><span class="ui">「プロジェクト全体を保存（.hanella）…」</span>で書き出します。受け取った人は<span class="ui">「プロジェクトを読み込む…」</span>で取り込みます。複数のファイルをまとめて選べます。</td>
+								</tr>
+								<tr>
+									<th scope="row">すべてのプロジェクトを書き出す</th>
+									<td>
+										<p><span class="ui">「すべてのプロジェクトを書き出す…」</span>で、選んだフォルダに 1 件ずつ <code>.hanella</code> を書き出します。同じフォルダに、設定のファイル（<code>Hanella設定.hanella-settings.json</code>）と、追加した音がある時は音のフォルダ（<code>Hanella設定の音</code>）もできます。言語・テーマ・タイマーのプリセットなどが入っています。パソコンの入れ替えや入れ直しの前に使います。終わると「フォルダを開く」が出ます。</p>
+										<p>戻す時は、<span class="ui">「プロジェクトを読み込む…」</span>で書き出したファイルをまとめて選びます（複数選べます）。設定のファイルを読み込むと<span class="ui">「設定を置き換えますか？」</span>と確認が出て、<span class="ui">「置き換える」</span>を押すとこのパソコンの設定が置き換わります。音のフォルダは設定のファイルと同じ場所に置いておきます。</p>
+									</td>
+								</tr>
+								<tr>
+									<th scope="row">消したプロジェクトを戻す</th>
+									<td>サイドバーの<span class="ui">「削除済みアイテム」</span>から<span class="ui">「復元」</span>できます（30 日間）。</td>
+								</tr>
+								<tr>
+									<th scope="row">保存できなかった内容を探す</th>
+									<td>保存できないまま終了すると、変更のコピーが Hanella の保存フォルダの <code>recovery</code> に残ります。次に起動した時、<span class="ui">「「〇〇」の保存できなかった変更のコピーがあります」</span>という知らせが 1 回出るので、<span class="ui">「開く」</span>を押すとファイルとして開けます。2 件以上ある時は「保存できなかった変更のコピーが○件あります」と出て、<span class="ui">「フォルダを開く」</span>から開きます。保存フォルダは、<span class="ui">「設定」</span>の<span class="ui">「データ」</span>でも確認できます。</td>
+								</tr>
+
+								<tr class="group"><th colspan="2" scope="colgroup">プログラムの表</th></tr>
+								<tr>
+									<th scope="row">行を足す</th>
+									<td>カテゴリの見出しの<span class="ui">「＋ プログラム」</span><span class="ui">「＋ 休憩」</span>、または行の左の <span class="ui">⠿</span> のメニュー（右クリックでも同じ）の<span class="ui">「この下にプログラムを追加」</span>を使います。</td>
+								</tr>
+								<tr>
+									<th scope="row">並べ替える</th>
+									<td>行の左の <span class="ui">⠿</span> をドラッグします。メニューの<span class="ui">「上へ移動」</span><span class="ui">「下へ移動」</span>でも動かせます。カテゴリも同じです。</td>
+								</tr>
+								<tr>
+									<th scope="row">行・カテゴリを複製する</th>
+									<td>メニューの<span class="ui">「この行を複製」</span><span class="ui">「このカテゴリを複製」</span>を使います。すぐ下に入ります。</td>
+								</tr>
+								<tr>
+									<th scope="row">行・カテゴリをコピーして貼り付ける</th>
+<td>
+										<p><span class="ui">⠿</span> を <kbd>⌘</kbd> を押しながらクリックして選びます（続けてクリックすると 1 つずつ足せます。<kbd>Shift</kbd> を押しながらクリックすると、間をまとめて選べます）。選んでいる間は画面の下に<span class="ui">「○件を選択中」</span>の帯が出ます。<kbd>⌘</kbd> <kbd>C</kbd> か帯の<span class="ui">「コピー」</span>でコピーし、貼り付けたい場所で <kbd>⌘</kbd> <kbd>V</kbd> を押します。選びは <kbd>Esc</kbd> か帯の<span class="ui">「解除」</span>で外せます。</p>
+										<p>1 行だけなら、<span class="ui">⠿</span> のメニューの<span class="ui">「コピー」</span>と<span class="ui">「この下に貼り付け」</span>が使えます。カテゴリは見出しの <span class="ui">⠿</span> のメニューの<span class="ui">「このカテゴリをコピー」</span>と<span class="ui">「この下に貼り付け」</span>です。コピーは Hanella の中だけに残るので、別のプロジェクトにも、ファイルにも貼れます。貼ると「○件を貼り付けました」と出ます。</p>
+										<p>貼った休憩の<span class="ui">「再開時刻を守る」</span>は外れて、コピーした時点の長さの普通の休憩になります。</p>
+									</td>
+								</tr>
+								<tr>
+									<th scope="row">直前の操作を取り消す</th>
+									<td>ツールバーの<span class="ui">「元に戻す」</span>（<kbd>⌘</kbd> <kbd>Z</kbd>）。やり直すは <kbd>⇧</kbd> <kbd>⌘</kbd> <kbd>Z</kbd> です。</td>
+								</tr>
+								<tr>
+									<th scope="row">タイマーを付ける</th>
+									<td>行の<span class="ui">「タイマー」</span>の<span class="ui">「タイマーを追加」</span>から、<span class="ui">「プリセットから」</span>か<span class="ui">「新しく作る」</span>を選びます。段階（説明 3 分→作業 10 分など）と繰り返しを組めます。</td>
+								</tr>
+								<tr>
+									<th scope="row">プロジェクト内を探す</th>
+									<td><span class="ui">「プロジェクト内を検索」</span>（<kbd>⌘</kbd> <kbd>F</kbd>）。</td>
+								</tr>
+								<tr>
+									<th scope="row">プロジェクトに関係なくタイマーを使う</th>
+									<td>サイドバーの<span class="ui">「タイマー」</span>のアイコンで、右下に小窓が開きます（クイックタイマー）。進行モードとは同時に使えません。</td>
+								</tr>
+
+								<tr class="group"><th colspan="2" scope="colgroup">資料と書き出し</th></tr>
+								<tr>
+									<th scope="row">スライドを使う</th>
+									<td>編集画面の<span class="ui">「発表資料」</span>から PDF を取り込み、プログラムごとに切り替えるページを決めます。PowerPoint のスライドは、PDF に書き出してから取り込みます。pptx ファイルからは、発表者ノートを取り込めます。</td>
+								</tr>
+								<tr>
+									<th scope="row">企画書を書き出す</th>
+									<td>メニューの<span class="ui">「企画書を書き出し」</span>から、PDF・Markdown・Word・書式つきでコピーを選びます。</td>
+								</tr>
+								<tr>
+									<th scope="row">当日の時間割を配る</th>
+									<td><span class="ui">「タイムテーブルを表示する」</span>から、コピー・PDF を保存・印刷ができます。</td>
+								</tr>
+								<tr>
+									<th scope="row">印刷する</th>
+									<td><span class="ui">「印刷…」</span>（<kbd>⌘</kbd> <kbd>P</kbd>）。備考と準備物・担当は、印刷の設定で入れるかを選べます。</td>
+								</tr>
+
+								<tr class="group"><th colspan="2" scope="colgroup">進行モード</th></tr>
+								<tr>
+									<th scope="row">次・前のプログラムへ</th>
+									<td><span class="ui">「次のプログラムへ」</span><span class="ui">「前へ」</span>、または <kbd>→</kbd> <kbd>←</kbd>（発表資料が無い時）。資料がある時は、<kbd>→</kbd> <kbd>←</kbd> がページ送りになります。</td>
+								</tr>
+								<tr>
+									<th scope="row">時間割を見る</th>
+									<td><kbd>T</kbd>（タイムテーブル）。スライドの一覧は <kbd>G</kbd> です。</td>
+								</tr>
+								<tr>
+									<th scope="row">開始時刻に自動で始める</th>
+									<td>開始前の画面の<span class="ui">「〇〇に自動で開始」</span>を押します。予定の開始の 3 時間前から押せます。</td>
+								</tr>
+								<tr>
+									<th scope="row">予定の長さをその場で変える</th>
+									<td>上の帯のプログラムを押し、<span class="ui">−5</span> <span class="ui">−1</span> <span class="ui">＋1</span> <span class="ui">＋5</span>（分）を選びます。</td>
+								</tr>
+								<tr>
+									<th scope="row">進行を終える</th>
+									<td>最後のプログラムで<span class="ui">「終了する」</span>を押します。途中で抜ける時は<span class="ui">「編集に戻る」</span>か <kbd>Esc</kbd> です。</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<p class="g-foot">
+						使い方でわからないことや、直してほしい点は、<a class="g-link" href="mailto:amemitai@gmail.com">お問い合わせ</a>からお知らせください。
+					</p>
+				</section>
+			</div>
+		</div>
+	</div>
+</HanellaLayout>

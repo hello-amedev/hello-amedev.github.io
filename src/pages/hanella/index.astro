@@ -1,0 +1,22 @@
+---
+// /hanella/ は、Hanella の製品ページ(LP)ができるまでの間、使い方のページへ移す。
+// 静的サイトなので meta refresh + canonical(Astro の redirects 設定が出すページと同じ形)。
+// LP を作る時は、このファイルを LP に置き換える(使い方は /hanella/guide/ のまま残る)。
+// サイトマップからは外してある(astro.config.mjs の sitemap の filter)。
+const target = new URL("/hanella/guide/", Astro.site);
+---
+
+<!doctype html>
+<html lang="ja">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>Hanella の使い方へ移動します — ame_dev</title>
+		<meta http-equiv="refresh" content="0; url=/hanella/guide/" />
+		<meta name="robots" content="noindex" />
+		<link rel="canonical" href={target} />
+	</head>
+	<body>
+		<p><a href="/hanella/guide/">Hanella の使い方へ移動します</a></p>
+	</body>
+</html>
