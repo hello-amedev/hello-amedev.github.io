@@ -77,7 +77,7 @@ const nav = [
 							<div>
 								<h3 class="g-step-h">Open a sample</h3>
 								<ul class="g-list">
-									<li>Pick one of the samples on the home screen and open it. The same list opens from <span class="ui">“Open samples”</span> on the home screen, or from <span class="ui">“Open Sample Project…”</span> in the menu.</li>
+									<li>The first time you start Hanella, the home screen shows two entrances, <span class="ui">“Projects”</span> and <span class="ui">“Files”</span>, and three samples under <span class="ui">“Start from a sample”</span>. Pick one and press <span class="ui">“Open”</span>. Once you have a project or a file, the same list opens from <span class="ui">“Open samples”</span> on the home screen, or from <span class="ui">“Open Sample Project…”</span> in the menu.</li>
 									<li>There are three samples: a workshop, a training session and an event. To go through all three steps, choose the training session, <b>“Your First 1-on-1s: Training for New Team Leads”</b>. It includes a past run, so you can see the review in step 3 right away.</li>
 									<li>The editor has an overview at the top (challenge, objective, time and so on) and the program table below it. Each row is one segment, in four columns: Time, Segment, Content and Notes. Times are worked out automatically from the lengths.</li>
 									<li>To start your own plan, choose <span class="ui">“New project”</span> (<kbd>⌘</kbd> <kbd>N</kbd>) or <span class="ui">“New file”</span> (<kbd>⇧</kbd> <kbd>⌘</kbd> <kbd>N</kbd>).</li>
@@ -91,6 +91,7 @@ const nav = [
 								<ul class="g-list">
 									<li>Press <span class="ui">“Start session”</span> in the editor to switch to the screen for the day (the menu item <span class="ui">“Project ＞ Start Session”</span> does the same). The clock is not running yet.</li>
 									<li>Press <span class="ui">“Start”</span> and the clock runs from the first segment. To move on, press <span class="ui">“Next segment”</span> or the <kbd>→</kbd> key. In a project with slides, <kbd>→</kbd> turns the slide page instead, and segments follow the pages of your slides.</li>
+									<li>The first time you open live mode, marks laid over the screen (a banner, where behind and ahead appear, the activity timer and the keys) show up once. You get them once for a project without slides and once for a project with slides. Press <span class="ui">“Close”</span> or anywhere on the screen to dismiss them.</li>
 									<li>The figures at the top, such as “7 min behind”, “3 min ahead” and “On time”, show how you compare with the plan. See <a class="g-link" href="#terms">Live mode terms</a> for what they mean.</li>
 									<li>On the last segment, <span class="ui">“Next segment”</span> becomes <span class="ui">“Finish”</span>. Press it to reach the “All segments are finished” screen. To leave earlier, use <span class="ui">“Back to editing”</span> or <kbd>Esc</kbd>, and confirm.</li>
 								</ul>
@@ -214,7 +215,10 @@ const nav = [
 								</tr>
 								<tr>
 									<th scope="row">Export all projects</th>
-									<td><span class="ui">“Export All Projects…”</span> writes one <code>.hanella</code> file per project into the folder you choose. Settings such as language, theme and the sounds you added are exported too. Use it before replacing or reinstalling a computer. Bring the files back together with <span class="ui">“Import Project…”</span>.</td>
+									<td>
+										<p><span class="ui">“Export All Projects…”</span> writes one <code>.hanella</code> file per project into the folder you choose. The same folder also gets a settings file (<code>Hanella settings.hanella-settings.json</code>) and, if you added sounds, a sounds folder (<code>Hanella settings sounds</code>). They hold your language, theme, timer presets and so on. Use it before replacing or reinstalling a computer. When it finishes, <span class="ui">“Open folder”</span> appears.</p>
+										<p>To bring everything back, choose the exported files together with <span class="ui">“Import Project…”</span> (you can select several). When the settings file is included, Hanella asks <span class="ui">“Replace the settings?”</span>, and <span class="ui">“Replace”</span> replaces the settings on this computer. Keep the sounds folder in the same place as the settings file.</p>
+									</td>
 								</tr>
 								<tr>
 									<th scope="row">Bring back a deleted project</th>
@@ -222,7 +226,7 @@ const nav = [
 								</tr>
 								<tr>
 									<th scope="row">Find content that could not be saved</th>
-									<td>If you quit while a file or project could not be saved, a copy of the content is kept in the <code>recovery</code> folder inside Hanella's data folder. A notice appears the next time you start Hanella, and you can open the copy from there. You can find the data folder under <span class="ui">“Settings”</span> and <span class="ui">“Data”</span>.</td>
+									<td>If you quit while something could not be saved, a copy of the changes is kept in the <code>recovery</code> folder inside Hanella's data folder. The next time you start Hanella, a notice appears once: <span class="ui">“Unsaved changes to “…” were kept as a copy”</span>. Press <span class="ui">“Open”</span> to open it as a file. With two or more, it says “Unsaved changes were kept as 2 copies” and <span class="ui">“Open folder”</span> opens the folder. You can also find the data folder under <span class="ui">“Settings”</span> and <span class="ui">“Data”</span>.</td>
 								</tr>
 
 								<tr class="group"><th colspan="2" scope="colgroup">The program table</th></tr>
@@ -241,8 +245,9 @@ const nav = [
 								<tr>
 									<th scope="row">Copy and paste rows or categories</th>
 									<td>
-										<p>Click a <span class="ui">⠿</span> while holding <kbd>⌘</kbd> to select it (keep clicking to select several). Copy with <kbd>⌘</kbd> <kbd>C</kbd>, then press <kbd>⌘</kbd> <kbd>V</kbd> where you want them.</p>
-										<p>The <span class="ui">“Copy”</span> and <span class="ui">“Paste below”</span> items in the <span class="ui">⠿</span> menu do the same. You can paste into another project, too.</p>
+										<p>Click a <span class="ui">⠿</span> while holding <kbd>⌘</kbd> to select it (keep clicking to add more; hold <kbd>Shift</kbd> and click to select everything in between). While you have a selection, a bar at the bottom of the screen shows <span class="ui">“3 segments selected”</span>. Copy with <kbd>⌘</kbd> <kbd>C</kbd> or the bar's <span class="ui">“Copy”</span>, then press <kbd>⌘</kbd> <kbd>V</kbd> where you want them. Clear the selection with <kbd>Esc</kbd> or the bar's <span class="ui">“Clear”</span>.</p>
+										<p>For a single row, use <span class="ui">“Copy”</span> and <span class="ui">“Paste below”</span> in the <span class="ui">⠿</span> menu. For a category, use <span class="ui">“Copy this category”</span> and <span class="ui">“Paste below”</span> in the menu of its heading's <span class="ui">⠿</span>. What you copy stays inside Hanella, so you can paste into another project or a file. A notice such as “Pasted 3 segments” appears.</p>
+										<p>A pasted break loses <span class="ui">“Keep resume time”</span> and becomes a normal break of the length it had when copied.</p>
 									</td>
 								</tr>
 								<tr>
