@@ -785,10 +785,6 @@ a.hb-app-go:hover {
 	font-weight: 500;
 	line-height: 1.65;
 	color: var(--ink-1);
-	/* 一言が 2 行になる時は、語の途中でなく読点・空白の所で折り返す
-	   (1 行に収まらない長い語だけは、はみ出さずにどこでも折る) */
-	word-break: keep-all;
-	overflow-wrap: anywhere;
 }
 .hb-card-lead {
 	margin-top: 12px;
@@ -957,6 +953,203 @@ a.hb-app-go:hover {
 		top: 0;
 		left: 6%;
 		width: 116%;
+	}
+}
+
+/* ---------------------------------------------------------
+   figures：figures のトップと同じ白い氷の世界を、画面いっぱいに敷く。
+   映像の地の色(--ice)で塗り、上下は紙面の色へ溶かしてつなぐ。
+   広い画面は映像の上の左側に文字、狭い画面は映像の下に文字
+   --------------------------------------------------------- */
+
+.hb-fig {
+	--ice: #eef5fb;
+	--fig-navy: #0a1f44;
+	--fig-blue: #1f4fe0;
+	/* 映像の高さ。16:9 で、画面の高さを超える時は高さに合わせて左右を切る */
+	--fig-h: max(560px, min(100svh, 56.25vw));
+	position: relative;
+	background: var(--ice);
+	overflow: hidden;
+}
+.hb-fig-media {
+	position: relative;
+	height: var(--fig-h);
+}
+.hb-fig-media > img,
+.hb-fig-media > video {
+	position: absolute;
+	inset: 0;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	/* 刃と、しぶきの開く床を残す */
+	object-position: 58% 100%;
+	display: block;
+}
+.hb-fig-video {
+	opacity: 0;
+}
+/* 動きのある時は映像を見せ、静止画は下に隠す */
+.hb-fig[data-motion] .hb-fig-video {
+	opacity: 1;
+}
+.hb-fig[data-motion] .hb-fig-still {
+	visibility: hidden;
+}
+/* 上は紙面の色から、下は紙面の色へ。境目の線を出さない */
+.hb-fig-media::before,
+.hb-fig-media::after {
+	content: "";
+	position: absolute;
+	left: 0;
+	right: 0;
+	z-index: 1;
+	pointer-events: none;
+}
+.hb-fig-media::before {
+	top: 0;
+	height: 16%;
+	background: linear-gradient(180deg, var(--paper), color-mix(in srgb, var(--ice) 0%, transparent));
+}
+.hb-fig-media::after {
+	bottom: 0;
+	height: 12%;
+	background: linear-gradient(0deg, var(--paper), color-mix(in srgb, var(--paper) 0%, transparent));
+}
+
+.hb-fig-copy {
+	position: absolute;
+	inset: 0;
+	z-index: 2;
+	display: flex;
+	align-items: flex-start;
+	/* 上の帯と左下のしぶき(映像の高さの 6 割あたりから)の間に収める */
+	padding-top: calc(var(--fig-h) * 0.15);
+	pointer-events: none;
+}
+.hb-fig-text {
+	/* 選手(画面の 48〜68%)にかからない幅 */
+	position: relative;
+	isolation: isolate;
+	max-width: min(38vw, 30em);
+	pointer-events: auto;
+	transition: opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1),
+		transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+}
+/* 左のしぶきが文字の下にかかる所でも読めるよう、文字の後ろだけ氷の色を淡く敷く */
+.hb-fig-text::before {
+	content: "";
+	position: absolute;
+	inset: -12% -18% -16% -14%;
+	z-index: -1;
+	background: radial-gradient(closest-side, color-mix(in srgb, var(--ice) 88%, transparent), color-mix(in srgb, var(--ice) 0%, transparent));
+	pointer-events: none;
+}
+/* 着氷するまで文字は待つ */
+.hb-fig[data-motion]:not([data-landed]) .hb-fig-text {
+	opacity: 0;
+	transform: translateY(18px);
+}
+.hb-fig-label {
+	display: flex;
+	align-items: baseline;
+	gap: 14px;
+	font-family: var(--font-mono);
+	font-size: 0.82rem;
+	letter-spacing: 0.32em;
+	color: var(--fig-blue);
+	margin-bottom: 20px;
+}
+.hb-fig-label span {
+	font-family: var(--font-jp);
+	font-size: 0.72rem;
+	letter-spacing: 0.14em;
+	color: var(--ink-3);
+}
+.hb-fig-title {
+	display: grid;
+	font-size: clamp(1.9rem, 0.9rem + 2.6vw, 3.3rem);
+	font-weight: 700;
+	line-height: 1.32;
+	letter-spacing: 0.02em;
+	color: var(--fig-navy);
+}
+/* 前置きは見出しの 4 割強(figures のトップと同じ比) */
+.hb-fig-title-lead {
+	font-size: 0.42em;
+	letter-spacing: 0.12em;
+	margin-bottom: 0.4em;
+}
+.hb-fig-lead {
+	margin-top: 20px;
+	font-size: 0.94rem;
+	line-height: 2;
+	color: var(--ink-1);
+	text-wrap: pretty;
+}
+.hb-fig-cta {
+	margin-top: 24px;
+}
+.hb-fig-cta a {
+	display: inline-block;
+	padding: 11px 26px;
+	border-radius: 999px;
+	font-size: 0.88rem;
+	letter-spacing: 0.04em;
+	text-decoration: none;
+	color: #fff;
+	background: var(--fig-blue);
+	box-shadow: 0 10px 26px -12px color-mix(in srgb, var(--fig-blue) 70%, transparent);
+	transition: background 0.3s ease, transform 0.3s ease;
+}
+.hb-fig-cta a:hover {
+	text-decoration: none;
+	background: var(--fig-navy);
+	transform: translateY(-1px);
+}
+
+/* 映像の上に文字を重ねると選手としぶきにかかる幅(タブレット以下)では、
+   映像を選手に寄せて切り、文字はその下に置く。終わりは紙面の色へ溶かして、AI for ART の白につなぐ */
+@media (max-width: 1180px) {
+	.hb-fig {
+		background: linear-gradient(180deg, var(--ice) 72%, var(--paper));
+	}
+	.hb-fig-media {
+		height: auto;
+		aspect-ratio: 4 / 3;
+	}
+	.hb-fig-media > img,
+	.hb-fig-media > video {
+		/* 着氷した足から、後ろへ上げた脚の先まで入れる */
+		object-position: 66% 100%;
+	}
+	.hb-fig-media::after {
+		background: linear-gradient(0deg, var(--ice), color-mix(in srgb, var(--ice) 0%, transparent));
+	}
+	.hb-fig-copy {
+		position: relative;
+		display: block;
+		padding-block: 8px 72px;
+	}
+	.hb-fig-text {
+		max-width: 36em;
+	}
+	.hb-fig-text::before {
+		display: none;
+	}
+}
+@media (max-width: 760px) {
+	.hb-fig-media {
+		aspect-ratio: 1 / 1;
+	}
+	.hb-fig-media > img,
+	.hb-fig-media > video {
+		object-position: 68% 100%;
+	}
+	.hb-fig-lead {
+		font-size: 0.88rem;
+		line-height: 1.95;
 	}
 }
 
@@ -1326,6 +1519,9 @@ a.hb-app-go:hover {
 	.hb-reveal {
 		opacity: 1 !important;
 		transform: none !important;
+	}
+	.hb-fig-text {
+		transition: none !important;
 	}
 	/* 演出はやめて、反転も幕も即時に切り替える */
 	.hb-art-sticky {
