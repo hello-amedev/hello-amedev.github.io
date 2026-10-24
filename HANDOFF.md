@@ -8,6 +8,17 @@
 | なぜこの実装なのか / 過去の経緯 | [docs/site-history.md](docs/site-history.md) |
 | 製品本体 Drive DAM の最新 | `~/Documents/claude-private/drive-dam/HANDOFF.md` |
 
+## 0-F. figures の専用セクション(2026-10-25)
+
+- フィギュアスケートの Web コンテンツ figures(https://ame-dev.com/figures/)を本公開したので、TOP の Works と AI for ART の間に専用セクションを置いた
+  (アプリと同じには並べない。あめさん。最初は Works のカードにしたが、この形に変えた)。中身は別の非公開リポジトリ skating-guide、置き場は公開用リポジトリ `hello-amedev/figures`
+- 文言と素材の置き場は `src/data/apps.ts` の `figuresProject`(紹介文はあめさんの文)。ヘッダーのメニューにも `figures`(640px 以下は隠す)
+- 見せ方: figures のトップのメインビジュアル(着氷の衝撃)を文字なしで録画した 6.5 秒の映像(`public/assets/figures/landing.mp4`、1280 幅・約 2.3MB)。
+  映像の半分が見えたら 1 回だけ流し、しぶきが落ち着いた最後のコマで止める。文字は着氷(映像の 1.9 秒)の後に出る。
+  動きを減らす設定・再生できない時は、最後のコマの静止画(`landing-end.jpg`)と文字をはじめから見せる
+- 広い画面は映像の上の左に文字、1180px 以下は映像を選手に寄せて切り(タブレット 4:3、スマホ 1:1)、文字はその下
+- 撮り直し方は `figuresProject` の上の注(skating-guide の開発サーバーで、トップの文字と上の帯を隠して 1600×900 で録る)
+
 ## 0-H. Hanella の使い方ページ(2026-10-18 公開)
 
 - Hanella(アプリ)の「使い方」を `/hanella/guide/`(英 `/en/hanella/guide/`)に置いた。アプリのメニューからここを開く

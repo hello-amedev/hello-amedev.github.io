@@ -4,7 +4,7 @@ import "@fontsource/noto-sans-jp/500.css";
 import "@fontsource/noto-sans-jp/700.css";
 import Base from "../layouts/Base.astro";
 import "../styles/hub.css";
-import { apps, artProject, author } from "../data/apps";
+import { apps, artProject, author, figuresProject } from "../data/apps";
 
 /**
  * ヒーローで浮遊させる位置と向き。中身（作品の情報）は apps.ts、
@@ -51,7 +51,7 @@ const siteJsonLd = [
 
 const title = "ame_dev — 自分や、自分のような誰かのためのアプリを作る";
 const description =
-	"ame_dev がひとりでつくった Windows アプリ・Chrome 拡張・Web アプリの一覧です。Drive DAM / Tsumist / Mitamama / FrameFit / SnapSide / Steep / StockBoard を公開中。デジタルアートの AI for ART プロジェクトも。";
+	"ame_dev がひとりでつくった Windows アプリ・Chrome 拡張・Web アプリの一覧です。Drive DAM / Tsumist / Mitamama / FrameFit / SnapSide / Steep / StockBoard を公開中。フィギュアスケートの Web コンテンツ figures と、デジタルアートの AI for ART プロジェクトも。";
 ---
 
 <Base title={title} description={description} current="hub" page="hub" bare jsonLd={siteJsonLd}>
@@ -78,6 +78,7 @@ const description =
 			</a>
 			<nav class="hb-nav" aria-label="ページ内メニュー">
 				<a href="#works">Works</a>
+				<a href="#figures" data-optional>figures</a>
 				<a href="#art" data-optional>AI for ART</a>
 				<a href="#about">About</a>
 			</nav>
@@ -301,6 +302,50 @@ const description =
 					</li>
 				))}
 			</ul>
+		</div>
+	</section>
+
+	<!-- ============================================================
+	     figures：figures のトップと同じ白い氷の世界。差しかかると
+	     選手が遠くから滑ってきて目の前に着氷し、しぶきが開いてから文字が出る
+	     ============================================================ -->
+	<section class="hb-fig" id="figures" data-fig>
+		<div class="hb-fig-media">
+			<img
+				class="hb-fig-still"
+				src={figuresProject.still}
+				alt={figuresProject.stillAlt}
+				width={figuresProject.stillW}
+				height={figuresProject.stillH}
+				loading="lazy"
+				decoding="async"
+			/>
+			<video
+				class="hb-fig-video"
+				data-fig-video
+				src={figuresProject.video}
+				poster={figuresProject.videoStart}
+				muted
+				playsinline
+				preload="none"
+				aria-hidden="true"
+			></video>
+		</div>
+
+		<div class="hb-fig-copy hb-wrap">
+			<div class="hb-fig-text">
+				<p class="hb-fig-label">
+					{figuresProject.name}<span>{figuresProject.kindLabel}</span>
+				</p>
+				<h2 class="hb-fig-title">
+					<span class="hb-fig-title-lead">{figuresProject.catchLead}</span>
+					{figuresProject.catchLines.map((line) => <span>{line}</span>)}
+				</h2>
+				<p class="hb-fig-lead">{figuresProject.lead}</p>
+				<p class="hb-fig-cta">
+					<a href={figuresProject.href}>{figuresProject.hrefLabel} →</a>
+				</p>
+			</div>
 		</div>
 	</section>
 
@@ -560,6 +605,52 @@ const description =
 		syncDark();
 		window.addEventListener("scroll", syncDark, { passive: true });
 		window.addEventListener("resize", syncDark, { passive: true });
+	}
+
+	/* -----------------------------------------------------------
+	   figures
+	     差しかかったら映像を 1 回だけ流し、最後のコマ（しぶきが落ち着いた絵）で止める。
+	     文字は選手が着氷してから出す。動きを減らす設定・JS 不発・再生に失敗した時は、
+	     最後のコマの静止画と文字をはじめから見せる（data-motion を立てない）
+	   ----------------------------------------------------------- */
+	const fig = document.querySelector<HTMLElement>("[data-fig]");
+	const figVideo = fig?.querySelector<HTMLVideoElement>("[data-fig-video]");
+	const figMedia = fig?.querySelector<HTMLElement>(".hb-fig-media");
+
+	if (fig && figVideo && figMedia && !reduceMotion) {
+		fig.setAttribute("data-motion", "");
+		// 映像のこの時刻で刃が氷に落ちる
+		const LANDED_AT = 1.9;
+		const fallback = () => {
+			fig.removeAttribute("data-motion");
+		};
+
+		// 近づいたら読み込みを始め、映像の半分ほどが見えたら流す
+		const near = new IntersectionObserver(
+			(entries) => {
+				if (!entries.some((e) => e.isIntersecting)) return;
+				near.disconnect();
+				figVideo.preload = "auto";
+			},
+			{ rootMargin: "100% 0px" },
+		);
+		near.observe(figMedia);
+
+		const start = new IntersectionObserver(
+			(entries) => {
+				if (!entries.some((e) => e.isIntersecting)) return;
+				start.disconnect();
+				figVideo.play().catch(fallback);
+			},
+			{ threshold: 0.5 },
+		);
+		start.observe(figMedia);
+
+		figVideo.addEventListener("timeupdate", () => {
+			if (figVideo.currentTime >= LANDED_AT) fig.setAttribute("data-landed", "");
+		});
+		figVideo.addEventListener("ended", () => fig.setAttribute("data-landed", ""));
+		figVideo.addEventListener("error", fallback);
 	}
 
 	/* ヘッダー：少しでもスクロールしたら背景を出す */

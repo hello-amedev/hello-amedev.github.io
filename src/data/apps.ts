@@ -163,6 +163,32 @@ export const apps: AppEntry[] = [
 	},
 ];
 
+/**
+ * figures(フィギュアスケートの Web コンテンツ)。アプリではないので Works には並べず、
+ * Works と AI for ART の間の専用セクションに出す(2026-10-25、あめさん)。
+ * 映像は figures のトップのメインビジュアル(着氷の衝撃のコマ)を文字なしで録画したもの。
+ * 撮り直す時は skating-guide 側で、トップの文字・上の帯を隠して 1600×900 で録り、1280 幅に縮める
+ */
+export const figuresProject = {
+	name: "figures",
+	kindLabel: "Web コンテンツ",
+	/** 見出しの前置き(小さく)と、2 行の見出し。figures のトップのキャッチと同じ文言 */
+	catchLead: "フィギュアスケートの",
+	catchLines: ["にわかファンを、", "卒業する。"],
+	lead: "フィギュアスケートを好きになった人が、観戦をもっと楽しめるように学べるWebコンテンツ。6種類のジャンプの見分け方や、構成と採点、2026-27シーズンのルールの変更などを解説します。",
+	href: "/figures/",
+	hrefLabel: "figures を見る",
+	/** 遠くから滑ってきた選手が跳び、目の前に着氷してしぶきが開くまでの 6.5 秒 */
+	video: "/assets/figures/landing.mp4",
+	/** 映像の最初のコマ(再生を待つ間) */
+	videoStart: "/assets/figures/landing-start.jpg",
+	/** しぶきが落ち着いた最後のコマ。動きを減らす設定・映像が流れない環境ではこれを見せる */
+	still: "/assets/figures/landing-end.jpg",
+	stillW: 1600,
+	stillH: 900,
+	stillAlt: "氷の上に着氷したスケーターの脚。刃が氷に落ちた所から、青と朱のしぶきが扇のように開いている",
+};
+
 /** AI for ART プロジェクト。Works とは別扱いで TOP の専用セクションに出す */
 export const artProject = {
 	name: "AI for ART",
