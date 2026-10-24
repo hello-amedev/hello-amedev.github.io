@@ -151,6 +151,18 @@ export const apps: AppEntry[] = [
 		accentSoft: "#F4A8C8",
 	},
 	{
+		id: "figures",
+		name: "figures",
+		kind: "web",
+		kindLabel: "Web コンテンツ",
+		tagline: "フィギュアスケートのにわかファンを、卒業する。",
+		lead: "フィギュアスケートを好きになった人が、観戦をもっと楽しめるように学べるWebコンテンツ。6種類のジャンプの見分け方や、構成と採点、2026-27シーズンのルールの変更などを解説します。",
+		href: "/figures/",
+		hrefLabel: "ブラウザで開く",
+		accent: "#1F4FE0",
+		accentSoft: "#00C8F0",
+	},
+	{
 		id: "facilita",
 		name: "Facilita",
 		kind: "soon",

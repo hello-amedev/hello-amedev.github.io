@@ -785,6 +785,10 @@ a.hb-app-go:hover {
 	font-weight: 500;
 	line-height: 1.65;
 	color: var(--ink-1);
+	/* 一言が 2 行になる時は、語の途中でなく読点・空白の所で折り返す
+	   (1 行に収まらない長い語だけは、はみ出さずにどこでも折る) */
+	word-break: keep-all;
+	overflow-wrap: anywhere;
 }
 .hb-card-lead {
 	margin-top: 12px;

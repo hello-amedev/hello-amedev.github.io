@@ -8,6 +8,14 @@
 | なぜこの実装なのか / 過去の経緯 | [docs/site-history.md](docs/site-history.md) |
 | 製品本体 Drive DAM の最新 | `~/Documents/claude-private/drive-dam/HANDOFF.md` |
 
+## 0-F. figures を作品一覧に追加(2026-10-25)
+
+- フィギュアスケートの Web コンテンツ figures(https://ame-dev.com/figures/)を本公開したので、`src/data/apps.ts` に足した
+  (種別「Web コンテンツ」。紹介文はあめさんの文。中身は別の非公開リポジトリ skating-guide、置き場は公開用リポジトリ `hello-amedev/figures`)。
+  アイコン `public/assets/apps/figures.png` は figures の favicon(しぶきの扇)を角を丸めずに 256px で書き出したもの
+- ヒーローの浮遊アイコンは 9 個目(`index.astro` の `layout`。広い画面は右の中ほど、狭い画面は右下)
+- Works のカードの一言は、2 行になる時に読点・空白の所で折り返す(`hub.css` の `.hb-card-tagline`。figures の一言が「卒業す / る。」と折れたため)
+
 ## 0-H. Hanella の使い方ページ(2026-10-18 公開)
 
 - Hanella(アプリ)の「使い方」を `/hanella/guide/`(英 `/en/hanella/guide/`)に置いた。アプリのメニューからここを開く
