@@ -1,6 +1,6 @@
 ---
 import Base from "../../../layouts/Base.astro";
-const updated = "Last updated: August 15, 2026";
+const updated = "Last updated: October 31, 2026";
 ---
 
 <Base
@@ -22,10 +22,23 @@ const updated = "Last updated: August 15, 2026";
 
 			<h2>1. About this website</h2>
 			<p>
-				This website consists of static pages and uses no cookies or analytics tools that could
-				identify visitors. If you contact us by email, the content of your message and your
-				contact details are used solely to reply and respond to your inquiry.
+				If you contact us by email, the content of your message and your contact details are
+				used solely to reply and respond to your inquiry.
 			</p>
+
+			<h3>Analytics (Google Analytics)</h3>
+			<p>
+				To improve this website, we use Google Analytics, an analytics tool provided by Google LLC,
+				only if you allow it. Only when you choose "Allow" in the prompt shown on your first visit are
+				cookies stored on your device and information such as the pages you view, time spent, the type
+				of device and browser you use, and your approximate region sent to Google. We do not collect
+				information that identifies you, such as your name or email address.
+			</p>
+			<ul class="legal__list">
+				<li>If you choose "Decline", no Google Analytics cookies are stored and no information is sent.</li>
+				<li>You can change your choice at any time from "Cookie settings" at the bottom of each page.</li>
+				<li>The information collected is managed by Google in accordance with Google's privacy policy. See <a href="https://policies.google.com/technologies/partner-sites" target="_blank" rel="noopener noreferrer">How Google uses information from sites or apps that use our services</a> for details.</li>
+			</ul>
 
 			<h2>2. About the Drive DAM app</h2>
 			<p>
@@ -112,6 +125,11 @@ const updated = "Last updated: August 15, 2026";
 		margin-top: 38px;
 		margin-bottom: 14px;
 		padding-top: 8px;
+	}
+	.legal h3 {
+		font-size: 1rem;
+		margin-top: 26px;
+		margin-bottom: 10px;
 	}
 	.legal__list {
 		color: var(--ink-muted);

@@ -1,0 +1,210 @@
+---
+// Google Analytics 4 と、その同意バナー。3 つのレイアウト(Base / DrivedamLayout / HanellaLayout)の
+// <body> 末尾に置く。測定 ID は src/data/analytics.ts。空なら何も出さない。
+// 「許可する」を押すまで gtag.js は読み込まない(Google へ何も送らない)。
+// フッターの <a data-cookie-settings hidden> は、ここのスクリプトが表示してバナーを開き直す口にする。
+import { GA_MEASUREMENT_ID } from "../data/analytics";
+
+const { lang = "ja" } = Astro.props as { lang?: "ja" | "en" | "zh" };
+
+const texts = {
+	ja: {
+		title: "アクセス解析について",
+		body: "サイトの改善のため、Google Analytics の Cookie を使ってもよいですか？ 許可すると、閲覧したページなどの情報が Google に送られます。個人を特定する情報は集めません。",
+		policy: "プライバシーポリシー",
+		policyHref: "/privacy/",
+		allow: "許可する",
+		deny: "使わない",
+	},
+	en: {
+		title: "About analytics",
+		body: "May we use Google Analytics cookies to improve this site? If you allow it, information such as the pages you view is sent to Google. We do not collect information that identifies you.",
+		policy: "Privacy Policy",
+		policyHref: "/en/privacy/",
+		allow: "Allow",
+		deny: "Decline",
+	},
+	zh: {
+		title: "關於流量分析",
+		body: "為了改善網站，是否允許使用 Google Analytics 的 Cookie？允許後，您瀏覽的頁面等資訊會傳送至 Google。我們不會蒐集可識別個人身分的資訊。",
+		policy: "隱私權政策",
+		policyHref: "/zh/privacy/",
+		allow: "允許",
+		deny: "不允許",
+	},
+}[lang];
+---
+
+{
+	GA_MEASUREMENT_ID && (
+		<>
+			<div class="ga-consent" id="gaConsent" role="dialog" aria-labelledby="gaConsentTitle" hidden>
+				<p class="ga-consent__title" id="gaConsentTitle">{texts.title}</p>
+				<p class="ga-consent__body">
+					{texts.body}
+					<a href={texts.policyHref}>{texts.policy}</a>
+				</p>
+				<div class="ga-consent__actions">
+					<button type="button" class="ga-consent__btn ga-consent__btn--allow" data-ga-choice="granted">{texts.allow}</button>
+					<button type="button" class="ga-consent__btn" data-ga-choice="denied">{texts.deny}</button>
+				</div>
+			</div>
+
+			<script is:inline define:vars={{ gaId: GA_MEASUREMENT_ID }}>
+				(function () {
+					"use strict";
+					var KEY = "ame-dev-analytics-consent";
+					var banner = document.getElementById("gaConsent");
+					if (!banner) return;
+
+					function readChoice() {
+						try {
+							return window.localStorage.getItem(KEY);
+						} catch (e) {
+							return null;
+						}
+					}
+					function saveChoice(v) {
+						try {
+							window.localStorage.setItem(KEY, v);
+						} catch (e) {
+							/* 保存できなくても、このページの間は選んだとおりに動く */
+						}
+					}
+
+					var loaded = false;
+					function loadGa() {
+						if (loaded) return;
+						loaded = true;
+						window["ga-disable-" + gaId] = false;
+						window.dataLayer = window.dataLayer || [];
+						window.gtag = function () {
+							window.dataLayer.push(arguments);
+						};
+						window.gtag("js", new Date());
+						window.gtag("config", gaId);
+						var s = document.createElement("script");
+						s.async = true;
+						s.src = "https://www.googletagmanager.com/gtag/js?id=" + encodeURIComponent(gaId);
+						document.head.appendChild(s);
+					}
+
+					/* 「使わない」にした時は、送信を止めて、GA が置いた Cookie(_ga, _ga_*)も消す */
+					function stopGa() {
+						window["ga-disable-" + gaId] = true;
+						var host = location.hostname;
+						var domains = [host, "." + host, "." + host.split(".").slice(-2).join(".")];
+						document.cookie.split(";").forEach(function (c) {
+							var name = c.split("=")[0].trim();
+							if (name !== "_ga" && name.indexOf("_ga_") !== 0) return;
+							domains.forEach(function (d) {
+								document.cookie = name + "=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/; domain=" + d;
+							});
+							document.cookie = name + "=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/";
+						});
+					}
+
+					function showBanner() {
+						banner.hidden = false;
+					}
+
+					banner.addEventListener("click", function (e) {
+						var btn = e.target.closest ? e.target.closest("[data-ga-choice]") : null;
+						if (!btn) return;
+						var choice = btn.getAttribute("data-ga-choice");
+						saveChoice(choice);
+						banner.hidden = true;
+						if (choice === "granted") loadGa();
+						else stopGa();
+					});
+
+					/* フッターの「Cookie 設定」。ID が入っている時だけ表示して、押すとバナーを開き直す */
+					document.querySelectorAll("[data-cookie-settings]").forEach(function (a) {
+						a.hidden = false;
+						a.addEventListener("click", function (e) {
+							e.preventDefault();
+							showBanner();
+						});
+					});
+
+					var saved = readChoice();
+					if (saved === "granted") loadGa();
+					else if (saved !== "denied") showBanner();
+				})();
+			</script>
+
+			<style is:global>
+				.ga-consent {
+					position: fixed;
+					left: 16px;
+					right: 16px;
+					bottom: 16px;
+					z-index: 1000;
+					max-width: 560px;
+					padding: 16px 18px;
+					border-radius: 14px;
+					background: #1f2933;
+					color: #f6f8fa;
+					box-shadow: 0 10px 40px rgba(0, 0, 0, 0.28);
+					font-family: "Inter", "Noto Sans JP", "Noto Sans TC", system-ui, -apple-system, "Segoe UI", sans-serif;
+					font-size: 0.88rem;
+					line-height: 1.6;
+				}
+				.ga-consent[hidden] {
+					display: none;
+				}
+				.ga-consent__title {
+					margin: 0 0 4px;
+					font-weight: 700;
+					font-size: 0.92rem;
+				}
+				.ga-consent__body {
+					margin: 0;
+				}
+				.ga-consent__body a {
+					margin-left: 0.4em;
+					color: #9cc4f2;
+					text-decoration: underline;
+					white-space: nowrap;
+				}
+				.ga-consent__actions {
+					display: flex;
+					flex-wrap: wrap;
+					gap: 8px;
+					margin-top: 12px;
+				}
+				.ga-consent__btn {
+					min-height: 40px;
+					padding: 8px 18px;
+					border: 1px solid #8595a5;
+					border-radius: 999px;
+					background: transparent;
+					color: inherit;
+					font: inherit;
+					font-weight: 600;
+					cursor: pointer;
+				}
+				.ga-consent__btn--allow {
+					border-color: #4a90e2;
+					background: #4a90e2;
+					color: #fff;
+				}
+				.ga-consent__btn:hover {
+					filter: brightness(1.1);
+				}
+				.ga-consent__btn:focus-visible,
+				.ga-consent__body a:focus-visible {
+					outline: 2px solid #9cc4f2;
+					outline-offset: 2px;
+				}
+				@media (min-width: 640px) {
+					.ga-consent {
+						left: 24px;
+						right: auto;
+						bottom: 24px;
+					}
+				}
+			</style>
+		</>
+	)
+}

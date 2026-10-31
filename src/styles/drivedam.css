@@ -743,6 +743,7 @@ section{position:relative}
 }
 .foot-base a{border-bottom:1px solid transparent;transition:border-color .25s var(--ease)}
 .foot-base a:hover{border-color:var(--ink-3)}
+.foot-base-links{display:flex;gap:20px;flex-wrap:wrap}
 
 /* --- release notes(更新履歴ページ) --- */
 /* LP と違いヒーローが無いので、ヘッダーは最初から不透明にする(scrolled と同じ見え方) */
