@@ -1,6 +1,6 @@
 ---
 import Base from "../../../layouts/Base.astro";
-const updated = "2026年8月15日";
+const updated = "2026年10月31日";
 ---
 
 <Base
@@ -22,10 +22,22 @@ const updated = "2026年8月15日";
 
 			<h2>1. 關於本網站</h2>
 			<p>
-				本網站由靜態頁面構成，未使用可識別使用者身分的 Cookie 或流量分析工具。
 				若您透過電子郵件與我方聯繫洽詢，其郵件內容及聯絡資訊，
 				僅用於回覆與處理該次洽詢。
 			</p>
+
+			<h3>流量分析（Google Analytics）</h3>
+			<p>
+				為改善本網站，我方僅在您允許的情況下，使用 Google LLC 提供的流量分析工具「Google Analytics」。
+				唯有您在初次造訪時顯示的確認畫面中選擇「允許」，Cookie 才會儲存於您的裝置，
+				且您瀏覽的頁面、停留時間、所使用的裝置與瀏覽器類型、大致地區等資訊才會傳送至 Google。
+				我方不會蒐集姓名、電子郵件地址等可識別個人身分的資訊。
+			</p>
+			<ul class="legal__list">
+				<li>若您選擇「不允許」，將不會儲存 Google Analytics 的 Cookie，也不會傳送任何資訊。</li>
+				<li>您可隨時透過各頁面下方的「Cookie 設定」變更您的選擇。</li>
+				<li>所蒐集的資訊由 Google 依其隱私權政策管理。詳情請參閱<a href="https://policies.google.com/technologies/partner-sites?hl=zh-TW" target="_blank" rel="noopener noreferrer">Google 如何使用採用其服務的網站或應用程式所提供的資訊</a>。</li>
+			</ul>
 
 			<h2>2. 關於 Drive DAM 應用程式</h2>
 			<p>
@@ -113,6 +125,11 @@ const updated = "2026年8月15日";
 		margin-top: 38px;
 		margin-bottom: 14px;
 		padding-top: 8px;
+	}
+	.legal h3 {
+		font-size: 1rem;
+		margin-top: 26px;
+		margin-bottom: 10px;
 	}
 	.legal__list {
 		color: var(--ink-muted);

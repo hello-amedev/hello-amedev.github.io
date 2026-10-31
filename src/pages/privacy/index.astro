@@ -1,6 +1,6 @@
 ---
 import Base from "../../layouts/Base.astro";
-const updated = "2026年8月15日";
+const updated = "2026年10月31日";
 ---
 
 <Base
@@ -21,10 +21,22 @@ const updated = "2026年8月15日";
 
 			<h2>1. ウェブサイトについて</h2>
 			<p>
-				本ウェブサイトは静的なページで構成されており、利用者を識別するための Cookie やアクセス解析ツールを
-				使用していません。お問い合わせのためにメールでご連絡をいただいた場合、その内容と連絡先は、
+				お問い合わせのためにメールでご連絡をいただいた場合、その内容と連絡先は、
 				ご返信および対応の目的にのみ使用します。
 			</p>
+
+			<h3>アクセス解析（Google Analytics）</h3>
+			<p>
+				本ウェブサイトでは、サイトの改善のために Google LLC の提供するアクセス解析ツール「Google Analytics」を、
+				利用者が許可した場合にのみ使用します。初めてご訪問いただいた際に表示される確認で「許可する」を
+				選んだ場合に限り、Cookie が利用者の端末に保存され、閲覧したページ、滞在時間、利用している端末やブラウザの種類、
+				おおまかな地域などの情報が Google に送信されます。氏名やメールアドレスなど、個人を特定する情報は収集しません。
+			</p>
+			<ul class="legal__list">
+				<li>「使わない」を選んだ場合は、Google Analytics の Cookie は保存されず、情報も送信されません。</li>
+				<li>選択は各ページ下部の「Cookie 設定」から、いつでも変更できます。</li>
+				<li>収集された情報は、Google のプライバシーポリシーに従って Google により管理されます。詳しくは <a href="https://policies.google.com/technologies/partner-sites?hl=ja" target="_blank" rel="noopener noreferrer">Google のサービスを使用するサイトやアプリからのデータの Google による使用</a>をご覧ください。</li>
+			</ul>
 
 			<h2>2. Drive DAM アプリについて</h2>
 			<p>
@@ -113,6 +125,11 @@ const updated = "2026年8月15日";
 		margin-top: 38px;
 		margin-bottom: 14px;
 		padding-top: 8px;
+	}
+	.legal h3 {
+		font-size: 1rem;
+		margin-top: 26px;
+		margin-bottom: 10px;
 	}
 	.legal__list {
 		color: var(--ink-muted);

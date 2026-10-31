@@ -14,6 +14,7 @@ import "@fontsource/noto-sans-jp/700.css";
 import "../styles/drivedam.css";
 import "../styles/hanella.css";
 import LangBanner from "../components/LangBanner.astro";
+import Analytics from "../components/Analytics.astro";
 
 interface Props {
 	title: string;
@@ -55,6 +56,7 @@ const ui = isEn
 			footSupport: "Support",
 			contact: "Contact",
 			privacy: "Privacy Policy",
+			cookie: "Cookie settings",
 		}
 	: {
 			menuAria: "ページ内メニュー",
@@ -68,6 +70,7 @@ const ui = isEn
 			footSupport: "サポート",
 			contact: "お問い合わせ",
 			privacy: "プライバシーポリシー",
+			cookie: "Cookie 設定",
 		};
 ---
 
@@ -148,6 +151,7 @@ const ui = isEn
 						<ul>
 							<li><a href="mailto:amemitai@gmail.com">{ui.contact}</a></li>
 							<li><a href={privacy}>{ui.privacy}</a></li>
+							<li><a href="#cookie-settings" data-cookie-settings hidden>{ui.cookie}</a></li>
 						</ul>
 					</div>
 				</div>
@@ -157,6 +161,8 @@ const ui = isEn
 				</div>
 			</div>
 		</footer>
+
+		<Analytics lang={lang} />
 
 		<script is:inline>
 			(function () {

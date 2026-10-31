@@ -8,6 +8,18 @@
 | なぜこの実装なのか / 過去の経緯 | [docs/site-history.md](docs/site-history.md) |
 | 製品本体 Drive DAM の最新 | `~/Documents/claude-private/drive-dam/HANDOFF.md` |
 
+## 0-G. Google Analytics(GA4)と同意バナー(2026-10-31 実装。測定 ID は未設定)
+
+- **測定 ID は `src/data/analytics.ts` の `GA_MEASUREMENT_ID` に 1 行入れるだけで全ページ有効になる。今は空 = 計測もバナーも出ない**
+  (ID は GA の 管理 → データストリーム → ウェブ。`https://ame-dev.com/` で作る)。ID を入れたらこの行は「設定済み」に書き換える
+- 部品は `src/components/Analytics.astro`(バナー + 読み込み)。3 レイアウト(Base / DrivedamLayout / HanellaLayout)の末尾で呼ぶ。
+  新しいレイアウトを作ったら必ず呼ぶ。転送だけの `/hanella/` と `/en/hanella/`(noindex)は対象外
+- **「許可する」を押すまで gtag.js は読み込まない**(同意前は Google へ何も送らない)。選択は localStorage の `ame-dev-analytics-consent`(`granted` / `denied`)。
+  「使わない」にすると送信を止め、`_ga` 系 Cookie も消す
+- フッターの「Cookie 設定」は `<a href="#cookie-settings" data-cookie-settings hidden>`。ID があると部品が表示し、押すとバナーを開き直す。
+  フッターを新しく作る時は、プライバシーポリシーのリンクの隣に同じ形で置く(Drive DAM のページは `.foot-base-links` で包む)
+- プライバシーポリシー 3 言語の「1. ウェブサイトについて」に、Google Analytics の節を足した(以前の「Cookie・解析を使っていない」は削除済み)
+
 ## 0-F. figures の専用セクション(2026-10-25)
 
 - フィギュアスケートの Web コンテンツ figures(https://ame-dev.com/figures/)を本公開したので、TOP の Works と AI for ART の間に専用セクションを置いた
@@ -241,7 +253,7 @@ worktree `claude/drive-dam-1-2-0-site-update-9e23c2` で作業。
 ## 1. プロジェクト概要
 
 - **何**: ame_dev ブランドの公式サイト。総合 TOP(`/`)+ Drive DAM LP(`/drivedam/`)
-- **スタック**: Astro 7(minimal / TypeScript strict)。外部フォント・解析・Cookie なし
+- **スタック**: Astro 7(minimal / TypeScript strict)。外部フォントなし。解析は GA4(同意した人だけ。0-G)
 - **公開先**: GitHub Pages User Site `hello-amedev/hello-amedev.github.io`。
   **独自ドメイン `ame-dev.com` で配信(2026-09-04 移行)**。旧 `hello-amedev.github.io` は
   GitHub が自動でパス保持の 301 転送を行う。User Site なのでルート配信 = `base` 調整不要
