@@ -8,10 +8,10 @@
 | なぜこの実装なのか / 過去の経緯 | [docs/site-history.md](docs/site-history.md) |
 | 製品本体 Drive DAM の最新 | `~/Documents/claude-private/drive-dam/HANDOFF.md` |
 
-## 0-G. Google Analytics(GA4)と同意バナー(2026-10-31 実装。測定 ID は未設定)
+## 0-G. Google Analytics(GA4)と同意バナー(2026-10-31 実装・測定 ID 設定済み)
 
-- **測定 ID は `src/data/analytics.ts` の `GA_MEASUREMENT_ID` に 1 行入れるだけで全ページ有効になる。今は空 = 計測もバナーも出ない**
-  (ID は GA の 管理 → データストリーム → ウェブ。`https://ame-dev.com/` で作る)。ID を入れたらこの行は「設定済み」に書き換える
+- **測定 ID は `src/data/analytics.ts` の `GA_MEASUREMENT_ID`(設定済み)。空にすると計測もバナーも出なくなる**
+  (ID は GA の 管理 → データストリーム → ウェブ。ストリームは `https://ame-dev.com/` で作成済み)
 - 部品は `src/components/Analytics.astro`(バナー + 読み込み)。3 レイアウト(Base / DrivedamLayout / HanellaLayout)の末尾で呼ぶ。
   新しいレイアウトを作ったら必ず呼ぶ。転送だけの `/hanella/` と `/en/hanella/`(noindex)は対象外
 - **「許可する」を押すまで gtag.js は読み込まない**(同意前は Google へ何も送らない)。選択は localStorage の `ame-dev-analytics-consent`(`granted` / `denied`)。
