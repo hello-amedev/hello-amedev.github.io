@@ -8,6 +8,12 @@
 | なぜこの実装なのか / 過去の経緯 | [docs/site-history.md](docs/site-history.md) |
 | 製品本体 Drive DAM の最新 | `~/Documents/claude-private/drive-dam/HANDOFF.md` |
 
+## 0-I. Drive DAM v1.4.0 の最低限の更新(2026-11-02)
+
+- v1.4.0 の Store 公開(2026-11-01)に合わせて、`src/data/releases.ts` に v1.4.0 を足し(3 言語、Store の What's new と同文)、
+  「安心設計」のカードを 3 言語で直した(ごみ箱に入れる機能が入り「削除できない」が事実と違ったため。文言は `docs/site-copy.md`)
+- **次の更新で検討(あめさん)**: コピー・ドラッグ移動・ごみ箱の機能カードとスクリーンショット、コンテンツ全体の整理
+
 ## 0-G. Google Analytics(GA4)と同意バナー(2026-10-31 実装・測定 ID 設定済み)
 
 - **測定 ID は `src/data/analytics.ts` の `GA_MEASUREMENT_ID`(設定済み)。空にすると計測もバナーも出なくなる**

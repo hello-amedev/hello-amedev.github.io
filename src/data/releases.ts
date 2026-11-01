@@ -36,6 +36,37 @@ export interface Release {
 
 export const releases: Release[] = [
 	{
+		version: "1.4.0",
+		date: "2026-11-01",
+		ja: [
+			"エクスプローラーから落としたフォルダやファイルを、ライブラリにコピーできるようになりました（元のファイルは残ります）",
+			"画像やフォルダを左のフォルダ一覧へドラッグして移動できるようになりました（右クリックから1つ上のフォルダへも移動できます）",
+			"画像・ファイル・空のフォルダを、右クリックからごみ箱に入れられるようになりました（ごみ箱から戻せますが、タグなどの記録は戻りません）",
+			"画像を外のアプリへドラッグするときの待ち時間をなくしました（渡るのはチームで共有している元のファイルです。編集して上書き保存すると、みんなの画像が変わります。更新日時も元のままです）",
+			"タグの名前の変更・統合・削除が、待たされずに終わるようになりました",
+			"使用不可にした画像は、最初から一覧に表示しません（「表示・並び替え」から表示できます）",
+			"ルートフォルダ直下の設定ファイルを専用フォルダにまとめる変更は、次のバージョン以降になります。引き続きチームの皆さんで更新をお願いします",
+		],
+		en: [
+			"Folders and files dropped in from Explorer can now be copied into your library (the originals stay where they are)",
+			"Images and folders can now be moved by dragging them onto the folder list on the left (the right-click menu can also move an item up one folder)",
+			"Images, files, and empty folders can now be moved to the Recycle Bin from the right-click menu (you can restore them from the Recycle Bin, but tags and other records won't come back)",
+			"Dragging an image out to another app no longer keeps you waiting (what you hand over is the original file your team shares, so editing it and saving over it changes everyone's image; the date modified also stays as it was)",
+			"Renaming, merging, and deleting tags now finish without keeping you waiting",
+			"Images marked \"Not usable\" are now hidden from the list from the start (you can show them from \"View & sort\")",
+			"Moving the settings file sitting directly in your root folder into a folder of its own has been put off to a later version. Please keep everyone on your team updated",
+		],
+		zh: [
+			"從檔案總管拖放進來的資料夾與檔案，現在可以複製到媒體庫（原始檔案會留在原處）",
+			"現在可以將圖片或資料夾拖曳到左側的資料夾清單來移動（也可以從右鍵選單移動到上一層資料夾）",
+			"現在可以從右鍵選單將圖片、檔案與空資料夾移到資源回收筒（可從資源回收筒還原檔案，但標籤等記錄不會還原）",
+			"將圖片拖曳到其他應用程式時不再需要等待（交出的是團隊共用的原始檔案，若編輯後覆寫儲存，所有人的圖片都會改變。修改日期也維持原樣）",
+			"標籤的重新命名、合併與刪除不再需要等待",
+			"標示為不可使用的圖片，一開始就不會顯示在清單中（可從「顯示與排序」顯示）",
+			"將根資料夾下的設定檔集中到專用資料夾的變更，將延後到之後的版本。請團隊成員持續更新",
+		],
+	},
+	{
 		version: "1.3.6",
 		date: "2026-09-05",
 		ja: [
